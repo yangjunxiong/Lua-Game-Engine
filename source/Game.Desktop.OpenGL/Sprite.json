@@ -1,0 +1,24 @@
+{
+  "a": {
+    "name": "first",
+    "sprite": [
+      {
+        "row": 0,
+        "col": 0
+      },
+      {
+        "row": 1,
+        "col": 0
+      }
+    ]
+  },
+  "b": {
+    "name": "second",
+    "sprite": [
+      {
+        "row": 0,
+        "col": 0
+      }
+    ]
+  }
+}

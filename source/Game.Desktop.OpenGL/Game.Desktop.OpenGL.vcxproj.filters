@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Program.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="SpriteSheet.cpp" />
+    <ClCompile Include="SpriteSet.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="ActionHeader.h" />
+    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="SpriteSheet.h" />
+    <ClInclude Include="SpriteSet.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{c7bde6ef-24e5-4631-b259-774378dd8c65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Config">
+      <UniqueIdentifier>{9484d17c-2957-49f9-aeed-4880069c546e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Sprites">
+      <UniqueIdentifier>{4aa976ec-1f9c-462c-9f10-954cd8a20896}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Audio">
+      <UniqueIdentifier>{8004e54c-ffc0-49b9-a043-1706878f568c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Shaders">
+      <UniqueIdentifier>{863b556e-a0a6-4e75-9e8f-8ebb21b23ed1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Config\Entry.json">
+      <Filter>Resources\Config</Filter>
+    </None>
+    <None Include="Resources\Shaders\SpriteFragmentShader.shader">
+      <Filter>Resources\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\SpriteVextexShader.shader">
+      <Filter>Resources\Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Sprites\sample.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

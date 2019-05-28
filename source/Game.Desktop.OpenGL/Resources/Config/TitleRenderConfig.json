@@ -1,0 +1,14 @@
+{
+	"Texture": {
+		"type": "integer",
+		"value": 5
+	},
+	"Row": {
+		"type": "integer",
+		"value": 0
+	},
+	"Column": {
+		"type": "integer",
+		"value": 0
+	}
+}

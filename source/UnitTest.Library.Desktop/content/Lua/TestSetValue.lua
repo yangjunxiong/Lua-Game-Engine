@@ -1,0 +1,8 @@
+check("10.0", tostring(test.int32))
+check("11.0", tostring(test.int64))
+check("12.0", tostring(test.float))
+check("13.0", tostring(test.double))
+check("true", tostring(test.bool))
+check("1.0", tostring(test.byte))
+check("ccc", tostring(test.cstring))
+check("bbb", tostring(test.string))

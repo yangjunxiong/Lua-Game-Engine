@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)HealthSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PlayerMovement.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Player.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Bullet.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ReactionBullet.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ReactionSword.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)HealthUI.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)HealthSystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PlayerMovement.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Bullet.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ReactionBullet.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ReactionSword.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)HealthUI.cpp" />
+  </ItemGroup>
+</Project>

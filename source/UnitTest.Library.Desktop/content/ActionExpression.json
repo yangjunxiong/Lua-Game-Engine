@@ -1,0 +1,22 @@
+{
+	"Name": {
+		"type": "string",
+		"value": "Expression"
+	},
+	"Expression": {
+		"type": "string",
+		"value": "Value3 = (Value1 - 98) * Value2 == 100.0"
+	},
+	"Value1": {
+		"type": "integer",
+		"value": 100
+	},
+	"Value2": {
+		"type": "float",
+		"value": 50.0
+	},
+	"Value3": {
+		"type": "integer",
+		"value": 0
+	}
+}

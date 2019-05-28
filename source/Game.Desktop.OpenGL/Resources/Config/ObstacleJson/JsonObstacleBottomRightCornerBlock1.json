@@ -1,0 +1,31 @@
+{
+	"Name": {
+		"type": "string",
+		"value": "ObstacleBottomRightCornerBlock1"
+	},
+	"Position": {
+		"type": "vector",
+		"value": "vec4(8, -5, 0, 1)"
+	},
+	"Rotation": {
+		"type": "vector",
+		"value": "vec4(0, 0, 0, 1)"
+	},
+	"Scale": {
+		"type": "vector",
+		"value": "vec4(1, 1, 1, 1)"
+	},
+	"Actions": {
+		"type": "table",
+		"value": [
+			{
+				"class": "ActionBoxCollision",
+				"file": "Resources/Config/ObstacleCollisionConfig.json"
+			},
+			{
+				"class": "ActionRender",
+				"file": "Resources/Config/ObstacleRenderConfig.json"
+			}
+		]
+	}
+}

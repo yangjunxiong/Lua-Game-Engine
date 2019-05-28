@@ -1,0 +1,139 @@
+{
+	"Name": {
+		"type": "string",
+		"value": "Sector"
+	},
+	"Entities": {
+		"type": "table",
+		"value": [
+			{
+				"class": "Avatar"
+			},
+			{
+				"class": "Entity"
+			},
+			{
+				"class": "Entity",
+				"Name": {
+					"type": "string",
+					"value": "Entity"
+				},
+				"Health": {
+					"type": "integer",
+					"value": 10
+				},
+				"Actions": {
+					"type": "table",
+					"value": [
+						{
+							"class": "ActionIncrement",
+							"Name": {
+								"type": "string",
+								"value": "Action1"
+							},
+							"Target": {
+								"type": "string",
+								"value": "Health"
+							},
+							"Step": {
+								"type": "float",
+								"value": 5.0
+							}
+						},
+						{
+							"class": "ActionCreateAction",
+							"Name": {
+								"type": "string",
+								"value": "Action2"
+							},
+							"Class": {
+								"type": "string",
+								"value": "ActionIncrement"
+							},
+							"InstanceName": {
+								"type": "string",
+								"value": "CreatedAction"
+							}
+						},
+						{
+							"class": "ActionList",
+							"Name": {
+								"type": "string",
+								"value": "ActionList1"
+							},
+							"ActionList": {
+								"type": "table",
+								"value": [
+									{
+										"class": "ActionDestroyAction",
+										"Name": {
+											"type": "string",
+											"value": "Action3"
+										},
+										"Target": {
+											"type": "string",
+											"value": "Action2"
+										}
+									},
+									{
+										"class": "ActionDestroyAction",
+										"Name": {
+											"type": "string",
+											"value": "Action4"
+										},
+										"Target": {
+											"type": "string",
+											"value": "ActionList1"
+										}
+									}
+								]
+							}
+						},
+						{
+							"class": "ActionListIf",
+							"Name": {
+								"type": "string",
+								"value": "ActionIf"
+							},
+							"Condition": {
+								"type": "integer",
+								"value": 0
+							},
+							"ActionList": {
+								"type": "table",
+								"value": [
+									{
+										"class": "ActionIncrement",
+										"Name": {
+											"type": "string",
+											"value": "INC"
+										},
+										"Target": {
+											"type": "string",
+											"value": "Health"
+										},
+										"Step": {
+											"type": "float",
+											"value": -7.0
+										}
+									},
+									{
+										"class": "ActionDestroyAction",
+										"Name": {
+											"type": "string",
+											"value": "DES"
+										},
+										"Target": {
+											"type": "string",
+											"value": "Action1"
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		]
+	}
+}

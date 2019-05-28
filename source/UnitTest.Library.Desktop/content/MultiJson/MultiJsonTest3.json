@@ -1,0 +1,23 @@
+{
+	"Name": {
+		"type": "string",
+		"value": "E"
+	},
+	"Int": {
+		"type": "integer",
+		"value": 1
+	},
+	"Vector": {
+		"type": "vector",
+		"value": "vec4(1, 2, 3, 4)"
+	},
+	"InternalScopeEmpty": {
+		"type": "table",
+		"value": {
+			"Bar": {
+				"type": "string",
+				"value": "Balabala"
+			}
+		}
+	}
+}

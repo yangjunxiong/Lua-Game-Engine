@@ -1,0 +1,25 @@
+{
+	"InternalScopeEmpty": {
+		"type": "table",
+		"value": [
+			{
+				"class": "Entity",
+				"file": "content/MultiJson/MultiJsonTest1.json"
+			},
+			{
+				"file": "content/MultiJson/MultiJsonTest2.json"
+			},
+			{
+				"class": "Entity",
+				"Name": {
+					"type": "string",
+					"value": "Hand Written Entity"
+				}
+			}
+		]
+	},
+	"Int": {
+		"type": "integer",
+		"value": 100
+	}
+}

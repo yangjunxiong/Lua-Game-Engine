@@ -1,0 +1,46 @@
+{
+	"Name": {
+		"type": "string",
+		"value": "Child"
+	},
+	"Actions": {
+		"type": "table",
+		"value": [
+			{
+				"class": "ActionLoadJson",
+				"Name": {
+					"type": "string",
+					"value": "AnotherLoad"
+				},
+				"Class": {
+					"type": "string",
+					"value": "Entity"
+				},
+				"Parent": {
+					"type": "string",
+					"value": "AnotherHold"
+				},
+				"File": {
+					"type": "string",
+					"value": "content/LoadJsonTest.json"
+				}
+			}
+		]
+	},
+	"AnotherHold": {
+		"type": "table",
+		"value": []
+	},
+	"Position": {
+		"type": "vector",
+		"value": "vec4(1, 2, 3, 0)"
+	},
+	"Rotation": {
+		"type": "vector",
+		"value": "vec4(0, 0, 0, 1)"
+	},
+	"Scale": {
+		"type": "vector",
+		"value": "vec4(3, 2, 1, 1)"
+	}
+}

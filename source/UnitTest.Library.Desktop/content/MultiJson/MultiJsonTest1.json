@@ -1,0 +1,44 @@
+{
+	"Name": {
+		"type": "string",
+		"value": "Entity1"
+	},
+	"Actions": {
+		"type": "table",
+		"value": [
+			{
+				"class": "ActionIncrement",
+				"Name": {
+					"type": "string",
+					"value": "ActionIncrement"
+				},
+				"Target": {
+					"type": "string",
+					"value": "A"
+				},
+				"Step": {
+					"type": "float",
+					"value": 5.0
+				}
+			}
+		]
+	},
+	"Foo": {
+		"type": "table",
+		"value": [
+			{
+				"class": "Entity",
+				"file": "content/MultiJson/MultiJsonTest3.json"
+			},
+			{
+				"class": "Entity",
+				"file": "content/MultiJson/MultiJsonTest3.json"
+			},
+			{
+				"class": "Entity",
+				"file": "content/MultiJson/MultiJsonTest3.json"
+			}
+		]
+			
+	}
+}

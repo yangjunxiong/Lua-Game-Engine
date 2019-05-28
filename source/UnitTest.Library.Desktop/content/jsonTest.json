@@ -1,0 +1,10 @@
+{
+    "integer": [1, 2, 3],
+    "object": {
+        "integer": 10,
+        "integer2": 11,
+        "object": {
+            "integer": [2, 3, 4]
+        }
+    }
+}

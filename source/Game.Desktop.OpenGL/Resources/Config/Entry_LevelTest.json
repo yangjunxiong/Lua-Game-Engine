@@ -1,0 +1,50 @@
+{
+	"Name": {
+		"type": "string",
+		"value": "World"
+	},
+	"Sectors": {
+		"type": "table",
+		"value": [
+			{
+				"class": "Sector",
+				"Name": {
+					"type": "string",
+					"value": "Sector1"
+				},
+				"Entities": {
+					"type": "table",
+					"value": [
+						{
+							"class": "Player",
+							"Name": {
+								"type": "string",
+								"value": "Player1"
+							},
+							"Actions": {
+								"type": "table",
+								"value": [
+                  {
+                    "class": "ActionRender",
+                    "Texture": {
+                      "type": "integer",
+                      "value": 1
+                    },
+                    "Row": {
+                      "type": "integer",
+                      "value": 1
+                    },
+                    "Column": {
+                      "type": "integer",
+                      "value": "0"
+                    }
+                  }
+								]
+							}
+						}
+					]
+				}
+			}
+		]
+	}
+}

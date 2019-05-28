@@ -1,0 +1,38 @@
+{
+	"Name": {
+		"type": "string",
+		"value": "World"
+	},
+	"Sectors": {
+		"type": "table",
+		"value": [
+			{
+				"class": "Sector",
+				"Name": {
+					"type": "string",
+					"value": "Sector1"
+				},
+				"Entities": {
+					"type": "table",
+					"value": [
+						{
+							"class": "Entity",
+							"Name": {
+								"type": "string",
+								"value": "Entity1"
+							}
+						}
+					]
+				}
+			}
+		]
+	},
+	"Actions": {
+		"type": "table",
+		"value": [
+			{
+				"class": "ActionCollisionEvent"
+			}
+		]
+	}
+}

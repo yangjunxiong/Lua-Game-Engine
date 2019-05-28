@@ -1,0 +1,245 @@
+{
+	"Name": {
+		"type": "string",
+		"value": "The World"
+	},
+	"Sectors": {
+		"type": "table",
+		"value": [
+			{
+				"class": "Sector",
+				"Name": {
+					"type": "string",
+					"value": "Sector1"
+				},
+				"Entities": {
+					"type": "table",
+					"value": [
+						{
+							"class": "Entity",
+							"Name": {
+								"type": "string",
+								"value": "Entity1"
+							},
+							"Actions": {
+								"type": "table",
+								"value": [
+									{
+										"class": "ActionEvent",
+										"Name": {
+											"type": "string",
+											"value": "ActionEvent"
+										},
+										"Subtype": {
+											"type": "string",
+											"value": "Add"
+										},
+										"Delay": {
+											"type": "integer",
+											"value": 500
+										},
+										"IntOperand": {
+											"type": "integer",
+											"value": 10
+										},
+										"FloatOperand": {
+											"type": "float",
+											"value": 5.0
+										},
+										"StringOperand1": {
+											"type": "string",
+											"value": "Hello"
+										},
+										"StringOperand2": {
+											"type": "string",
+											"value": " World"
+										},
+										"StringOperand3": {
+											"type": "string",
+											"value": "!"
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		]
+	},
+	"Reactions": {
+		"type": "table",
+		"value": [
+			{
+				"class": "ReactionAttributed",
+				"Name": {
+					"type": "string",
+					"value": "ReactionAdd"
+				},
+				"Subtype": {
+					"type": "string",
+					"value": "Add"
+				},
+				"ActionList": {
+					"type": "table",
+					"value": [
+						{
+							"class": "ActionAdd",
+							"Name": {
+								"type": "string",
+								"value": "ActionAddInt"
+							},
+							"Operands": {
+								"type": "table",
+								"value": [
+									{
+										"Type": {
+											"type": "integer",
+											"value": 0
+										},
+										"Value": {
+											"type": "integer",
+											"value": 5
+										}
+									},
+									{
+										"Type": {
+											"type": "integer",
+											"value": 1
+										},
+										"Value": {
+											"type": "string",
+											"value": "IntOperand"
+										}
+									}
+								]
+							}
+						},
+						{
+							"class": "ActionAdd",
+							"Name": {
+								"type": "string",
+								"value": "ActionAddFloat"
+							},
+							"Operands": {
+								"type": "table",
+								"value": [
+									{
+										"Type": {
+											"type": "integer",
+											"value": 1
+										},
+										"Value": {
+											"type": "string",
+											"value": "FloatOperand"
+										}
+									},
+									{
+										"Type": {
+											"type": "integer",
+											"value": 0
+										},
+										"Value": {
+											"type": "float",
+											"value": 20.0
+										}
+									}
+								]
+							}
+						},
+						{
+							"class": "ActionAdd",
+							"Name": {
+								"type": "string",
+								"value": "ActionAddString"
+							},
+							"Operands": {
+								"type": "table",
+								"value": [
+									{
+										"Type": {
+											"type": "integer",
+											"value": 1
+										},
+										"Value": {
+											"type": "string",
+											"value": "StringOperand1"
+										}
+									},
+									{
+										"Type": {
+											"type": "integer",
+											"value": 1
+										},
+										"Value": {
+											"type": "string",
+											"value": "StringOperand2"
+										}
+									},
+									{
+										"Type": {
+											"type": "integer",
+											"value": 1
+										},
+										"Value": {
+											"type": "string",
+											"value": "StringOperand3"
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			},
+			{
+				"class": "ReactionAttributed",
+				"Name": {
+					"type": "string",
+					"value": "ReactionNoAdd"
+				},
+				"Subtype": {
+					"type": "string",
+					"value": "NoAdd"
+				},
+				"ActionList": {
+					"type": "table",
+					"value": [
+						{
+							"class": "ActionAdd",
+							"Name": {
+								"type": "string",
+								"value": "ActionAddInt"
+							},
+							"Operands": {
+								"type": "table",
+								"value": [
+									{
+										"Type": {
+											"type": "integer",
+											"value": 0
+										},
+										"Value": {
+											"type": "integer",
+											"value": 5
+										}
+									},
+									{
+										"Type": {
+											"type": "integer",
+											"value": 1
+										},
+										"Value": {
+											"type": "string",
+											"value": "IntOperand"
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		]
+	}
+}

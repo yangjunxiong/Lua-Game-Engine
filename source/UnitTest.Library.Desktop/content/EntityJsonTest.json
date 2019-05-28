@@ -1,0 +1,71 @@
+{
+	"Name": {
+		"type": "string",
+		"value": "The World"
+	},
+	"Sectors": {
+		"type": "table",
+		"value": [
+			{
+				"class": "Sector",
+				"Name": {
+					"type": "string",
+					"value": "Sector1"
+				}
+			},
+			{
+				"class": "Sector",
+				"Name": {
+					"type": "string",
+					"value": "Sector2"
+				},
+				"Entities": {
+					"type": "table",
+					"value": [
+						{
+							"class": "Entity",
+							"Name": {
+								"type": "string",
+								"value": "Entity1"
+							},
+							"Actions": {
+								"type": "table",
+								"value": [
+								]
+							}
+						},
+						{
+							"class": "Entity",
+							"Name": {
+								"type": "string",
+								"value": "Entity2"
+							}
+						},
+						{
+							"class": "Avatar",
+							"Name": {
+								"type": "string",
+								"value": "AvatarTM"
+							},
+							"Value": {
+								"type": "integer",
+								"value": 123
+							},
+							"Other": {
+								"type": "string",
+								"value": "Other"
+							}
+						}
+					]
+				}
+			},
+			{
+				"class": "Sector",
+				"Name": {
+					"type": "string",
+					"value": "Sector3"
+				}
+			}
+		]
+	}
+}

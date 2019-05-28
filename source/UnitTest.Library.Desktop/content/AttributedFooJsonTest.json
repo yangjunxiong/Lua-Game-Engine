@@ -1,0 +1,145 @@
+{
+  "Int": {
+    "type": "integer",
+    "value": 100
+  },
+  "Float": {
+    "type": "float",
+    "value": 11.123
+  },
+  "Vector": {
+    "type": "vector",
+    "value": "vec4(1, 2, 3, 4)"
+  },
+	"Matrix": {
+		"type": "matrix",
+		"value": "mat4x4((1, 2, 3, 4), (5, 6, 7, 8), (9, 10, 11, 12), (13, 14, 15, 16))"
+	},
+	"String": {
+		"type": "string",
+		"value": "I'm a string"
+	},
+	"IntArray": {
+		"type": "integer",
+		"value": [ 1, 2, 3 ]
+	},
+	"FloatArray": {
+		"type": "float",
+		"value": [ 1.1, 2.2, 3.3 ]
+	},
+	"VectorArray": {
+		"type": "vector",
+		"value": [ "vec4(0, 0, 0, 0)", "vec4(1, 2, 3, 4)", "vec4(5, 6, 7, 8)" ]
+	},
+	"MatrixArray": {
+		"type": "matrix",
+		"value": [
+			"mat4x4((1, 2, 3, 4), (5, 6, 7, 8), (9, 10, 11, 12), (13, 14, 15, 16))",
+			"mat4x4((-1, -2, -3, -4), (-5, -6, -7, -8), (-9, -10, -11, -12), (-13, -14, -15, -16))",
+			"mat4x4((1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1))"
+		]
+	},
+	"StringArray": {
+		"type": "string",
+		"value": [ "A", "B", "C" ]
+	},
+	"InternalInt": {
+		"type": "integer",
+		"value": 999
+	},
+	"InternalFloat": {
+		"type": "float",
+		"value": 99.99
+	},
+	"InternalVector": {
+		"type": "vector",
+		"value": "vec4(9, 9, 9, 9)"
+	},
+	"InternalMatrix": {
+		"type": "matrix",
+		"value": "mat4x4((1, 2, 3, 4), (5, 6, 7, 8), (9, 10, 11, 12), (13, 14, 15, 16))"
+	},
+	"InternalString": {
+		"type": "string",
+		"value": "InternalString"
+	},
+	"InternalIntArray": {
+		"type": "integer",
+		"value": [ 3, 2, 1, 0 ]
+	},
+	"InternalFloatArray": {
+		"type": "float",
+		"value": [ 3.5, 2.5, 1.5, 0.5 ]
+	},
+	"InternalVectorArray": {
+		"type": "vector",
+		"value": [ "vec4(0, 0, 0, 0)", "vec4(4, 3, 2, 1)", "vec4(9, 8, 7, 6)", "vec4(10, 10, 10, 10)" ]
+	},
+	"InternalMatrixArray": {
+		"type": "matrix",
+		"value": [
+			"mat4x4((1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1))",
+			"mat4x4((-1, -2, -3, -4), (-5, -6, -7, -8), (-9, -10, -11, -12), (-13, -14, -15, -16))",
+			"mat4x4((1, 2, 3, 4), (5, 6, 7, 8), (9, 10, 11, 12), (13, 14, 15, 16))"
+		]
+	},
+	"InternalStringArray": {
+		"type": "string",
+		"value": [ "C", "B", "A" ]
+	},
+	"InternalScopeArray": {
+		"type": "table",
+		"value": [
+			{
+				"CK2": {
+					"type": "string",
+					"value": "Crusader Kings II"
+				},
+				"MoreTable": {
+					"type": "table",
+					"value": {
+						"value": {
+							"type": "integer",
+							"value": 233
+						}
+					}
+				}
+			},
+			{
+				"Haha": {
+					"type": "vector",
+					"value": [ "vec4(1, 2, 3, 4)" ]
+				}
+			}
+		]
+	},
+	"InternalScopeEmpty": {
+		"type": "table",
+		"value": [
+			{
+				"class": "Entity",
+				"Name": {
+					"type": "string",
+					"value": "Bob"
+				},
+				"FIEA": {
+					"type": "float",
+					"value": [ 1.1, 2.2, 3.3, 4.4 ]
+				}
+			},
+			{
+				"value": {
+					"type": "integer",
+					"value": 123
+				}
+			},
+			{
+				"class": "Entity"
+			}
+		]
+	},
+	"Auxiliary": {
+		"type": "string",
+		"value": "Auxiliary"
+	}
+}

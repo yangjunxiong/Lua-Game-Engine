@@ -1,0 +1,99 @@
+{
+	"Health": {
+		"type": "float",
+		"value": 10.5
+	},
+	"Money": {
+		"type": "integer",
+		"value": 100
+	},
+	"Position": {
+		"type": "vector",
+		"value": "vec4(100.0, 200.0, 300.123, 0.0)"
+	},
+	"Transform": {
+		"type": "matrix",
+		"value": "mat4x4((1, 2, 3, 4), (5, 6, 7, 8), (9, 10, 11, 12), (13, 14, 15, 16))"
+	},
+	"Name": {
+		"type": "string",
+		"value": "Jack"
+	},
+	"Traits": {
+		"type": "integer",
+		"value": [ 300, 301, 452, 342 ]
+	},
+	"Tags": {
+		"type": "string",
+		"value": [ "Hero", "Human", "Stressed" ]
+	},
+	"Inventory": {
+		"type": "table",
+		"value": [
+			{
+				"Id": {
+					"type": "integer",
+					"value": 0
+				},
+				"Name": {
+					"type": "string",
+					"value": "Mother's Soup"
+				},
+				"Count": {
+					"type": "integer",
+					"value": 3
+				},
+				"Effect": {
+					"type": "table",
+					"value": {
+						"Id": {
+							"type": "integer",
+							"value": 30
+						},
+						"Duration": {
+							"type": "float",
+							"value": 5.35
+						},
+						"Requirement": {
+							"type": "table",
+							"value": [
+								{
+									"Id": {
+										"type": "integer",
+										"value": 0
+									}
+								},
+								{
+									"Id": {
+										"type": "integer",
+										"value": 1
+									}
+								},
+								{
+									"Id": {
+										"type": "integer",
+										"value": 2
+									}
+								}
+							]
+						}
+					}
+				}
+			},
+			{
+				"Id": {
+					"type": "integer",
+					"value": 10
+				},
+				"Name": {
+					"type": "string",
+					"value": "Sword"
+				},
+				"Damage": {
+					"type": "float",
+					"value": 10.0
+				}
+			}
+		]
+	}
+}
