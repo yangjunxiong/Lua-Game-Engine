@@ -137,6 +137,12 @@ namespace UnitTestLibraryDesktop
 			return mDoCount;
 		}
 
+		std::string& AppendText(LuaBindTest* other)
+		{
+			mText += other->mText;
+			return mText;
+		}
+
 		TEST_METHOD(TestTable)
 		{
 			LuaBind bind;
@@ -459,9 +465,43 @@ namespace UnitTestLibraryDesktop
 			bind.LoadString(lua);
 		}
 
+		TEST_METHOD(TestClassMemberVariable)
+		{
+			LuaBind bind;
+			LuaWrapper<LuaBindTest>::Register(bind.LuaState());
+			bind.SetFunction("CheckNumber", function(CheckNumber));
+			bind.SetFunction("Check", function(Check));
+			bind.SetFunction("AppendText", &LuaBindTest::AppendText);
+			bind.SetProperty("DoCount", &LuaBindTest::mDoCount);
+			bind.SetProperty("Text", &LuaBindTest::mText);
+			bind.SetProperty("Foo", this);
+			std::string lua = R"#(
+				local obj = Test()
+				CheckNumber(0, obj.DoCount)
+				Check("Hello", obj.Text)
+				local obj2 = Test()
+				local appendedText = obj:AppendText(obj2)
+				Check("HelloHello", appendedText)
+				Check("HelloHello", obj.Text)
+				Check("Hello", obj2.Text)
+
+				CheckNumber(0, Foo.DoCount)
+				Check("Hello", Foo.Text)
+				Foo.DoCount = Foo.DoCount + 10
+				Foo.Text = "YoYo"
+				CheckNumber(10, Foo.DoCount)
+				Check("YoYo", Foo.Text)
+				Foo["DoCount"] = Foo["DoCount"] * 2
+			)#";
+			bind.LoadString(lua);
+			Assert::AreEqual(20, mDoCount);
+			Assert::AreEqual("YoYo"s, mText);
+		}
+
 	private:
 		static _CrtMemState sStartMemState;
 		int mDoCount = 0;
+		std::string mText = "Hello";
 	};
 
 	_CrtMemState LuaBindTest::sStartMemState;

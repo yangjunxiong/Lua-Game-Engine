@@ -1,6 +1,15 @@
 #pragma once
+#include <set>
+
 namespace GameEngine::Lua
 {
+	class MetaFunction
+	{
+	public:
+		static inline int Index(lua_State* L);
+		static inline int NewIndex(lua_State* L);
+	};
+
 	template <typename T>
 	class LuaWrapper final
 	{
@@ -18,6 +27,7 @@ namespace GameEngine::Lua
 		T* const mObject = nullptr;
 		const bool mLuaObject = false;
 		const static std::string sName;
+		const static std::set<std::string> sReservedKeys;
 
 	protected:
 		static int __new(lua_State* L);

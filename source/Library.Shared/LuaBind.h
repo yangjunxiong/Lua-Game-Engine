@@ -71,6 +71,16 @@ namespace GameEngine::Lua
 		void SetProperty(const std::string& key, T* value, int index = 0);
 
 		/// <summary>
+		/// Bind C++ class member variable to Lua. So Lua script can access and modify the member values as if in C++
+		/// Before calling this function, be sure to register corresponding class type first
+		/// </summary>
+		/// <param name="key">Name of the member variable in Lua</param>
+		/// <param name="address">The pointer to class member</param>
+		/// <param name="writable">Whether this member is editable in Lua. If not, when Lua tries to write the value, it will trigger Lua error</param>
+		template <typename Class, typename T>
+		void SetProperty(const std::string& key, T Class::* address, bool writable = true);
+
+		/// <summary>
 		/// Set free C function or lambda function to a Lua variable
 		/// If current stack has table, will set the variable in the table, otherwise will set global variable
 		/// </summary>
@@ -135,6 +145,8 @@ namespace GameEngine::Lua
 
 		template <typename T>
 		static inline LuaWrapper<T>* _SetProperty(lua_State* L, T* value, const std::string& key = "", int index = 0);
+		template <typename Class, typename T>
+		static inline void _SetProperty(lua_State* L, const std::string& key, int(*getter)(lua_State*), int(*setter)(lua_State*));
 
 		template <typename Ret>
 		static inline int _CallCFunction(lua_State* L, const std::function<Ret(lua_State*)>& wrap);
