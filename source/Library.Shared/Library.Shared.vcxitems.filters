@@ -281,7 +281,9 @@
       <Filter>LuaBind</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)LuaWrapper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LuaWrapper.h">
+      <Filter>LuaBind</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)DefaultHashFunction.inl">
@@ -308,7 +310,9 @@
     <None Include="$(MSBuildThisFileDirectory)LuaBind.inl">
       <Filter>LuaBind</Filter>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)LuaWrapper.inl" />
+    <None Include="$(MSBuildThisFileDirectory)LuaWrapper.inl">
+      <Filter>LuaBind</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Container">

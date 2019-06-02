@@ -10,7 +10,14 @@ namespace GameEngine::Lua
 	class LuaBind final
 	{
 	public:
+		/// <summary>
+		/// Default and only constructor, creates a lua state and register primitive types
+		/// </summary>
 		LuaBind();
+
+		/// <summary>
+		/// Destructor, destroy the lua state
+		/// </summary>
 		~LuaBind();
 		LuaBind(const LuaBind& other) = delete;
 		LuaBind(LuaBind&& other) = delete;
@@ -18,16 +25,57 @@ namespace GameEngine::Lua
 		LuaBind& operator==(LuaBind&& other) = delete;
 		lua_State* LuaState() const;
 
+		/// <summary>
+		/// Clear current lua stack
+		/// </summary>
 		void ClearStack();
+
+		/// <summary>
+		/// Create a new table on the top of current stack
+		/// </summary>
+		/// <param name="name">Name of new table</param>
 		void CreateTable(const std::string& name);
+
+		/// <summary>
+		/// Open the table under current stack context. If current table stack is empty, will open global table, otherwise will open nested table belonging to current table on the top of stack
+		/// </summary>
+		/// <param name="path">The path to target table, delimited by .</param>
 		void OpenTable(const std::string& path);
+
+		/// <summary>
+		/// Close current table
+		/// </summary>
 		void CloseTable();
 		std::string CurrentTableName() const;
 		int CurrentTableIndex() const;
 
+		/// <summary>
+		/// Set the value of a Lua variable. If current stack has table, will set the variable in the table, otherwise will set global variable
+		/// Note this function doesn't pass reference to Lua, Lua variable only holds the copy of the data passed in.
+		/// So any change in Lua to the variable will not influence C++ value
+		/// </summary>
+		/// <param name="key">The name of variable to set</param>
+		/// <param name="value">The value to set to</param>
 		template <typename T>
 		void SetLuaValue(const std::string& key, const T& value) { static_assert(false, "Unsupported value type, only int32, int64, float, double, std::string are supported"); };
 
+		/// <summary>
+		/// Bind a C++ object to Lua, so both share the same memory location. Operation happended in Lua will also change the content in C++.
+		/// Primitive types are supported natively, for custom classes, user needs to register the class with LuaWrapper before binding.
+		/// This operation happens under current lua stack. If user doesn't provide index, it will set the property to global, otherwise it will set the property to the table whose index on stack is "index"
+		/// </summary>
+		/// <param name="key">The property name in lua</param>
+		/// <param name="value">The pointer to the object</param>
+		/// <param name="index">Index of target table on Lua stack. If index is 0, will set the property to global</param>
+		template <typename T>
+		void SetProperty(const std::string& key, T* value, int index = 0);
+
+		/// <summary>
+		/// Set free C function or lambda function to a Lua variable
+		/// If current stack has table, will set the variable in the table, otherwise will set global variable
+		/// </summary>
+		/// <param name="key">Name of the function in Lua</param>
+		/// <param name="value">function to set</param>
 		template <typename Ret>
 		void SetFunction(const std::string& key, const std::function<Ret()>& value);
 		template <typename Ret, typename Param1>
@@ -42,6 +90,30 @@ namespace GameEngine::Lua
 		void SetFunction(const std::string& key, const std::function<Ret(Param1, Param2, Param3, Param4, Param5)>& value);
 		template <typename Ret, typename Param1, typename Param2, typename Param3, typename Param4, typename Param5, typename Param6>
 		void SetFunction(const std::string& key, const std::function<Ret(Param1, Param2, Param3, Param4, Param5, Param6)>& value);
+
+		/// <summary>
+		/// Set member function (static or non-static) to a Lua name.
+		/// Before running this function, be sure to register corresponding class type with LuaWrapper<class>::Register().
+		/// This will always change the global Lua registry regardless of current Lua stack state
+		/// Member function in Lua can only be called against an object with same class type.
+		/// To call a member function in Lua, use "obj:func(...)" or "obj.func(obj, ...)"
+		/// </summary>
+		/// <param name="key">Name of the member function in Lua</param>
+		/// <param name="value">Pointer to member function</param>
+		template <typename Class, typename Ret>
+		void SetFunction(const std::string& key, Ret (Class::* value)());
+		template <typename Class, typename Ret, typename Param1>
+		void SetFunction(const std::string& key, Ret(Class::* value)(Param1));
+		template <typename Class, typename Ret, typename Param1, typename Param2>
+		void SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2));
+		template <typename Class, typename Ret, typename Param1, typename Param2, typename Param3>
+		void SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2, Param3));
+		template <typename Class, typename Ret, typename Param1, typename Param2, typename Param3, typename Param4>
+		void SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2, Param3, Param4));
+		template <typename Class, typename Ret, typename Param1, typename Param2, typename Param3, typename Param4, typename Param5>
+		void SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2, Param3, Param4, Param5));
+		template <typename Class, typename Ret, typename Param1, typename Param2, typename Param3, typename Param4, typename Param5, typename Param6>
+		void SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2, Param3, Param4, Param5, Param6));
 
 		void LoadFile(const std::string& fileName);
 		void LoadString(const std::string& str);
@@ -61,6 +133,9 @@ namespace GameEngine::Lua
 		void _ProcessError(int error);
 		void _SetLuaValue(std::function<void()> func, const std::string& key);
 
+		template <typename T>
+		static inline LuaWrapper<T>* _SetProperty(lua_State* L, T* value, const std::string& key = "", int index = 0);
+
 		template <typename Ret>
 		static inline int _CallCFunction(lua_State* L, const std::function<Ret(lua_State*)>& wrap);
 
@@ -77,74 +152,38 @@ namespace GameEngine::Lua
 	};
 }
 
-#define LUA_DEFINE_POINTER_TYPE(_type)														   \
-template<> static inline _type* GameEngine::Lua::LuaBind::_FromLuaStack(lua_State* L, int index)                   \
-{																					   \
-	if (lua_isuserdata(L, index))														   \
-	{																				   \
-		void* pointer = lua_touserdata(L, index);										   \
-		if (pointer == nullptr)														   \
-		{																			   \
-			throw std::exception("Pointer is nullptr");								   \
-		}																			   \
-		return static_cast<LuaWrapper<_type>*>(pointer)->mObject;										   \
-	}																				   \
-	throw std::exception("Unknown pointer type");									   \
-}																					   \
-template<> static inline const _type* GameEngine::Lua::LuaBind::_FromLuaStack(lua_State* L, int index)			   \
-{																					   \
-	if (lua_isuserdata(L, index))														   \
-	{																				   \
-		void* pointer = lua_touserdata(L, index);										   \
-		if (pointer == nullptr)														   \
-		{																			   \
-			throw std::exception("Pointer is nullptr");								   \
-		}																			   \
-		return static_cast<const LuaWrapper<_type>*>(pointer)->mObject;									   \
-	}																				   \
-	throw std::exception("Unknown pointer type");									   \
-}																					   \
-template<> static inline _type& GameEngine::Lua::LuaBind::_FromLuaStack(lua_State* L, int index)				   \
-{																					   \
-	if (lua_isuserdata(L, index))														   \
-	{																				   \
-		void* pointer = lua_touserdata(L, index);										   \
-		if (pointer == nullptr)														   \
-		{																			   \
-			throw std::exception("Pointer is nullptr");								   \
-		}																			   \
-		return *static_cast<LuaWrapper<_type>*>(pointer)->mObject;										   \
-	}																				   \
-	throw std::exception("Unknown pointer type");									   \
-}																					   \
-template<> static inline const _type& GameEngine::Lua::LuaBind::_FromLuaStack(lua_State* L, int index)			   \
-{																					   \
-	if (lua_isuserdata(L, index))														   \
-	{																				   \
-		void* pointer = lua_touserdata(L, index);										   \
-		if (pointer == nullptr)														   \
-		{																			   \
-			throw std::exception("Pointer is nullptr");								   \
-		}																			   \
-		return *static_cast<const LuaWrapper<_type>*>(pointer)->mObject;									   \
-	}																				   \
-	throw std::exception("Unknown pointer type");									   \
-}																									   \
-template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStackTerminal(lua_State* L, _type* value)                 \
-{																									   \
-	LuaWrapper<_type>::Create(L, value);															   \
-}																									   \
-template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStackTerminal(lua_State* L, const _type* value)		   \
-{																									   \
-	LuaWrapper<_type>::Create(L, const_cast<_type*>(value));										   \
-}																									   \
-template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStackTerminal(lua_State* L, _type& value)				   \
-{																									   \
-	LuaWrapper<_type>::Create(L, &value);															   \
-}																									   \
-template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStackTerminal(lua_State* L, const _type& value)		   \
-{																									   \
-	LuaWrapper<_type>::Create(L, &const_cast<_type&>(value));										   \
+#define LUA_DEFINE_POINTER_TYPE(_type)																						 \
+template<> static inline _type* GameEngine::Lua::LuaBind::_FromLuaStack(lua_State* L, int index)                             \
+{																															 \
+	return static_cast<LuaWrapper<_type>*>(luaL_checkudata(L, index, LuaWrapper<_type>::sName.c_str()))->mObject;			 \
+}																															 \
+template<> static inline const _type* GameEngine::Lua::LuaBind::_FromLuaStack(lua_State* L, int index)						 \
+{																															 \
+	return static_cast<const LuaWrapper<_type>*>(luaL_checkudata(L, index, LuaWrapper<_type>::sName.c_str()))->mObject;		 \
+}																															 \
+template<> static inline _type& GameEngine::Lua::LuaBind::_FromLuaStack(lua_State* L, int index)							 \
+{																															 \
+	return *static_cast<LuaWrapper<_type>*>(luaL_checkudata(L, index, LuaWrapper<_type>::sName.c_str()))->mObject;			 \
+}																															 \
+template<> static inline const _type& GameEngine::Lua::LuaBind::_FromLuaStack(lua_State* L, int index)						 \
+{																															 \
+	return *static_cast<const LuaWrapper<_type>*>(luaL_checkudata(L, index, LuaWrapper<_type>::sName.c_str()))->mObject;	 \
+}																															 \
+template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStackTerminal(lua_State* L, _type* value)						 \
+{																															 \
+	_SetProperty(L, value);																									 \
+}																															 \
+template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStackTerminal(lua_State* L, const _type* value)				 \
+{																															 \
+	_SetProperty(L, const_cast<_type*>(value));																				 \
+}																															 \
+template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStackTerminal(lua_State* L, _type& value)						 \
+{																															 \
+	_SetProperty(L, &value);																								 \
+}																															 \
+template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStackTerminal(lua_State* L, const _type& value)				 \
+{																															 \
+	_SetProperty(L, &const_cast<_type&>(value));																			 \
 }
 
 #include "LuaBind.inl"

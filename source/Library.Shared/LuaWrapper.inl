@@ -23,7 +23,7 @@ namespace GameEngine::Lua
 	{
 		assert(!sName.empty());
 		int newTable = luaL_newmetatable(L, sName.c_str());
-		assert(("A unique lua string can only have one object mapping", newTable));
+		assert(("Each class mapped to Lua must have unique name", newTable));
 
 		// Set __index metafunction
 		lua_pushvalue(L, -1);
@@ -70,33 +70,6 @@ namespace GameEngine::Lua
 			lua_pushnil(L);
 			lua_setfield(L, LUA_REGISTRYINDEX, sName.c_str());
 		}
-	}
-
-	template <typename T>
-	LuaWrapper<T>* LuaWrapper<T>::Create(lua_State* L, T* ptr, const std::string& name, int index)
-	{
-		assert(!sName.empty());
-
-		LuaWrapper<T>* pointer = static_cast<LuaWrapper<T>*>(lua_newuserdata(L, sizeof(LuaWrapper<T>)));
-		new(pointer) LuaWrapper<T>(false, ptr);
-
-		int newTable = luaL_newmetatable(L, sName.c_str());
-		assert(!newTable);
-		lua_setmetatable(L, -2);
-
-		if (!name.empty())
-		{
-			if (index == 0)
-			{
-				lua_setglobal(L, name.c_str());  // Set the object to the global key
-			}
-			else
-			{
-				lua_setfield(L, index > 0 ? index : index - 1, name.c_str());  // Set the object to the table key
-			}
-		}
-
-		return pointer;
 	}
 
 	template <typename T>
