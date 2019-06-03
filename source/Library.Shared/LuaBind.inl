@@ -35,7 +35,7 @@ auto wrapper = [](lua_State* L) -> int																						   \
 	auto* func = static_cast<Ret(Class::**)(__VA_ARGS__)>(lua_touserdata(L, lua_upvalueindex(1)));							   \
 	return _CallCFunction<Ret>(L, [func](lua_State* L)->Ret																	   \
 	{																														   \
-		LuaWrapper<Class>* wrap = static_cast<LuaWrapper<Class>*>(luaL_checkudata(L, 1, LuaWrapper<Class>::sName.c_str()));    \
+		LuaWrapper<Class>* wrap = static_cast<LuaWrapper<Class>*>(lua_touserdata(L, 1));    \
 		Class* obj = wrap->mObject;																								\
 		return (obj->**func)(_params);																							\
 	});																															\
@@ -44,7 +44,7 @@ auto wrapper = [](lua_State* L) -> int																						   \
 int newTable = luaL_newmetatable(mLuaState, LuaWrapper<Class>::sName.c_str());													 \
 assert(("Must register the class type before binding its member function", !newTable));											 \
 assert(("The function name is preserved keyword, please change to another name",												  \
-	LuaWrapper<Class>::sReservedKeys.find(key) == LuaWrapper<Class>::sReservedKeys.end()));										  \
+		MetaFunction::sReservedKeys.find(key) == MetaFunction::sReservedKeys.end()));										  \
 lua_pushstring(mLuaState, key.c_str());																							 \
 new (lua_newuserdata(mLuaState, sizeof(value))) (Ret(Class::*)(__VA_ARGS__))(value);											 \
 lua_pushcclosure(mLuaState, wrapper, 1);																						 \
@@ -305,12 +305,6 @@ static inline LuaWrapper<T>* LuaBind::_SetProperty(lua_State* L, T* value, const
 	}
 
 	return pointer;
-}
-
-template <typename Class, typename T>
-static inline void LuaBind::_SetProperty(lua_State* L, const std::string& key, int(*getter)(lua_State*), int(*setter)(lua_State*))
-{
-
 }
 #pragma endregion
 

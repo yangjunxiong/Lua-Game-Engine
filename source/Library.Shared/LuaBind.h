@@ -145,8 +145,6 @@ namespace GameEngine::Lua
 
 		template <typename T>
 		static inline LuaWrapper<T>* _SetProperty(lua_State* L, T* value, const std::string& key = "", int index = 0);
-		template <typename Class, typename T>
-		static inline void _SetProperty(lua_State* L, const std::string& key, int(*getter)(lua_State*), int(*setter)(lua_State*));
 
 		template <typename Ret>
 		static inline int _CallCFunction(lua_State* L, const std::function<Ret(lua_State*)>& wrap);

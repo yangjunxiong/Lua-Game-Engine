@@ -49,6 +49,33 @@ inline std::size_t operator "" _z(unsigned long long int x)
 
 void f() {};
 
+class A
+{
+public:
+	int DoA(int a) { return a + 1; }
+	virtual int Do(int value) { return DoA(value); }
+	int dataA = 0;
+};
+const std::string LuaWrapper<A>::sName = "A";
+
+class B : public A
+{
+public:
+	int DoB(int b) { return b + 2; }
+	virtual int Do(int value) override { return DoB(value); }
+	int dataB = 0;
+};
+const std::string LuaWrapper<B>::sName = "B";
+
+class C : public B
+{
+public:
+	int DoC(int c) { return c + 3; }
+	virtual int Do(int value) override { return DoC(value); }
+	int dataC = 0;
+};
+const std::string LuaWrapper<C>::sName = "C";
+
 namespace UnitTestLibraryDesktop
 {
 	class LuaBindTest;
@@ -496,6 +523,59 @@ namespace UnitTestLibraryDesktop
 			bind.LoadString(lua);
 			Assert::AreEqual(20, mDoCount);
 			Assert::AreEqual("YoYo"s, mText);
+		}
+
+		TEST_METHOD(TestClassInheritance)
+		{
+			LuaBind bind;
+			bind.SetFunction("CheckNumber", function(CheckNumber));
+			LuaWrapper<A>::Register(bind.LuaState());
+			LuaWrapper<B>::Register<A>(bind.LuaState());
+			LuaWrapper<C>::Register<B>(bind.LuaState());
+			bind.SetFunction("DoA", &A::DoA);
+			bind.SetFunction("DoB", &B::DoB);
+			bind.SetFunction("DoC", &C::DoC);
+			bind.SetFunction("Do", &A::Do);
+			bind.SetFunction("Do", &B::Do);
+			bind.SetFunction("Do", &C::Do);
+			bind.SetProperty("dataA", &A::dataA);
+			bind.SetProperty("dataB", &B::dataB);
+			bind.SetProperty("dataC", &C::dataC);
+			A* a = new C();
+			bind.CreateTable("Test");
+			bind.SetProperty("a", a, bind.CurrentTableIndex());
+			std::string lua = R"#(
+				local a = A()
+				local b = B()
+				local c = C()
+				a.dataA = 1
+				b.dataA = 1
+				b.dataB = 2
+				c.dataA = 1
+				c.dataB = 2
+				c.dataC = 3
+				CheckNumber(1, a.dataA)
+				CheckNumber(1, b.dataA)
+				CheckNumber(2, b.dataB)
+				CheckNumber(1, c.dataA)
+				CheckNumber(2, c.dataB)
+				CheckNumber(3, c.dataC)
+
+				CheckNumber(1, a:DoA(0))
+				CheckNumber(1, b:DoA(0))
+				CheckNumber(2, b:DoB(0))
+				CheckNumber(1, c:DoA(0))
+				CheckNumber(2, c:DoB(0))
+				CheckNumber(3, c:DoC(0))
+
+				CheckNumber(1, a:Do(0))
+				CheckNumber(2, b:Do(0))
+				CheckNumber(3, c:Do(0))
+
+				CheckNumber(3, Test.a:Do(0))
+			)#";
+			bind.LoadString(lua);
+			delete a;
 		}
 
 	private:

@@ -4,79 +4,105 @@ namespace GameEngine::Lua
 {
 	int MetaFunction::Index(lua_State* L)
 	{
-		int hasMetatable = lua_getmetatable(L, 1);  // Userdata pointer is at 1
+		int hasMetatable = lua_getmetatable(L, 1);  // Userdata pointer is at 1, get its metatable and push to 3
 		assert(hasMetatable);
-		lua_pushvalue(L, 2);                        // Key is at 2
-		lua_rawget(L, 3);                           // Metatable for userdata is at 3, look for the key in metatable
 
 		int result = 0;
-		if (lua_isnil(L, -1))                       // Can't find the key in metatable, which means it's not a function, might be a property
+		while (result == 0)                         // Loop while can't find the required key
 		{
-			lua_pushstring(L, "__propget");
-			lua_rawget(L, 3);                       // Get __propget table from metatable
-			lua_pushvalue(L, 2);                    // Copy key to stack top
-			lua_rawget(L, -2);                      // Look up the key in __propget table
-			if (!lua_isnil(L, -1))                  // Find the key in __propget table
+			lua_pushvalue(L, 2);                        // Key is at 2, copy it and push to 4
+			lua_rawget(L, 3);                           // Metatable for userdata is at 3, look for the key in metatable
+			if (lua_isnil(L, -1))                       // Can't find the key in metatable, which means it's not a function, might be a property
 			{
-				assert(lua_iscfunction(L, -1));          // Must be a LuaWrapper getter function
-				lua_pushvalue(L, 1);                     // Copy the user object to stack top, it serves as getter function argument
-				lua_call(L, 1, 1);                       // Call lua function with 1 argument and 1 return value
+				lua_pushstring(L, "__propget");
+				lua_rawget(L, 3);                       // Get __propget table from metatable
+				lua_pushvalue(L, 2);                    // Copy key to stack top
+				lua_rawget(L, -2);                      // Look up the key in __propget table
+				if (!lua_isnil(L, -1))                  // Find the key in __propget table
+				{
+					assert(lua_iscfunction(L, -1));          // Must be a LuaWrapper getter function
+					lua_pushvalue(L, 1);                     // Copy the user object to stack top, it serves as getter function argument
+					lua_call(L, 1, 1);                       // Call lua function with 1 argument and 1 return value
+					result = 1;
+				}
+				else                                    // Can't find key, go to parent table
+				{
+					lua_pop(L, 3);                      // Pop nil, __propget table, and nil, now metatable is at top
+					lua_pushstring(L, "__parent");
+					int type = lua_rawget(L, 3);        // Get parent table, it sits at 4
+					if (type != LUA_TTABLE)             // No parent metatable, end of search
+					{
+						break;
+					}
+					lua_remove(L, 3);                   // Remove current metatable, so now parent metatable becomes new metatable for next iteration
+					assert(lua_gettop(L) == 3 && lua_istable(L, 3));
+				}
+			}
+			else if (lua_iscfunction(L, -1))
+			{
 				result = 1;
 			}
+			else
+			{
+				assert(("__index metatable should only contain function", false));
+			}
 		}
-		else if (lua_iscfunction(L, -1))
-		{
-			result = 1;
-		}
-		else
-		{
-			lua_error(L);
-		}
+
 		return result;
 	}
 
 	int MetaFunction::NewIndex(lua_State* L)
 	{
-		int hasMetatable = lua_getmetatable(L, 1);  // Userdata pointer is at 1
+		int hasMetatable = lua_getmetatable(L, 1);  // Userdata pointer is at 1, get its metatable and push to 4
 		assert(hasMetatable);
-		lua_pushvalue(L, 2);                        // Key is at 2
-		lua_rawget(L, 4);                           // Metatable for userdata is at 4, look for the key in metatable
 
-		if (lua_isnil(L, -1))
+		while (true)
 		{
-			lua_pushstring(L, "__propset");
-			lua_rawget(L, 4);                       // Get __propset table from metatable
-			lua_pushvalue(L, 2);                    // Copy key to stack top
-			lua_rawget(L, -2);                      // Look up the key in __propset table
-			if (!lua_isnil(L, -1))
+			lua_pushvalue(L, 2);                        // Key is at 2, value is at 3, copy key and push to 5
+			lua_rawget(L, 4);                           // Metatable for userdata is at 4, look for the key in metatable
+			if (lua_isnil(L, -1))
 			{
-				assert(lua_iscfunction(L, -1));          // Must be a LuaWrapper setter function
-				lua_pushvalue(L, 1);                     // Copy the user object to stack top, it serves as first setter function argument
-				lua_pushvalue(L, 3);                     // Copy new value to stack top, it serves as second setter function argument
-				lua_call(L, 2, 0);                       // Call lua function with 2 arguments and no return value
+				lua_pushstring(L, "__propset");
+				lua_rawget(L, 4);                       // Get __propset table from metatable
+				lua_pushvalue(L, 2);                    // Copy key to stack top
+				lua_rawget(L, -2);                      // Look up the key in __propset table
+				if (!lua_isnil(L, -1))
+				{
+					assert(lua_iscfunction(L, -1));          // Must be a LuaWrapper setter function
+					lua_pushvalue(L, 1);                     // Copy the user object to stack top, it serves as first setter function argument
+					lua_pushvalue(L, 3);                     // Copy new value to stack top, it serves as second setter function argument
+					lua_call(L, 2, 0);                       // Call lua function with 2 arguments and no return value
+					break;
+				}
+				else                                    // Can't find in current table, go to parent table
+				{
+					lua_pop(L, 3);                      // Pop nil, __propset table, and nil, now metatable is at top
+					lua_pushstring(L, "__parent");
+					int type = lua_rawget(L, 4);         // Get parent table, it now sits at 5
+					if (type != LUA_TTABLE)              // No parent metatable, can't find target member, error
+					{
+						lua_pushstring(L, "Name");
+						lua_rawget(L, 4);
+						lua_call(L, 0, 1);
+						lua_pushfstring(L, "Attemp to modify non-existant variable \"%s\" in class \"%s\"", lua_tostring(L, 2), lua_tostring(L, -1));
+						lua_error(L);
+					}
+					lua_remove(L, 4);                   // Remove current metatable, so now parent metatable becomes new metatable for next iteration
+					assert(lua_gettop(L) == 4 && lua_istable(L, 4));
+				}
 			}
-		}
-		else
-		{
-			lua_error(L);  // For current design, __newindex shouldn't allow any keys
+			else
+			{
+				lua_pushstring(L, "Name");
+				lua_rawget(L, 4);
+				lua_call(L, 0, 1);
+				lua_pushfstring(L, "Attemp to modify function \"%s\" in class \"%s\"", lua_tostring(L, 2), lua_tostring(L, -1));
+				lua_error(L);
+			}
 		}
 
 		return 0;
 	}
-
-	template <typename T>
-	const std::set<std::string> LuaWrapper<T>::sReservedKeys =
-	{
-		"__index",
-		"__newindex",
-		"__gc",
-		"__tostring",
-		"__propget",
-		"__propset",
-		"Name",
-		"Set",
-		"Get"
-	};
 
 	template <typename T>
 	LuaWrapper<T>::LuaWrapper(bool luaObject, T* ptr) :
@@ -149,6 +175,22 @@ namespace GameEngine::Lua
 
 		// Pop metatable
 		lua_pop(L, 1);
+	}
+
+	template <typename T>
+	template <typename Parent>
+	static void LuaWrapper<T>::Register(lua_State* L)
+	{
+		// Register child class
+		LuaWrapper<T>::Register(L);
+
+		// Set parent metatable
+		assert(("Hey you can't parent yourself", sName != LuaWrapper<Parent>::sName));
+		luaL_newmetatable(L, sName.c_str());
+		lua_pushstring(L, "__parent");
+		int newParentTable = luaL_newmetatable(L, LuaWrapper<Parent>::sName.c_str());
+		assert(("Must register parent type before registering child type", !newParentTable));
+		lua_rawset(L, -3);
 	}
 
 	template <typename T>
