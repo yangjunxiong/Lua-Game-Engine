@@ -1,4 +1,5 @@
 #pragma once
+#include "Macro.h"
 #include "lua.hpp"
 #include "Stack.h"
 #include "vector.h"
@@ -144,6 +145,9 @@ namespace GameEngine::Lua
 		void _SetLuaValue(std::function<void()> func, const std::string& key);
 
 		template <typename T>
+		static inline bool CheckArgType(lua_State* L, int index);
+
+		template <typename T>
 		static inline LuaWrapper<T>* _SetProperty(lua_State* L, T* value, const std::string& key = "", int index = 0);
 
 		template <typename Ret>
@@ -162,38 +166,5 @@ namespace GameEngine::Lua
 	};
 }
 
-#define LUA_DEFINE_POINTER_TYPE(_type)																						 \
-template<> static inline _type* GameEngine::Lua::LuaBind::_FromLuaStack(lua_State* L, int index)                             \
-{																															 \
-	return static_cast<LuaWrapper<_type>*>(luaL_checkudata(L, index, LuaWrapper<_type>::sName.c_str()))->mObject;			 \
-}																															 \
-template<> static inline const _type* GameEngine::Lua::LuaBind::_FromLuaStack(lua_State* L, int index)						 \
-{																															 \
-	return static_cast<const LuaWrapper<_type>*>(luaL_checkudata(L, index, LuaWrapper<_type>::sName.c_str()))->mObject;		 \
-}																															 \
-template<> static inline _type& GameEngine::Lua::LuaBind::_FromLuaStack(lua_State* L, int index)							 \
-{																															 \
-	return *static_cast<LuaWrapper<_type>*>(luaL_checkudata(L, index, LuaWrapper<_type>::sName.c_str()))->mObject;			 \
-}																															 \
-template<> static inline const _type& GameEngine::Lua::LuaBind::_FromLuaStack(lua_State* L, int index)						 \
-{																															 \
-	return *static_cast<const LuaWrapper<_type>*>(luaL_checkudata(L, index, LuaWrapper<_type>::sName.c_str()))->mObject;	 \
-}																															 \
-template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStackTerminal(lua_State* L, _type* value)						 \
-{																															 \
-	_SetProperty(L, value);																									 \
-}																															 \
-template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStackTerminal(lua_State* L, const _type* value)				 \
-{																															 \
-	_SetProperty(L, const_cast<_type*>(value));																				 \
-}																															 \
-template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStackTerminal(lua_State* L, _type& value)						 \
-{																															 \
-	_SetProperty(L, &value);																								 \
-}																															 \
-template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStackTerminal(lua_State* L, const _type& value)				 \
-{																															 \
-	_SetProperty(L, &const_cast<_type&>(value));																			 \
-}
-
 #include "LuaBind.inl"
+#include "NativeType.inl"

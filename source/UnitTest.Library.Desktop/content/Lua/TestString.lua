@@ -4,7 +4,7 @@ check("hello", tostring(Temp))
 check("lua", tostring(Temp2))
 check("!", tostring(Temp3))
 Temp4:Set(tostring(Temp4) .. "3")
-check("String", str.Name())
+check("String", str.TypeName())
 
 function f1()
 	local int = int32()

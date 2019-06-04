@@ -153,13 +153,18 @@ namespace GameEngine::Lua
 		lua_pushcfunction(L, &LuaWrapper<T>::__gc);
 		lua_rawset(L, -3);
 
+		// Set __eq metafunction
+		lua_pushstring(L, "__eq");
+		lua_pushcfunction(L, &LuaWrapper<T>::__eq);
+		lua_rawset(L, -3);
+
 		// Set __tostring metafunction
 		lua_pushstring(L, "__tostring");
 		lua_pushcfunction(L, &LuaWrapper<T>::__tostring);
 		lua_rawset(L, -3);
 
 		// Set name function
-		lua_pushstring(L, "Name");
+		lua_pushstring(L, "TypeName");
 		lua_pushcfunction(L, &LuaWrapper<T>::__name);
 		lua_rawset(L, -3);
 
@@ -175,6 +180,10 @@ namespace GameEngine::Lua
 
 		// Pop metatable
 		lua_pop(L, 1);
+
+		// Add type info to registry
+		const std::string& name = LuaWrapper<T>::sName;
+		Registry::sTypeRegistry.Insert(std::make_pair(name, Registry::TypeNode(name, LuaWrapper<T>::sTypeId)));
 	}
 
 	template <typename T>
@@ -191,17 +200,50 @@ namespace GameEngine::Lua
 		int newParentTable = luaL_newmetatable(L, LuaWrapper<Parent>::sName.c_str());
 		assert(("Must register parent type before registering child type", !newParentTable));
 		lua_rawset(L, -3);
+
+		// Build type link in registry
+		Registry::TypeNode& node = Registry::sTypeRegistry.Find(LuaWrapper<T>::sName)->second;
+		Registry::TypeNode& parentNode = Registry::sTypeRegistry.Find(LuaWrapper<Parent>::sName)->second;
+		node.mUpLink.PushBack(&parentNode);
+		parentNode.mDownLink.PushBack(&node);
 	}
 
 	template <typename T>
 	void LuaWrapper<T>::Unregister(lua_State* L)
 	{
 		assert(!sName.empty());
+
+		// Remove metatable
 		if (L != nullptr)
 		{
 			lua_pushnil(L);
 			lua_setfield(L, LUA_REGISTRYINDEX, sName.c_str());
 		}
+
+		// Fix type link in registry
+		auto it = Registry::sTypeRegistry.Find(LuaWrapper<T>::sName)->second;
+		auto& node = it->second;
+		for (const auto* parentNode : node.mUpLink)
+		{
+			for (const auto* childNode : node.mDownLink)
+			{
+				if (parentNode->mDownLink.Find(childNode) != parentNode->mDownLink.end())
+				{
+					parentNode->mDownLink.PushBack(childNode);
+				}
+			}
+		}
+		for (const auto* childNode : node.mDownLink)
+		{
+			for (const auto* parentNode : node.mUpLink)
+			{
+				if (childNode->mUpLink.Find(parentNode) != childNode->mUpLink.end())
+				{
+					childNode->mUpLink.PushBack(parentNode);
+				}
+			}
+		}
+		Registry::sTypeRegistry.Remove(it);
 	}
 
 	template <typename T>
@@ -220,11 +262,23 @@ namespace GameEngine::Lua
 	template <typename T>
 	int LuaWrapper<T>::__gc(lua_State* L)
 	{
-		void* pointer = luaL_checkudata(L, 1, sName.c_str());
-		assert(pointer != nullptr);
-		LuaWrapper<T>* wrap = static_cast<LuaWrapper<T>*>(pointer);
+		auto* wrap = static_cast<LuaWrapper<T>*>(luaL_checkudata(L, 1, sName.c_str()));
 		wrap->~LuaWrapper();
 		return 0;
+	}
+
+	template <typename T>
+	int LuaWrapper<T>::__eq(lua_State* L)
+	{
+		if (!Registry::Is(L, 1, LuaWrapper<T>::sTypeId) || !Registry::Is(L, 2, LuaWrapper<T>::sTypeId))
+		{
+			return false;
+		}
+
+		auto* wrap1 = static_cast<LuaWrapper<T>*>(lua_touserdata(L, 1));
+		auto* wrap2 = static_cast<LuaWrapper<T>*>(lua_touserdata(L, 2));
+		lua_pushboolean(L, wrap1->mObject == wrap2->mObject);
+		return 1;
 	}
 
 	template <typename T>
@@ -255,321 +309,71 @@ namespace GameEngine::Lua
 		return 0;
 	}
 
-#pragma region int
-	template<> const std::string LuaWrapper<int>::sName = "int32";
+#pragma region Registry
+	Registry::TypeNode::TypeNode(const std::string& name, uint64_t id) :
+		mName(name),
+		mTypeId(id)
+	{}
 
-	template<> static inline int LuaWrapper<int>::__new(lua_State* L)
+	bool Registry::TypeNode::IsAncestor(uint64_t expectType)
 	{
-		int value = 0;
-		if (lua_gettop(L) > 0)
+		return BFS([](TypeNode* node) { return &node->mDownLink; }, expectType);
+	}
+
+	bool Registry::TypeNode::IsDescedant(uint64_t expectType)
+	{
+		return BFS([](TypeNode* node) { return &node->mUpLink; }, expectType);
+	}
+
+	bool Registry::TypeNode::BFS(std::function<Link*(TypeNode*)> getLinkFunc, uint64_t expectType)
+	{
+		SList<TypeNode*> queue = { this };
+		while (!queue.IsEmpty())
 		{
-			value = static_cast<int>(luaL_checknumber(L, 1));
-		}
-
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(lua_newuserdata(L, sizeof(LuaWrapper)));
-		new(pointer) LuaWrapper(true, new int(value));
-
-		int newTable = luaL_newmetatable(L, sName.c_str());
-		assert(!newTable);
-		lua_setmetatable(L, -2);
-
-		return 1;
-	}
-
-	template<> static inline int LuaWrapper<int>::__set(lua_State* L)
-	{
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(luaL_checkudata(L, 1, sName.c_str()));
-		lua_Number number = luaL_checknumber(L, 2);
-		*pointer->mObject = static_cast<int>(number);
-		return 0;
-	}
-
-	template<> static inline int LuaWrapper<int>::__get(lua_State* L)
-	{
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(luaL_checkudata(L, 1, sName.c_str()));
-		lua_pushinteger(L, static_cast<lua_Integer>(*pointer->mObject));
-		return 1;
-	}
-
-	template<> static inline int LuaWrapper<int>::__tostring(lua_State* L)
-	{
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(luaL_checkudata(L, 1, sName.c_str()));
-		lua_pushstring(L, to_string(*pointer->mObject).c_str());
-		return 1;
-	}
-#pragma endregion
-
-#pragma region int64
-	template<> const std::string LuaWrapper<long long>::sName = "int64";
-
-	template<> static inline int LuaWrapper<long long>::__new(lua_State* L)
-	{
-		long long value = 0;
-		if (lua_gettop(L) > 0)
-		{
-			value = static_cast<long long>(luaL_checknumber(L, 1));
-		}
-
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(lua_newuserdata(L, sizeof(LuaWrapper)));
-		new(pointer) LuaWrapper(true, new long long(value));
-
-		int newTable = luaL_newmetatable(L, sName.c_str());
-		assert(!newTable);
-		lua_setmetatable(L, -2);
-
-		return 1;
-	}
-
-	template<> static inline int LuaWrapper<long long>::__set(lua_State* L)
-	{
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(luaL_checkudata(L, 1, sName.c_str()));
-		lua_Number number = luaL_checknumber(L, 2);
-		*pointer->mObject = static_cast<long long>(number);
-		return 0;
-	}
-
-	template<> static inline int LuaWrapper<long long>::__get(lua_State* L)
-	{
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(luaL_checkudata(L, 1, sName.c_str()));
-		lua_pushinteger(L, *pointer->mObject);
-		return 1;
-	}
-
-	template<> static inline int LuaWrapper<long long>::__tostring(lua_State* L)
-	{
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(luaL_checkudata(L, 1, sName.c_str()));
-		lua_pushstring(L, to_string(*pointer->mObject).c_str());
-		return 1;
-	}
-#pragma endregion
-
-#pragma region float
-	template<> const std::string LuaWrapper<float>::sName = "float";
-
-	template<> static inline int LuaWrapper<float>::__new(lua_State* L)
-	{
-		float value = 0.f;
-		if (lua_gettop(L) > 0)
-		{
-			value = static_cast<float>(luaL_checknumber(L, 1));
-		}
-
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(lua_newuserdata(L, sizeof(LuaWrapper)));
-		new(pointer) LuaWrapper(true, new float(value));
-
-		int newTable = luaL_newmetatable(L, sName.c_str());
-		assert(!newTable);
-		lua_setmetatable(L, -2);
-
-		return 1;
-	}
-
-	template<> static inline int LuaWrapper<float>::__set(lua_State* L)
-	{
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(luaL_checkudata(L, 1, sName.c_str()));
-		lua_Number number = luaL_checknumber(L, 2);
-		*pointer->mObject = static_cast<float>(number);
-		return 0;
-	}
-
-	template<> static inline int LuaWrapper<float>::__get(lua_State* L)
-	{
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(luaL_checkudata(L, 1, sName.c_str()));
-		lua_pushnumber(L, *pointer->mObject);
-		return 1;
-	}
-
-	template<> static inline int LuaWrapper<float>::__tostring(lua_State* L)
-	{
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(luaL_checkudata(L, 1, sName.c_str()));
-		lua_pushstring(L, to_string(*pointer->mObject).c_str());
-		return 1;
-	}
-#pragma endregion
-
-#pragma region double
-	template<> const std::string LuaWrapper<double>::sName = "double";
-
-	template<> static inline int LuaWrapper<double>::__new(lua_State* L)
-	{
-		double value = 0.0;
-		if (lua_gettop(L) > 0)
-		{
-			value = static_cast<double>(luaL_checknumber(L, 1));
-		}
-
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(lua_newuserdata(L, sizeof(LuaWrapper)));
-		new(pointer) LuaWrapper(true, new double(value));
-
-		int newTable = luaL_newmetatable(L, sName.c_str());
-		assert(!newTable);
-		lua_setmetatable(L, -2);
-
-		return 1;
-	}
-
-	template<> static inline int LuaWrapper<double>::__set(lua_State* L)
-	{
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(luaL_checkudata(L, 1, sName.c_str()));
-		lua_Number number = luaL_checknumber(L, 2);
-		*pointer->mObject = static_cast<double>(number);
-		return 0;
-	}
-
-	template<> static inline int LuaWrapper<double>::__get(lua_State* L)
-	{
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(luaL_checkudata(L, 1, sName.c_str()));
-		lua_pushnumber(L, *pointer->mObject);
-		return 1;
-	}
-
-	template<> static inline int LuaWrapper<double>::__tostring(lua_State* L)
-	{
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(luaL_checkudata(L, 1, sName.c_str()));
-		lua_pushstring(L, to_string(*pointer->mObject).c_str());
-		return 1;
-	}
-#pragma endregion
-
-#pragma region bool
-	template<> const std::string LuaWrapper<bool>::sName = "bool";
-
-	template<> static inline int LuaWrapper<bool>::__new(lua_State* L)
-	{
-		bool value = true;
-		if (lua_gettop(L) > 0)
-		{
-			value = lua_toboolean(L, 1);
-		}
-
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(lua_newuserdata(L, sizeof(LuaWrapper)));
-		new(pointer) LuaWrapper(true, new bool(value));
-
-		int newTable = luaL_newmetatable(L, sName.c_str());
-		assert(!newTable);
-		lua_setmetatable(L, -2);
-
-		return 1;
-	}
-
-	template<> static inline int LuaWrapper<bool>::__set(lua_State* L)
-	{
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(luaL_checkudata(L, 1, sName.c_str()));
-		if (lua_isboolean(L, 2))
-		{
-			*pointer->mObject = lua_toboolean(L, 2);
-		}
-		else
-		{
-			lua_error(L);
-		}
-		return 0;
-	}
-
-	template<> static inline int LuaWrapper<bool>::__get(lua_State* L)
-	{
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(luaL_checkudata(L, 1, sName.c_str()));
-		lua_pushboolean(L, *pointer->mObject);
-		return 1;
-	}
-
-	template<> static inline int LuaWrapper<bool>::__tostring(lua_State* L)
-	{
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(luaL_checkudata(L, 1, sName.c_str()));
-		lua_pushstring(L, *pointer->mObject ? "true" : "false");
-		return 1;
-	}
-#pragma endregion
-	
-#pragma region char
-	template<> const std::string LuaWrapper<char>::sName = "char";
-
-	template<> static inline int LuaWrapper<char>::__new(lua_State* L)
-	{
-		char value = 0;
-		if (lua_gettop(L) > 0)
-		{
-			value = static_cast<char>(luaL_checknumber(L, 1));
-		}
-
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(lua_newuserdata(L, sizeof(LuaWrapper)));
-		new(pointer) LuaWrapper(true, new char(value));
-
-		int newTable = luaL_newmetatable(L, sName.c_str());
-		assert(!newTable);
-		lua_setmetatable(L, -2);
-
-		return 1;
-	}
-
-	template<> static inline int LuaWrapper<char>::__set(lua_State* L)
-	{
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(luaL_checkudata(L, 1, sName.c_str()));
-		lua_Number number = luaL_checknumber(L, 2);
-		*pointer->mObject = static_cast<char>(number);
-		return 0;
-	}
-
-	template<> static inline int LuaWrapper<char>::__get(lua_State* L)
-	{
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(luaL_checkudata(L, 1, sName.c_str()));
-		lua_pushinteger(L, static_cast<lua_Integer>(*pointer->mObject));
-		return 1;
-	}
-
-	template<> static inline int LuaWrapper<char>::__tostring(lua_State* L)
-	{
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(luaL_checkudata(L, 1, sName.c_str()));
-		lua_pushstring(L, to_string(*pointer->mObject).c_str());
-		return 1;
-	}
-#pragma endregion
-
-#pragma region std::string
-	template<> const std::string LuaWrapper<std::string>::sName = "String";
-
-	template<> static inline int LuaWrapper<std::string>::__new(lua_State* L)
-	{
-		std::string temp;
-		if (lua_gettop(L) >= 1)
-		{
-			const char* str = luaL_checkstring(L, 1);
-			if (str != nullptr)
+			// Check the first item in queue
+			TypeNode* node = queue.Front();
+			queue.PopFront();
+			if (node->mTypeId == expectType)
 			{
-				temp.assign(str);
+				return true;
+			}
+
+			// Push this node's next list to queue
+			Link& nextLink = *getLinkFunc(node);
+			for (TypeNode* childNode : nextLink)
+			{
+				queue.PushBack(childNode);
 			}
 		}
 
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(lua_newuserdata(L, sizeof(LuaWrapper)));
-		new(pointer) LuaWrapper(true, new std::string(temp));
-
-		int newTable = luaL_newmetatable(L, sName.c_str());
-		assert(!newTable);
-		lua_setmetatable(L, -2);
-
-		return 1;
+		return false;
 	}
 
-	template<> static inline int LuaWrapper<std::string>::__set(lua_State* L)
+	bool Registry::Is(lua_State* L, int index, uint64_t expectType)
 	{
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(luaL_checkudata(L, 1, sName.c_str()));
-		const char* str = luaL_checkstring(L, 2);
-		pointer->mObject->assign(str);
-		return 0;
-	}
+		int type = lua_type(L, index);
+		if (type == LUA_TUSERDATA)
+		{
+			lua_getmetatable(L, index);
+			lua_pushstring(L, "__name");
+			type = lua_rawget(L, -2);
+			if (type == LUA_TSTRING)
+			{
+				std::string name = lua_tostring(L, -1);
+				auto it = sTypeRegistry.Find(name);
+				if (it != sTypeRegistry.end())
+				{
+					if (it->second.IsDescedant(expectType))
+					{
+						lua_pop(L, 2);  // Remove string and metatable
+						return true;
+					}
+				}
+			}
+		}
 
-	template<> static inline int LuaWrapper<std::string>::__get(lua_State* L)
-	{
-		LuaWrapper* pointer = static_cast<LuaWrapper*>(luaL_checkudata(L, 1, sName.c_str()));
-		lua_pushstring(L, pointer->mObject->c_str());
-		return 1;
-	}
-
-	template<> static inline int LuaWrapper<std::string>::__tostring(lua_State* L)
-	{
-		LuaWrapper* p = static_cast<LuaWrapper*>(luaL_checkudata(L, -1, sName.c_str()));
-		lua_pushstring(L, p->mObject->c_str());
-		return 1;
+		return false;
 	}
 #pragma endregion
+
 }

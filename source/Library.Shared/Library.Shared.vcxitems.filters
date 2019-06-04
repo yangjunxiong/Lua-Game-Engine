@@ -284,6 +284,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)LuaWrapper.h">
       <Filter>LuaBind</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Macro.h">
+      <Filter>LuaBind</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)DefaultHashFunction.inl">
@@ -311,6 +314,9 @@
       <Filter>LuaBind</Filter>
     </None>
     <None Include="$(MSBuildThisFileDirectory)LuaWrapper.inl">
+      <Filter>LuaBind</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)NativeType.inl">
       <Filter>LuaBind</Filter>
     </None>
   </ItemGroup>

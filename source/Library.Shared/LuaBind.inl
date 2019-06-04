@@ -4,13 +4,6 @@ using namespace GameEngine;
 using namespace GameEngine::Lua;
 using namespace std;
 
-LUA_DEFINE_POINTER_TYPE(std::string);
-LUA_DEFINE_POINTER_TYPE(int);
-LUA_DEFINE_POINTER_TYPE(long long);
-LUA_DEFINE_POINTER_TYPE(float);
-LUA_DEFINE_POINTER_TYPE(double);
-LUA_DEFINE_POINTER_TYPE(bool);
-
 #pragma region Function
 #define EXP(...) __VA_ARGS__
 #define SET_FUNCTION_BODY(_params, ...)                                                                                \
@@ -35,7 +28,8 @@ auto wrapper = [](lua_State* L) -> int																						   \
 	auto* func = static_cast<Ret(Class::**)(__VA_ARGS__)>(lua_touserdata(L, lua_upvalueindex(1)));							   \
 	return _CallCFunction<Ret>(L, [func](lua_State* L)->Ret																	   \
 	{																														   \
-		LuaWrapper<Class>* wrap = static_cast<LuaWrapper<Class>*>(lua_touserdata(L, 1));    \
+		TYPE_CHECK(CheckArgType<Class>(L, 1));																					   \
+		LuaWrapper<Class>* wrap = static_cast<LuaWrapper<Class>*>(lua_touserdata(L, 1));                                       \
 		Class* obj = wrap->mObject;																								\
 		return (obj->**func)(_params);																							\
 	});																															\
@@ -43,8 +37,6 @@ auto wrapper = [](lua_State* L) -> int																						   \
 																																 \
 int newTable = luaL_newmetatable(mLuaState, LuaWrapper<Class>::sName.c_str());													 \
 assert(("Must register the class type before binding its member function", !newTable));											 \
-assert(("The function name is preserved keyword, please change to another name",												  \
-		MetaFunction::sReservedKeys.find(key) == MetaFunction::sReservedKeys.end()));										  \
 lua_pushstring(mLuaState, key.c_str());																							 \
 new (lua_newuserdata(mLuaState, sizeof(value))) (Ret(Class::*)(__VA_ARGS__))(value);											 \
 lua_pushcclosure(mLuaState, wrapper, 1);																						 \
@@ -146,6 +138,17 @@ template<> static inline int LuaBind::_CallCFunction<void>(lua_State* L, const s
 {
 	wrap(L);
 	return 0;
+}
+
+template <typename T>
+static inline bool LuaBind::CheckArgType(lua_State* L, int index)
+{
+	if (!Registry::Is(L, index, LuaWrapper<T>::sTypeId))
+	{
+		luaL_checkudata(L, index, LuaWrapper<T>::sName.c_str());  // Gurantee to fail, so will trigger lua runtime error
+	}
+
+	return true;
 }
 #pragma endregion
 

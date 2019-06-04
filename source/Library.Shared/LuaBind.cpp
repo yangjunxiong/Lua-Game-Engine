@@ -22,6 +22,7 @@ LuaBind::~LuaBind()
 {
 	assert(mLuaState != nullptr);
 	lua_close(mLuaState);
+	Registry::sTypeRegistry.Clear();
 }
 
 lua_State* LuaBind::LuaState() const

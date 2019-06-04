@@ -49,6 +49,60 @@ inline std::size_t operator "" _z(unsigned long long int x)
 
 void f() {};
 
+class Dummy
+{
+public:
+	int mDoCount = 0;
+	std::string mText = "Hello";
+	int Do()
+	{
+		return ++mDoCount;
+	}
+
+	int Do2(int count)
+	{
+		mDoCount += count;
+		return mDoCount;
+	}
+
+	int Do3(int count1, int count2)
+	{
+		mDoCount = mDoCount + count1 - count2;
+		return mDoCount;
+	}
+
+	int Do4(int c1, int c2, int c3)
+	{
+		mDoCount = mDoCount + c1 - c2 + c3;
+		return mDoCount;
+	}
+
+	int Do5(int c1, int c2, int c3, int c4)
+	{
+		mDoCount = mDoCount + c1 - c2 + c3 - c4;
+		return mDoCount;
+	}
+
+	int Do6(int c1, int c2, int c3, int c4, int c5)
+	{
+		mDoCount = mDoCount + c1 - c2 + c3 - c4 + c5;
+		return mDoCount;
+	}
+
+	int Do7(int c1, int c2, int c3, int c4, int c5, int c6)
+	{
+		mDoCount = mDoCount + c1 - c2 + c3 - c4 + c5 - c6;
+		return mDoCount;
+	}
+
+	std::string& AppendText(Dummy* other)
+	{
+		mText += other->mText;
+		return mText;
+	}
+};
+DECLARE_LUA_WRAPPER(Dummy, "Dummy");
+
 class A
 {
 public:
@@ -56,7 +110,7 @@ public:
 	virtual int Do(int value) { return DoA(value); }
 	int dataA = 0;
 };
-const std::string LuaWrapper<A>::sName = "A";
+DECLARE_LUA_WRAPPER(A, "A");
 
 class B : public A
 {
@@ -65,22 +119,21 @@ public:
 	virtual int Do(int value) override { return DoB(value); }
 	int dataB = 0;
 };
-const std::string LuaWrapper<B>::sName = "B";
+DECLARE_LUA_WRAPPER(B, "B");
 
 class C : public B
 {
 public:
 	int DoC(int c) { return c + 3; }
 	virtual int Do(int value) override { return DoC(value); }
+	C* Poly(A& a1, const A& a2, const B* b, C* c)
+	{
+		dataC = a1.dataA + a2.dataA + b->dataB + c->dataC;
+		return this;
+	}
 	int dataC = 0;
 };
-const std::string LuaWrapper<C>::sName = "C";
-
-namespace UnitTestLibraryDesktop
-{
-	class LuaBindTest;
-}
-LUA_DEFINE_POINTER_TYPE(UnitTestLibraryDesktop::LuaBindTest);
+DECLARE_LUA_WRAPPER(C, "C");
 
 namespace UnitTestLibraryDesktop
 {
@@ -121,53 +174,6 @@ namespace UnitTestLibraryDesktop
 		static void CheckNumber(double expect, double actual)
 		{
 			Assert::AreEqual(expect, actual);
-		}
-
-		int Do()
-		{
-			return ++mDoCount;
-		}
-
-		int Do2(int count)
-		{
-			mDoCount += count;
-			return mDoCount;
-		}
-
-		int Do3(int count1, int count2)
-		{
-			mDoCount = mDoCount + count1 - count2;
-			return mDoCount;
-		}
-
-		int Do4(int c1, int c2, int c3)
-		{
-			mDoCount = mDoCount + c1 - c2 + c3;
-			return mDoCount;
-		}
-
-		int Do5(int c1, int c2, int c3, int c4)
-		{
-			mDoCount = mDoCount + c1 - c2 + c3 - c4;
-			return mDoCount;
-		}
-
-		int Do6(int c1, int c2, int c3, int c4, int c5)
-		{
-			mDoCount = mDoCount + c1 - c2 + c3 - c4 + c5;
-			return mDoCount;
-		}
-
-		int Do7(int c1, int c2, int c3, int c4, int c5, int c6)
-		{
-			mDoCount = mDoCount + c1 - c2 + c3 - c4 + c5 - c6;
-			return mDoCount;
-		}
-
-		std::string& AppendText(LuaBindTest* other)
-		{
-			mText += other->mText;
-			return mText;
 		}
 
 		TEST_METHOD(TestTable)
@@ -463,25 +469,26 @@ namespace UnitTestLibraryDesktop
 		TEST_METHOD(TestClassMemberFunction)
 		{
 			LuaBind bind;
-			LuaWrapper<LuaBindTest>::Register(bind.LuaState());
+			LuaWrapper<Dummy>::Register(bind.LuaState());
 			bind.SetFunction("CheckNumber", std::function(CheckNumber));
-			bind.SetFunction("Do", &LuaBindTest::Do);
-			bind.SetFunction("Do2", &LuaBindTest::Do2);
-			bind.SetFunction("Do3", &LuaBindTest::Do3);
-			bind.SetFunction("Do4", &LuaBindTest::Do4);
-			bind.SetFunction("Do5", &LuaBindTest::Do5);
-			bind.SetFunction("Do6", &LuaBindTest::Do6);
-			bind.SetFunction("Do7", &LuaBindTest::Do7);
-			bind.SetProperty("obj", this);
+			bind.SetFunction("Do", &Dummy::Do);
+			bind.SetFunction("Do2", &Dummy::Do2);
+			bind.SetFunction("Do3", &Dummy::Do3);
+			bind.SetFunction("Do4", &Dummy::Do4);
+			bind.SetFunction("Do5", &Dummy::Do5);
+			bind.SetFunction("Do6", &Dummy::Do6);
+			bind.SetFunction("Do7", &Dummy::Do7);
+			Dummy dummy;
+			bind.SetProperty("obj", &dummy);
 			std::string lua = R"#(
 				CheckNumber(1, obj:Do())
 				CheckNumber(2, obj:Do())
 				CheckNumber(3, obj:Do())
-				local obj2 = Test()
+				local obj2 = Dummy()
 				CheckNumber(1, obj2:Do())
 				CheckNumber(4, obj:Do())
 
-				local obj3 = Test()
+				local obj3 = Dummy()
 				CheckNumber(2, obj3:Do2(2))
 				CheckNumber(1, obj3:Do3(1, 2))
 				CheckNumber(3, obj3:Do4(1, 2, 3))
@@ -492,42 +499,10 @@ namespace UnitTestLibraryDesktop
 			bind.LoadString(lua);
 		}
 
-		TEST_METHOD(TestClassMemberVariable)
-		{
-			LuaBind bind;
-			LuaWrapper<LuaBindTest>::Register(bind.LuaState());
-			bind.SetFunction("CheckNumber", function(CheckNumber));
-			bind.SetFunction("Check", function(Check));
-			bind.SetFunction("AppendText", &LuaBindTest::AppendText);
-			bind.SetProperty("DoCount", &LuaBindTest::mDoCount);
-			bind.SetProperty("Text", &LuaBindTest::mText);
-			bind.SetProperty("Foo", this);
-			std::string lua = R"#(
-				local obj = Test()
-				CheckNumber(0, obj.DoCount)
-				Check("Hello", obj.Text)
-				local obj2 = Test()
-				local appendedText = obj:AppendText(obj2)
-				Check("HelloHello", appendedText)
-				Check("HelloHello", obj.Text)
-				Check("Hello", obj2.Text)
-
-				CheckNumber(0, Foo.DoCount)
-				Check("Hello", Foo.Text)
-				Foo.DoCount = Foo.DoCount + 10
-				Foo.Text = "YoYo"
-				CheckNumber(10, Foo.DoCount)
-				Check("YoYo", Foo.Text)
-				Foo["DoCount"] = Foo["DoCount"] * 2
-			)#";
-			bind.LoadString(lua);
-			Assert::AreEqual(20, mDoCount);
-			Assert::AreEqual("YoYo"s, mText);
-		}
-
 		TEST_METHOD(TestClassInheritance)
 		{
 			LuaBind bind;
+			bind.SetFunction("Check", function(Check));
 			bind.SetFunction("CheckNumber", function(CheckNumber));
 			LuaWrapper<A>::Register(bind.LuaState());
 			LuaWrapper<B>::Register<A>(bind.LuaState());
@@ -576,15 +551,31 @@ namespace UnitTestLibraryDesktop
 			)#";
 			bind.LoadString(lua);
 			delete a;
+
+			bind.SetFunction("Poly", &C::Poly);
+			lua = R"#(
+				a = A()
+				a.dataA = 10
+				b = B()
+				b.dataB = 20
+				c = C()
+				c.dataC = 30
+				local c2 = c:Poly(a, c, b, c)
+				CheckNumber(60, c2.dataC)
+				local c3 = c2
+				Check("true", tostring(c2 == c))
+				Check("true", tostring(c2 == c3))
+				Check("false", tostring(a == c))
+				Check("false", tostring(a == b))
+				Check("false", tostring(b == c))
+				Check("false", tostring(c == 30))
+			)#";
+			bind.LoadString(lua);
 		}
 
 	private:
 		static _CrtMemState sStartMemState;
-		int mDoCount = 0;
-		std::string mText = "Hello";
 	};
 
 	_CrtMemState LuaBindTest::sStartMemState;
 }
-
-const std::string LuaWrapper<UnitTestLibraryDesktop::LuaBindTest>::sName = "Test";
