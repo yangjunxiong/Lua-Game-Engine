@@ -154,8 +154,9 @@ void LuaBind::_SetLuaValue(std::function<void()> func, const std::string& key)
 	// Determine global or nested table
 	if (lua_gettop(mLuaState) > 0 && lua_istable(mLuaState, -1))
 	{
+		lua_pushstring(mLuaState, key.c_str());
 		func();
-		lua_setfield(mLuaState, -2, key.c_str());
+		lua_rawset(mLuaState, -3);
 	}
 	else
 	{

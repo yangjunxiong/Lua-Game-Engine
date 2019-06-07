@@ -127,6 +127,17 @@ void LuaBind::SetFunction(const std::string& key, Ret(Class::* value)(Param1, Pa
 	SET_MEMBER_FUNCTION_BODY(EXP(_FromLuaStack<Param1>(L, 2), _FromLuaStack<Param2>(L, 3), _FromLuaStack<Param3>(L, 4), _FromLuaStack<Param4>(L, 5), _FromLuaStack<Param5>(L, 6), _FromLuaStack<Param6>(L, 7)), Param1, Param2, Param3, Param4, Param5, Param6);
 }
 
+template <typename Class, typename T>
+void LuaBind::SetFunction(const std::string& key, T func)
+{
+	lua_getglobal(mLuaState, LuaWrapper<Class>::sName.c_str());
+	assert(lua_istable(mLuaState, -1));
+	lua_getmetatable(mLuaState, -1);
+	assert(lua_rawequal(mLuaState, -1, -2));
+	SetFunction(key, std::function(func));
+	lua_pop(mLuaState, 2);
+}
+
 template <typename Ret>
 static inline int LuaBind::_CallCFunction(lua_State* L, const std::function<Ret(lua_State*)>& wrap)
 {
@@ -275,6 +286,59 @@ void LuaBind::SetProperty(const std::string& key, T Class::* address, bool writa
 			return luaL_error(L, "Member variable \"%s\" of class \"%s\" is read-only",
 							  lua_tostring(L, lua_upvalueindex(2)),
 							  LuaWrapper<Class>::sName.c_str());
+		};
+		setMetaTable("__propset", setter);
+	}
+
+	lua_pop(mLuaState, 1);  // Pop class metatable, restore stack
+}
+
+template <typename Class, typename T>
+void LuaBind::SetProperty(const std::string& key, T* address, bool writable)
+{
+	// Get metatable for target class
+	lua_getglobal(mLuaState, LuaWrapper<Class>::sName.c_str());
+	assert(("Must register class type before setting an object as property", lua_istable(mLuaState, -1)));
+
+	auto setMetaTable = [this, &key, &address](const char* tableName, int(*func)(lua_State*))
+	{
+		lua_pushstring(mLuaState, tableName);
+		lua_rawget(mLuaState, -2);                                         // Push __propset table to the stack
+		lua_pushstring(mLuaState, key.c_str());                            // Push name of variable
+		lua_pushlightuserdata(mLuaState, address);                                 // Push variable memory offset as upvalue
+		lua_pushstring(mLuaState, key.c_str());                            // Push member name as upvalue for error report purpose
+		lua_pushcclosure(mLuaState, func, 2);                              // Push function with upvalue
+		lua_rawset(mLuaState, -3);                                         // Set getter function to __propget table
+		lua_pop(mLuaState, 1);											   // Pop __propget table
+	};
+
+	// Set getter
+	auto getter = [](lua_State* L) -> int
+	{
+		T* address = static_cast<T*>(lua_touserdata(L, lua_upvalueindex(1)));
+		_ToLuaStack(L, *address);
+		return 1;
+	};
+	setMetaTable("__propget", getter);
+
+	// Set setter
+	if (writable)
+	{
+		auto setter = [](lua_State* L) -> int
+		{
+			T* address = static_cast<T*>(lua_touserdata(L, lua_upvalueindex(1)));
+			*address = _FromLuaStack<T>(L, 1);
+			return 0;
+		};
+		setMetaTable("__propset", setter);
+	}
+	else
+	{
+		auto setter = [](lua_State* L) -> int
+		{
+			return luaL_error(L, "Member variable \"%s\" of class \"%s\" is read-only",
+				lua_tostring(L, lua_upvalueindex(2)),
+				LuaWrapper<Class>::sName.c_str());
 		};
 		setMetaTable("__propset", setter);
 	}

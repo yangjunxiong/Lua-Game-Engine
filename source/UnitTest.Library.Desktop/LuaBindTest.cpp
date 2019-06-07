@@ -109,6 +109,9 @@ public:
 	int DoA(int a) { return a + 1; }
 	virtual int Do(int value) { return DoA(value); }
 	int dataA = 0;
+
+	static inline int data = 0;
+	static int Foo(int a) { return a + 1; }
 };
 DECLARE_LUA_WRAPPER(A, "A");
 
@@ -118,6 +121,9 @@ public:
 	int DoB(int b) { return b + 2; }
 	virtual int Do(int value) override { return DoB(value); }
 	int dataB = 0;
+
+	static inline int data = 0 ;
+	static int Foo(int a) { return a + 2; }
 };
 DECLARE_LUA_WRAPPER(B, "B");
 
@@ -132,6 +138,9 @@ public:
 		return this;
 	}
 	int dataC = 0;
+
+	static inline int data = 0;
+	static int Foo(int a) { return a + 3; }
 };
 DECLARE_LUA_WRAPPER(C, "C");
 
@@ -484,11 +493,11 @@ namespace UnitTestLibraryDesktop
 				CheckNumber(1, obj:Do())
 				CheckNumber(2, obj:Do())
 				CheckNumber(3, obj:Do())
-				local obj2 = Dummy()
+				local obj2 = Dummy.New()
 				CheckNumber(1, obj2:Do())
 				CheckNumber(4, obj:Do())
 
-				local obj3 = Dummy()
+				local obj3 = Dummy.New()
 				CheckNumber(2, obj3:Do2(2))
 				CheckNumber(1, obj3:Do3(1, 2))
 				CheckNumber(3, obj3:Do4(1, 2, 3))
@@ -499,9 +508,30 @@ namespace UnitTestLibraryDesktop
 			bind.LoadString(lua);
 		}
 
+		TEST_METHOD(TestClassMemberVariable)
+		{
+			LuaBind bind;
+			LuaWrapper<Dummy>::Register(bind.LuaState());
+			bind.SetFunction("Check", function(Check));
+			bind.SetFunction("CheckNumber", std::function(CheckNumber));
+			bind.SetProperty("mDoCount", &Dummy::mDoCount);
+			bind.SetProperty("mText", &Dummy::mText);
+			std::string lua = R"#(
+				local dummy = Dummy.New()
+				Check("Hello", dummy.mText)
+				CheckNumber(0, dummy.mDoCount)
+				dummy.mDoCount = dummy.mDoCount + 10
+				CheckNumber(10, dummy.mDoCount)
+				dummy.mText = dummy.mText .. " World!"
+				Check("Hello World!", dummy.mText)
+			)#";
+			bind.LoadString(lua);
+		}
+
 		TEST_METHOD(TestClassInheritance)
 		{
 			LuaBind bind;
+			bind.SetFunction("Print", function(Print));
 			bind.SetFunction("Check", function(Check));
 			bind.SetFunction("CheckNumber", function(CheckNumber));
 			LuaWrapper<A>::Register(bind.LuaState());
@@ -513,16 +543,22 @@ namespace UnitTestLibraryDesktop
 			bind.SetFunction("Do", &A::Do);
 			bind.SetFunction("Do", &B::Do);
 			bind.SetFunction("Do", &C::Do);
+			bind.SetFunction<A>("Foo", &A::Foo);
+			bind.SetFunction<B>("Foo", &B::Foo);
+			bind.SetFunction<C>("Foo", &C::Foo);
 			bind.SetProperty("dataA", &A::dataA);
 			bind.SetProperty("dataB", &B::dataB);
 			bind.SetProperty("dataC", &C::dataC);
+			bind.SetProperty<A>("data", &A::data);
+			bind.SetProperty<B>("data", &B::data);
+			bind.SetProperty<C>("data", &C::data);
 			A* a = new C();
 			bind.CreateTable("Test");
 			bind.SetProperty("a", a, bind.CurrentTableIndex());
 			std::string lua = R"#(
-				local a = A()
-				local b = B()
-				local c = C()
+				local a = A.New()
+				local b = B.New()
+				local c = C.New()
 				a.dataA = 1
 				b.dataA = 1
 				b.dataB = 2
@@ -548,17 +584,31 @@ namespace UnitTestLibraryDesktop
 				CheckNumber(3, c:Do(0))
 
 				CheckNumber(3, Test.a:Do(0))
+
+				CheckNumber(0, A.data)
+				CheckNumber(0, B.data)
+				CheckNumber(0, C.data)
+				A.data = 1
+				B.data = 2
+				C.data = 3
+				CheckNumber(1, A.data)
+				CheckNumber(2, B.data)
+				CheckNumber(3, C.data)
+
+				CheckNumber(1, A.Foo(0))
+				CheckNumber(2, B.Foo(0))
+				CheckNumber(3, C.Foo(0))
 			)#";
 			bind.LoadString(lua);
 			delete a;
 
 			bind.SetFunction("Poly", &C::Poly);
 			lua = R"#(
-				a = A()
+				a = A.New()
 				a.dataA = 10
-				b = B()
+				b = B.New()
 				b.dataB = 20
-				c = C()
+				c = C.New()
 				c.dataC = 30
 				local c2 = c:Poly(a, c, b, c)
 				CheckNumber(60, c2.dataC)

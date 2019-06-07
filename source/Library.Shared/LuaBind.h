@@ -82,6 +82,16 @@ namespace GameEngine::Lua
 		void SetProperty(const std::string& key, T Class::* address, bool writable = true);
 
 		/// <summary>
+		/// Bind C++ class static member variables to Lua
+		/// Lua can access the static member variables with ClassName.VariableName
+		/// </summary>
+		/// <param name="key">Name of the variable</param>
+		/// <param name="address">Pointer to the static member variable</param>
+		/// <param name="writable">Whehter this variable can be modified in Lua</param>
+		template <typename Class, typename T>
+		void SetProperty(const std::string& key, T* address, bool writable = true);
+
+		/// <summary>
 		/// Set free C function or lambda function to a Lua variable
 		/// If current stack has table, will set the variable in the table, otherwise will set global variable
 		/// </summary>
@@ -125,6 +135,14 @@ namespace GameEngine::Lua
 		void SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2, Param3, Param4, Param5));
 		template <typename Class, typename Ret, typename Param1, typename Param2, typename Param3, typename Param4, typename Param5, typename Param6>
 		void SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2, Param3, Param4, Param5, Param6));
+		
+		/// <summary>
+		/// Set static member function. Lua can invoke the function by ClassName.FunctionName()
+		/// </summary>
+		/// <param name="key">Name of the function</param>
+		/// <param name="func">Function pointer to static member function</param>
+		template <typename Class, typename T>
+		void SetFunction(const std::string& key, T func);
 
 		void LoadFile(const std::string& fileName);
 		void LoadString(const std::string& str);

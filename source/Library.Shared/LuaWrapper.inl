@@ -104,6 +104,45 @@ namespace GameEngine::Lua
 		return 0;
 	}
 
+	int MetaFunction::StaticIndex(lua_State* L)
+	{
+		lua_getmetatable(L, 1);
+		assert(lua_rawequal(L, 1, 3));  // Static table is its metatable
+
+		int result = 0;
+		lua_pushstring(L, "__propget");
+		lua_rawget(L, 3);                       // Get __propget table from metatable
+		lua_pushvalue(L, 2);                    // Copy key to stack top
+		lua_rawget(L, -2);                      // Look up the key in __propget table
+		if (!lua_isnil(L, -1))
+		{
+			assert(lua_iscfunction(L, -1));          // Must be a Lua static member variable getter function
+			lua_call(L, 0, 1);                       // Call lua function, this will push the result to stack
+			result = 1;
+		}
+
+		return result;
+	}
+
+	int MetaFunction::StaticNewIndex(lua_State* L)
+	{
+		lua_getmetatable(L, 1);
+		assert(lua_rawequal(L, 1, 4));  // Static table is its metatable
+
+		lua_pushstring(L, "__propset");
+		lua_rawget(L, 4);                       // Get __propset table from metatable
+		lua_pushvalue(L, 2);                    // Copy key to stack top
+		lua_rawget(L, -2);                      // Look up the key in __propset table
+		if (!lua_isnil(L, -1))
+		{
+			assert(lua_iscfunction(L, -1));          // Must be a Lua static member variable getter function
+			lua_pushvalue(L, 3);                     // Copy value from argument place to top of stack, as the argument of static member setter function
+			lua_call(L, 1, 0);                       // Call lua function, this will push the result to stack
+		}
+
+		return 0;
+	}
+
 	template <typename T>
 	LuaWrapper<T>::LuaWrapper(bool luaObject, T* ptr) :
 		mLuaObject(luaObject),
@@ -124,11 +163,10 @@ namespace GameEngine::Lua
 	void LuaWrapper<T>::Register(lua_State* L)
 	{
 		assert(!sName.empty());
+
+		// Create member metatable
 		int newTable = luaL_newmetatable(L, sName.c_str());
 		assert(("Each class mapped to Lua must have unique name", newTable));
-
-		// Set constructor as global function
-		lua_register(L, sName.c_str(), &LuaWrapper<T>::__new);
 
 		// Set __index metafunction
 		lua_pushcfunction(L, &MetaFunction::Index);
@@ -180,6 +218,37 @@ namespace GameEngine::Lua
 
 		// Pop metatable
 		lua_pop(L, 1);
+
+		// Create static member metatable
+		lua_newtable(L);
+		lua_pushvalue(L, -1);
+		lua_setmetatable(L, -2);
+
+		// Set static member variable index function
+		lua_pushcfunction(L, &MetaFunction::StaticIndex);
+		lua_setfield(L, -2, "__index");
+
+		// Set static member variable newindex function
+		lua_pushcfunction(L, &MetaFunction::StaticNewIndex);
+		lua_setfield(L, -2, "__newindex");
+
+		// Set static member variable get function
+		lua_pushstring(L, "__propget");
+		lua_newtable(L);
+		lua_rawset(L, -3);
+
+		// Set static member variable set function
+		lua_pushstring(L, "__propset");
+		lua_newtable(L);
+		lua_rawset(L, -3);
+
+		// Set constructor
+		lua_pushstring(L, "New");
+		lua_pushcfunction(L, &LuaWrapper<T>::__new);
+		lua_rawset(L, -3);
+
+		// Set global static table
+		lua_setglobal(L, sName.c_str());
 
 		// Add type info to registry
 		const std::string& name = LuaWrapper<T>::sName;

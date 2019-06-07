@@ -10,6 +10,8 @@ namespace GameEngine::Lua
 	public:
 		static inline int Index(lua_State* L);
 		static inline int NewIndex(lua_State* L);
+		static inline int StaticIndex(lua_State* L);
+		static inline int StaticNewIndex(lua_State* L);
 	};
 
 	template <typename T>
