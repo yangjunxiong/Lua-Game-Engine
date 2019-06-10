@@ -42,11 +42,6 @@ namespace Microsoft::VisualStudio::CppUnitTestFramework
 		RETURN_WIDE_STRING(mat[0][0]);
 	}
 
-	template<> inline std::wstring ToString<int64_t>(const int64_t& value)
-	{
-		RETURN_WIDE_STRING(value);
-	}
-
 	template<> inline std::wstring ToString<TokenType>(const TokenType& value)
 	{
 		RETURN_WIDE_STRING(int(value));

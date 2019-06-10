@@ -33,11 +33,6 @@ namespace Microsoft::VisualStudio::CppUnitTestFramework
 	{
 		RETURN_WIDE_STRING(mat[0][0]);
 	}
-
-	template<> inline std::wstring ToString<int64_t>(const int64_t& value)
-	{
-		RETURN_WIDE_STRING(value);
-	}
 }
 
 inline std::size_t operator "" _z(unsigned long long int x)
