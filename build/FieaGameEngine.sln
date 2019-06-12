@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29001.49
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Library.Shared", "..\source\Library.Shared\Library.Shared.vcxitems", "{C221CBE7-A9C7-4DEE-BB0C-33B0ED9C95BE}"
 EndProject
@@ -19,6 +19,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game.Shared", "..\source\Game.Shared\Game.Shared.vcxitems", "{7DDDB361-A635-4111-8279-A85B1EE59942}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Library.Desktop", "..\source\Library.Desktop\Library.Desktop.vcxproj", "{6130C58F-2F3C-4F3D-9C1F-475F085B34C7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LuaHeaderTool", "..\source\LuaHeaderTool\LuaHeaderTool.vcxproj", "{F61357FC-9868-46E2-81B3-CE67FB96B595}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -67,6 +69,14 @@ Global
 		{6130C58F-2F3C-4F3D-9C1F-475F085B34C7}.Release|x64.Build.0 = Release|x64
 		{6130C58F-2F3C-4F3D-9C1F-475F085B34C7}.Release|x86.ActiveCfg = Release|Win32
 		{6130C58F-2F3C-4F3D-9C1F-475F085B34C7}.Release|x86.Build.0 = Release|Win32
+		{F61357FC-9868-46E2-81B3-CE67FB96B595}.Debug|x64.ActiveCfg = Debug|x64
+		{F61357FC-9868-46E2-81B3-CE67FB96B595}.Debug|x64.Build.0 = Debug|x64
+		{F61357FC-9868-46E2-81B3-CE67FB96B595}.Debug|x86.ActiveCfg = Debug|Win32
+		{F61357FC-9868-46E2-81B3-CE67FB96B595}.Debug|x86.Build.0 = Debug|Win32
+		{F61357FC-9868-46E2-81B3-CE67FB96B595}.Release|x64.ActiveCfg = Release|x64
+		{F61357FC-9868-46E2-81B3-CE67FB96B595}.Release|x64.Build.0 = Release|x64
+		{F61357FC-9868-46E2-81B3-CE67FB96B595}.Release|x86.ActiveCfg = Release|Win32
+		{F61357FC-9868-46E2-81B3-CE67FB96B595}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

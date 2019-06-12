@@ -50,3 +50,7 @@ template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStackTerminal(lua_
 const std::string GameEngine::Lua::LuaWrapper<_type>::sName = _name; \
 const uint64_t GameEngine::Lua::LuaWrapper<_type>::sTypeId = reinterpret_cast<uint64_t>(&GameEngine::Lua::LuaWrapper<_type>::sTypeId);  \
 LUA_DEFINE_POINTER_TYPE(_type)
+
+#define CLASS(...) __VA_ARGS__
+#define PROPERTY(...) __VA_ARGS__
+#define FUNCTION(...) __VA_ARGS__

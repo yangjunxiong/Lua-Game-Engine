@@ -305,7 +305,7 @@ void LuaBind::SetProperty(const std::string& key, T* address, bool writable)
 		lua_pushstring(mLuaState, tableName);
 		lua_rawget(mLuaState, -2);                                         // Push __propset table to the stack
 		lua_pushstring(mLuaState, key.c_str());                            // Push name of variable
-		lua_pushlightuserdata(mLuaState, address);                                 // Push variable memory offset as upvalue
+		lua_pushlightuserdata(mLuaState, const_cast<T*>(address));         // Push variable memory offset as upvalue
 		lua_pushstring(mLuaState, key.c_str());                            // Push member name as upvalue for error report purpose
 		lua_pushcclosure(mLuaState, func, 2);                              // Push function with upvalue
 		lua_rawset(mLuaState, -3);                                         // Set getter function to __propget table
