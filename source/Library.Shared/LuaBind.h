@@ -80,6 +80,8 @@ namespace GameEngine::Lua
 		/// <param name="writable">Whether this member is editable in Lua. If not, when Lua tries to write the value, it will trigger Lua error</param>
 		template <typename Class, typename T>
 		void SetProperty(const std::string& key, T Class::* address, bool writable = true);
+		template <typename Class, typename T>
+		void SetProperty(const std::string& key, const T Class::* address);
 
 		/// <summary>
 		/// Bind C++ class static member variables to Lua
@@ -90,6 +92,8 @@ namespace GameEngine::Lua
 		/// <param name="writable">Whehter this variable can be modified in Lua</param>
 		template <typename Class, typename T>
 		void SetProperty(const std::string& key, T* address, bool writable = true);
+		template <typename Class, typename T>
+		void SetProperty(const std::string& key, const T* address);
 
 		/// <summary>
 		/// Set free C function or lambda function to a Lua variable
@@ -162,18 +166,46 @@ namespace GameEngine::Lua
 		void _ProcessError(int error);
 		void _SetLuaValue(std::function<void()> func, const std::string& key);
 
+		/// <summary>
+		/// Debug function to check Lua run time userdata type. Expensive so turn it off in release mode
+		/// </summary>
 		template <typename T>
 		static inline bool CheckArgType(lua_State* L, int index);
 
+		/// <summary>
+		/// Helper functions for set property
+		/// </summary>
 		template <typename T>
 		static inline LuaWrapper<T>* _SetProperty(lua_State* L, T* value, const std::string& key = "", int index = 0);
+		template <typename Class, typename T>
+		inline void _SetPropertyFunction(const std::string& key, T Class::* address, const char* tableName, int(*func)(lua_State*));
+		template <typename Class, typename T>
+		static inline int _PropertyGetter(lua_State* L);
+		template <typename Class, typename T>
+		static inline int _PropertySetter(lua_State* L);
+		template <typename Class>
+		static inline int _ConstPropertySetter(lua_State* L);
+		inline void _SetStaticPropertyFunction(const std::string& key, void* address, const char* tableName, int(*func)(lua_State*));
+		template <typename T>
+		static inline int _StaticPropertyGetter(lua_State* L);
+		template <typename T>
+		static inline int _StaticPropertySetter(lua_State* L);
 
+		/// <summary>
+		/// Helper wrapper that calls a user-provided function
+		/// </summary>
 		template <typename Ret>
 		static inline int _CallCFunction(lua_State* L, const std::function<Ret(lua_State*)>& wrap);
 
+		/// <summary>
+		/// Get an argument from Lua stack, used to retreive arguments for function call from Lua
+		/// </summary>
 		template <typename T>
 		static inline T _FromLuaStack(lua_State* L, int index) { static_assert(false, "Unsupported type, please register your type"); };
 
+		/// <summary>
+		/// Push argument to Lua stack, used to report return value for function call from Lua
+		/// </summary>
 		template <typename... Args>
 		static void _ToLuaStack(lua_State* L, Args&&... args);
 		template <typename T, typename... Args>

@@ -139,6 +139,18 @@ public:
 };
 DECLARE_LUA_WRAPPER(C, "C");
 
+class ConstClass
+{
+public:
+	const int a = 5;
+	const int b = 4;
+	int c = 3;
+
+	static inline const int d = 10;
+	static inline int e = 11;
+};
+DECLARE_LUA_WRAPPER(ConstClass, "ConstClass");
+
 namespace UnitTestLibraryDesktop
 {
 	TEST_CLASS(LuaBindTest)
@@ -616,6 +628,35 @@ namespace UnitTestLibraryDesktop
 				Check("false", tostring(c == 30))
 			)#";
 			bind.LoadString(lua);
+		}
+
+		TEST_METHOD(TestConstClassMember)
+		{
+			LuaBind bind;
+			bind.SetFunction("Check", function(Check));
+			bind.SetFunction("CheckNumber", function(CheckNumber));
+			LuaWrapper<ConstClass>::Register(bind.LuaState());
+			bind.SetProperty("a", &ConstClass::a);
+			bind.SetProperty("b", &ConstClass::b);
+			bind.SetProperty("c", &ConstClass::c);
+			bind.SetProperty<ConstClass>("d", &ConstClass::d);
+			bind.SetProperty<ConstClass>("e", &ConstClass::e);
+
+			std::string lua = R"#(
+				local test = ConstClass.New()
+				CheckNumber(5, test.a)
+				CheckNumber(4, test.b)
+				CheckNumber(3, test.c)
+				test.c = 10
+				CheckNumber(10, test.c)
+
+				CheckNumber(10, ConstClass.d)
+				CheckNumber(11, ConstClass.e)
+				ConstClass.e = 12
+				CheckNumber(12, ConstClass.e)
+			)#";
+			bind.LoadString(lua);
+			CheckNumber(12, ConstClass::e);
 		}
 
 	private:
