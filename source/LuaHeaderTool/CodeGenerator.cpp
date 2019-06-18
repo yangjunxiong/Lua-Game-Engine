@@ -32,6 +32,7 @@ void CodeGenerator::GenerateCPP(const std::vector<Item>& items, const std::strin
 	file << "namespace GameEngine" << endl;
 	file << "{" << endl;
 
+	mItems = &items;
 	for (size_t i = 0; i < items.size(); ++i)
 	{
 		const Item& item = items[i];
@@ -41,6 +42,7 @@ void CodeGenerator::GenerateCPP(const std::vector<Item>& items, const std::strin
 			(this->*func)(item, file);
 		}
 	}
+	mItems = nullptr;
 
 	// End namespace
 	file << "}" << endl;
@@ -113,7 +115,16 @@ void CodeGenerator::EndClassState(const SyntaxAnalyzer::Item& item, std::ofstrea
 	file << "};" << endl;
 
 	// Write macro for pointer type
-	file << "DECLARE_LUA_WRAPPER(" << item.mClassName << ", \"" << item.mClassName << "\");" << endl << endl;
+	file << "DECLARE_LUA_WRAPPER(" << item.mClassName << ", \"" << item.mClassName << "\");" << endl;
+	file << "LUA_DEFINE_CUSTOM_OBJECT_TYPE(" << item.mClassName << ");" << endl;
+	for (const auto& i : *mItems)
+	{
+		if (i.mType == ItemType::Constructor && i.mClassName == item.mClassName)
+		{
+			file << "LUA_DEFINE_CUSTOM_COPY_TYPE(" << item.mClassName << ");" << endl;
+			break;
+		}
+	}
 }
 
 void CodeGenerator::VariableState(const SyntaxAnalyzer::Item& item, std::ofstream& file)

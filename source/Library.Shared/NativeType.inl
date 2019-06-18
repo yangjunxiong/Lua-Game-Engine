@@ -461,6 +461,7 @@ namespace GameEngine::Lua
 #pragma region glm::vec4
 	DECLARE_LUA_WRAPPER(glm::vec4, "vec4");
 	LUA_DEFINE_CUSTOM_OBJECT_TYPE(glm::vec4);
+	LUA_DEFINE_CUSTOM_COPY_TYPE(glm::vec4);
 
 	template<> static inline void LuaBind::_AdditionalRegister<glm::vec4>(LuaBind& bind)
 	{

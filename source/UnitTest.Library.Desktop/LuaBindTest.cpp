@@ -106,6 +106,7 @@ public:
 };
 DECLARE_LUA_WRAPPER(Dummy, "Dummy");
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(Dummy);
+LUA_DEFINE_CUSTOM_COPY_TYPE(Dummy);
 
 class A
 {
@@ -119,6 +120,7 @@ public:
 };
 DECLARE_LUA_WRAPPER(A, "A");
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(A);
+LUA_DEFINE_CUSTOM_COPY_TYPE(A);
 
 class B : public A
 {
@@ -132,6 +134,7 @@ public:
 };
 DECLARE_LUA_WRAPPER(B, "B");
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(B);
+LUA_DEFINE_CUSTOM_COPY_TYPE(B);
 
 class C : public B
 {
@@ -150,6 +153,7 @@ public:
 };
 DECLARE_LUA_WRAPPER(C, "C");
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(C);
+LUA_DEFINE_CUSTOM_COPY_TYPE(C);
 
 class ConstClass
 {
@@ -181,6 +185,7 @@ public:
 };
 DECLARE_LUA_WRAPPER(ConstClass, "ConstClass");
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(ConstClass);
+LUA_DEFINE_CUSTOM_COPY_TYPE(ConstClass);
 
 namespace UnitTestLibraryDesktop
 {

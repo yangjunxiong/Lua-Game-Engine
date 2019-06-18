@@ -21,5 +21,6 @@ namespace GameEngine::HeaderTool
 		void ConstructorState(const SyntaxAnalyzer::Item& item, std::ofstream& file);
 
 		int mIndentation = 0;
+		const std::vector<SyntaxAnalyzer::Item>* mItems = nullptr;
 	};
 }
