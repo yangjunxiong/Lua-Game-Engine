@@ -7,6 +7,7 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="SpriteSet.cpp" />
+    <ClCompile Include="LuaRegister.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

@@ -15,6 +15,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game.Desktop.DirectX", "..\source\Game.Desktop.DirectX\Game.Desktop.DirectX.vcxproj", "{B022AFDA-45B3-472C-8A32-7974503BC76B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game.Desktop.OpenGL", "..\source\Game.Desktop.OpenGL\Game.Desktop.OpenGL.vcxproj", "{76D332A1-9587-4630-9026-084C4E2F3CB0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F61357FC-9868-46E2-81B3-CE67FB96B595} = {F61357FC-9868-46E2-81B3-CE67FB96B595}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game.Shared", "..\source\Game.Shared\Game.Shared.vcxitems", "{7DDDB361-A635-4111-8279-A85B1EE59942}"
 EndProject

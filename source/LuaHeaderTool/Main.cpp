@@ -1,39 +1,37 @@
 #include "pch.h"
-#include "HeaderTokenizer.h"
-#include "SyntaxAnalyzer.h"
-#include "CodeGenerator.h"
+#include "BatchGenerator.h"
 #include "LuaBind.h"
-#include "HeaderTest_generated.h"
 
 using namespace GameEngine::HeaderTool;
+using namespace GameEngine::Lua;
 
-int main()
+int main(int argc, const char* argv[])
 {
-	std::fstream file;
-	file.open("HeaderTest.h");
-	std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-	file.close();
+	if (argc != 5)
+	{
+		cout << "Wrong number of arguments. Expect source folder, generated file folder, register cpp file, and register include path.";
+		cout << "Got " << argc << " arguments" << endl;
+		return -1;
+	}
 
-	HeaderTokenizer t;
-	std::vector<HeaderTokenizer::Token> tokens;
-	t.Tokenize(str, tokens);
+	const char* sourceDir = argv[1];
+	const char* generatedDir = argv[2];
+	const char* registerFile = argv[3];
+	const char* includePath = argv[4];
+	cout << "Running Lua header tool ......" << endl;
+	cout << "Source scanning directory: " << sourceDir << endl;
+	cout << "Generated files directory: " << generatedDir << endl;
+	cout << "LuaRegister.cpp file path: " << registerFile << endl;
+	cout << "LuaRegister.cpp file include path: " << includePath << endl;
 
-	SyntaxAnalyzer sa;
-	std::vector<SyntaxAnalyzer::Item> items;
-	sa.Run(tokens, items);
+	BatchGenerator batch;
+	cout << "Clearing old generated files ......" << endl;
+	batch.ClearGenerated(generatedDir);
+	cout << "Parsing C++ header files ......" << endl;
+	batch.BatchParse(sourceDir);
+	cout << "Generating C++ binding code ......" << endl;
+	batch.BatchWriteCPP(generatedDir);
+	batch.WriteRegister(registerFile, includePath);
 
-	CodeGenerator cg;
-	cg.GenerateCPP(items, "HeaderTest.h");
-
-	LuaBind bind;
-	HeaderTest_generated::RegisterClass(bind.LuaState());
-	HeaderTest2_generated::RegisterClass(bind.LuaState());
-	HeaderTest_generated::RegisterMember(bind);
-	HeaderTest2_generated::RegisterMember(bind);
-	std::string lua = R"#(
-		local test = HeaderTest.New()
-		test.mFloat = test:Do()
-		assert(test.mFloat == 112.125)
-	)#";
-	bind.LoadString(lua);
+	cout << "Lua header tool runs successfully!" << endl;
 }

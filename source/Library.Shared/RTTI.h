@@ -2,9 +2,11 @@
 
 #include <string>
 #include <cstdint>
+#include "Macro.h"
 
 namespace GameEngine
 {
+	CLASS()
 	class RTTI
 	{
 	public:

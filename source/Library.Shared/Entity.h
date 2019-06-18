@@ -16,6 +16,7 @@ namespace GameEngine
 	/// An entity represents a base individual object in the game.
 	/// It can contain actions
 	/// </summary>
+	CLASS()
 	class Entity : public Attributed
 	{
 		RTTI_DECLARATIONS(Entity, Attributed);
@@ -62,12 +63,14 @@ namespace GameEngine
 		/// Get the name of this Entity
 		/// </summary>
 		/// <returns>The name of this Entity</returns>
+		FUNCTION()
 		const std::string& Name() const;
 
 		/// <summary>
 		/// Set the name of this Entity
 		/// </summary>
 		/// <param name="name">New name of this Entity</param>
+		FUNCTION()
 		void SetName(const std::string& name);
 
 		/// <summary>

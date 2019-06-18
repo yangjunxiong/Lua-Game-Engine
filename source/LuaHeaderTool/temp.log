@@ -1,3 +1,0 @@
-2019-6-11 21:52:59    [string "..."]:4: ')' expected near '!'
-2019-6-11 21:53:41    [string "..."]:3: bad argument #1 to 'Do' (HeaderTest expected, got no value)
-2019-6-11 21:55:56    [string "..."]:4: assertion failed!

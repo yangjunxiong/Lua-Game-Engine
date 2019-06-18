@@ -94,7 +94,9 @@ void HeaderTokenizer::Tokenize(const std::string& input, std::vector<Token>& out
 	}
 
 	// Finish up the last state by inserting a space
-	SpaceState(' ');
+	assert(mParseState.size() > 0);
+	auto func = sStateFunction[static_cast<size_t>(mParseState.top())];
+	(this->*func)(' ');
 	if (!(mParseState.size() == 1 && mParseState.top() == ParseState::Space))
 	{
 		throw std::runtime_error("Invalid file format");
@@ -289,6 +291,7 @@ void HeaderTokenizer::QuoteState(char c)
 void HeaderTokenizer::LeftAngleBracketState(char c)
 {
 	PushToken(TokenType::Left_AngleBracket);
+	mParseState.pop();
 	NewToken(c);
 }
 
@@ -296,15 +299,7 @@ void HeaderTokenizer::RightAngleBracketState(char c)
 {
 	PushToken(TokenType::Right_AngleBracket);
 	mParseState.pop();  // Pop '>'
-	if (mParseState.size() > 0 && mParseState.top() == ParseState::Left_AngleBracket)
-	{
-		mParseState.pop();  // Pop '<'
-		NewToken(c);
-	}
-	else
-	{
-		throw std::runtime_error("Angle bracket mismatch");
-	}
+	NewToken(c);
 }
 
 void HeaderTokenizer::StarState(char c)
@@ -356,7 +351,8 @@ void HeaderTokenizer::SlashState(char c)
 	}
 	else
 	{
-		throw std::runtime_error("Slash can't stand by itself");
+		PushToken(TokenType::Slash);
+		NewToken(c);
 	}
 }
 

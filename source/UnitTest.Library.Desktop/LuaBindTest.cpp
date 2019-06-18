@@ -148,6 +148,9 @@ public:
 
 	static inline const int d = 10;
 	static inline int e = 11;
+
+	void Do() { c += 10; };
+	void DoConst() const { int r = c + 10; r; };
 };
 DECLARE_LUA_WRAPPER(ConstClass, "ConstClass");
 
@@ -641,6 +644,8 @@ namespace UnitTestLibraryDesktop
 			bind.SetProperty("c", &ConstClass::c);
 			bind.SetProperty<ConstClass>("d", &ConstClass::d);
 			bind.SetProperty<ConstClass>("e", &ConstClass::e);
+			bind.SetFunction("Do", &ConstClass::Do);
+			bind.SetFunction("DoConst", &ConstClass::DoConst);
 
 			std::string lua = R"#(
 				local test = ConstClass.New()
@@ -654,6 +659,11 @@ namespace UnitTestLibraryDesktop
 				CheckNumber(11, ConstClass.e)
 				ConstClass.e = 12
 				CheckNumber(12, ConstClass.e)
+
+				test:Do()
+				CheckNumber(20, test.c)
+				test:DoConst()
+				CheckNumber(20, test.c)
 			)#";
 			bind.LoadString(lua);
 			CheckNumber(12, ConstClass::e);

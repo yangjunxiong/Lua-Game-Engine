@@ -6,12 +6,13 @@
     <ClCompile Include="HeaderTokenizer.cpp" />
     <ClCompile Include="SyntaxAnalyzer.cpp" />
     <ClCompile Include="CodeGenerator.cpp" />
+    <ClCompile Include="BatchGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="HeaderTokenizer.h" />
-    <ClInclude Include="HeaderTest.h" />
     <ClInclude Include="SyntaxAnalyzer.h" />
     <ClInclude Include="CodeGenerator.h" />
+    <ClInclude Include="BatchGenerator.h" />
   </ItemGroup>
 </Project>

@@ -39,6 +39,27 @@ lua_pushcclosure(mLuaState, wrapper, 1);																						 \
 lua_rawset(mLuaState, -3);																										 \
 lua_pop(mLuaState, 1);
 
+#define SET_CONST_MEMBER_FUNCTION_BODY(_params, ...)																		\
+auto wrapper = [](lua_State* L) -> int																						   \
+{																															   \
+	auto* func = static_cast<Ret(Class:: * *)(__VA_ARGS__) const>(lua_touserdata(L, lua_upvalueindex(1)));							   \
+	return _CallCFunction<Ret>(L, [func](lua_State* L)->Ret																	   \
+	{																														   \
+		TYPE_CHECK(CheckArgType<Class>(L, 1));																					   \
+		LuaWrapper<Class>* wrap = static_cast<LuaWrapper<Class>*>(lua_touserdata(L, 1));                                       \
+		Class* obj = wrap->mObject;																								\
+		return (obj->* * func)(_params);																							\
+	});																															\
+};																																\
+\
+int newTable = luaL_newmetatable(mLuaState, LuaWrapper<Class>::sName.c_str());													 \
+assert(("Must register the class type before binding its member function", !newTable));											 \
+lua_pushstring(mLuaState, key.c_str());																							 \
+new (lua_newuserdata(mLuaState, sizeof(value))) (Ret(Class::*)(__VA_ARGS__)const)(value);											 \
+lua_pushcclosure(mLuaState, wrapper, 1);																						 \
+lua_rawset(mLuaState, -3);																										 \
+lua_pop(mLuaState, 1);
+
 namespace GameEngine::Lua
 {
 	template <typename Ret>
@@ -123,6 +144,48 @@ namespace GameEngine::Lua
 	void LuaBind::SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2, Param3, Param4, Param5, Param6))
 	{
 		SET_MEMBER_FUNCTION_BODY(EXP(_FromLuaStack<Param1>(L, 2), _FromLuaStack<Param2>(L, 3), _FromLuaStack<Param3>(L, 4), _FromLuaStack<Param4>(L, 5), _FromLuaStack<Param5>(L, 6), _FromLuaStack<Param6>(L, 7)), Param1, Param2, Param3, Param4, Param5, Param6);
+	}
+
+	template <typename Class, typename Ret>
+	void LuaBind::SetFunction(const std::string& key, Ret(Class::* value)() const)
+	{
+		SET_CONST_MEMBER_FUNCTION_BODY(EXP());
+	}
+
+	template <typename Class, typename Ret, typename Param1>
+	void LuaBind::SetFunction(const std::string& key, Ret(Class::* value)(Param1) const)
+	{
+		SET_CONST_MEMBER_FUNCTION_BODY(EXP(_FromLuaStack<Param1>(L, 2)), Param1);
+	}
+
+	template <typename Class, typename Ret, typename Param1, typename Param2>
+	void LuaBind::SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2) const)
+	{
+		SET_CONST_MEMBER_FUNCTION_BODY(EXP(_FromLuaStack<Param1>(L, 2), _FromLuaStack<Param2>(L, 3)), Param1, Param2);
+	}
+
+	template <typename Class, typename Ret, typename Param1, typename Param2, typename Param3>
+	void LuaBind::SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2, Param3) const)
+	{
+		SET_CONST_MEMBER_FUNCTION_BODY(EXP(_FromLuaStack<Param1>(L, 2), _FromLuaStack<Param2>(L, 3), _FromLuaStack<Param3>(L, 4)), Param1, Param2, Param3);
+	}
+
+	template <typename Class, typename Ret, typename Param1, typename Param2, typename Param3, typename Param4>
+	void LuaBind::SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2, Param3, Param4) const)
+	{
+		SET_CONST_MEMBER_FUNCTION_BODY(EXP(_FromLuaStack<Param1>(L, 2), _FromLuaStack<Param2>(L, 3), _FromLuaStack<Param3>(L, 4), _FromLuaStack<Param4>(L, 5)), Param1, Param2, Param3, Param4);
+	}
+
+	template <typename Class, typename Ret, typename Param1, typename Param2, typename Param3, typename Param4, typename Param5>
+	void LuaBind::SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2, Param3, Param4, Param5) const)
+	{
+		SET_CONST_MEMBER_FUNCTION_BODY(EXP(_FromLuaStack<Param1>(L, 2), _FromLuaStack<Param2>(L, 3), _FromLuaStack<Param3>(L, 4), _FromLuaStack<Param4>(L, 5), _FromLuaStack<Param5>(L, 6)), Param1, Param2, Param3, Param4, Param5);
+	}
+
+	template <typename Class, typename Ret, typename Param1, typename Param2, typename Param3, typename Param4, typename Param5, typename Param6>
+	void LuaBind::SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2, Param3, Param4, Param5, Param6) const)
+	{
+		SET_CONST_MEMBER_FUNCTION_BODY(EXP(_FromLuaStack<Param1>(L, 2), _FromLuaStack<Param2>(L, 3), _FromLuaStack<Param3>(L, 4), _FromLuaStack<Param4>(L, 5), _FromLuaStack<Param5>(L, 6), _FromLuaStack<Param6>(L, 7)), Param1, Param2, Param3, Param4, Param5, Param6);
 	}
 
 	template <typename Class, typename T>

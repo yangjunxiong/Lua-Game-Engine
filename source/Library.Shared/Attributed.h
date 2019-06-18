@@ -11,6 +11,7 @@ namespace GameEngine
 	/// An registered type has prescribed attributes that are universal for all instances of that type.
 	/// An instance of object can have auxiliary attributes that are unique to that instance.
 	/// </summary>
+	CLASS()
 	class Attributed : public Scope
 	{
 		using PairType = Scope::TablePairType;

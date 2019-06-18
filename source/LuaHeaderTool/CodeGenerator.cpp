@@ -16,14 +16,14 @@ const std::vector<CodeGenerator::StateFunction> CodeGenerator::sFunctions =
 	&CodeGenerator::FunctionState
 };
 
-void CodeGenerator::GenerateCPP(const std::vector<Item>& items, const std::string& sourceFile)
+void CodeGenerator::GenerateCPP(const std::vector<Item>& items, const std::string& source, const std::string& outputPath)
 {
 	std::ofstream file;
-	std::string generatedFile = sourceFile.substr(0, sourceFile.size() - 2);
-	file.open(generatedFile + "_generated.h", ios::out);
+	std::string output = outputPath + source + "_generated.h";
+	file.open(output, ios::out);
 
 	// Output include files
-	file << "#include \"" << sourceFile << "\"" << endl;
+	file << "#include \"" << source << ".h" << "\"" << endl;
 	file << "#include \"LuaBind.h\"" << endl;
 	file << endl;
 
@@ -64,7 +64,7 @@ void CodeGenerator::ClassState(const SyntaxAnalyzer::Item& item, std::ofstream& 
 
 	// Write class register
 	WriteIndentation(file);
-	file << "static void RegisterClass(lua_State* L)" << endl;
+	file << "static void Lua_RegisterClass(lua_State* L)" << endl;
 	WriteIndentation(file);
 	file << "{" << endl;
 	++mIndentation;
@@ -84,10 +84,12 @@ void CodeGenerator::ClassState(const SyntaxAnalyzer::Item& item, std::ofstream& 
 	
 	// Write member register
 	WriteIndentation(file);
-	file << "static void RegisterMember(LuaBind& bind)" << endl;
+	file << "static void Lua_RegisterMember(LuaBind& bind)" << endl;
 	WriteIndentation(file);
 	file << "{" << endl;
 	++mIndentation;
+	WriteIndentation(file);
+	file << "bind;" << endl;
 }
 
 void CodeGenerator::EndClassState(const SyntaxAnalyzer::Item& item, std::ofstream& file)
@@ -115,10 +117,6 @@ void CodeGenerator::VariableState(const SyntaxAnalyzer::Item& item, std::ofstrea
 		file << "<" << item.mClassName << ">";
 	}
 	file << "(\"" << item.mToken.String << "\", &" << item.mClassName << "::" << item.mToken.String;
-	if (!item.mWritable)
-	{
-		file << ", false";
-	}
 	file << ");" << endl;
 }
 

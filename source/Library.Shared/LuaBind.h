@@ -139,6 +139,20 @@ namespace GameEngine::Lua
 		void SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2, Param3, Param4, Param5));
 		template <typename Class, typename Ret, typename Param1, typename Param2, typename Param3, typename Param4, typename Param5, typename Param6>
 		void SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2, Param3, Param4, Param5, Param6));
+		template <typename Class, typename Ret>
+		void SetFunction(const std::string& key, Ret(Class::* value)() const);
+		template <typename Class, typename Ret, typename Param1>
+		void SetFunction(const std::string& key, Ret(Class::* value)(Param1) const);
+		template <typename Class, typename Ret, typename Param1, typename Param2>
+		void SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2) const);
+		template <typename Class, typename Ret, typename Param1, typename Param2, typename Param3>
+		void SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2, Param3) const);
+		template <typename Class, typename Ret, typename Param1, typename Param2, typename Param3, typename Param4>
+		void SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2, Param3, Param4) const);
+		template <typename Class, typename Ret, typename Param1, typename Param2, typename Param3, typename Param4, typename Param5>
+		void SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2, Param3, Param4, Param5) const);
+		template <typename Class, typename Ret, typename Param1, typename Param2, typename Param3, typename Param4, typename Param5, typename Param6>
+		void SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2, Param3, Param4, Param5, Param6) const);
 		
 		/// <summary>
 		/// Set static member function. Lua can invoke the function by ClassName.FunctionName()

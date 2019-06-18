@@ -31,6 +31,7 @@ namespace GameEngine::HeaderTool
 			Ampersand,
 			Colon,
 			DoubleColon,
+			Slash,
 
 			Mark_Class,
 			Mark_Property,

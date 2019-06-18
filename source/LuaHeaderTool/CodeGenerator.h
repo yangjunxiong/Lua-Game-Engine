@@ -7,7 +7,7 @@ namespace GameEngine::HeaderTool
 	class CodeGenerator final
 	{
 	public:
-		void GenerateCPP(const std::vector<SyntaxAnalyzer::Item>& items, const std::string& sourceFile);
+		void GenerateCPP(const std::vector<SyntaxAnalyzer::Item>& items, const std::string& source, const std::string& output);
 		void GenerateLua();
 
 	private:

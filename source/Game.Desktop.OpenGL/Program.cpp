@@ -12,6 +12,7 @@
 #include "Event.h"
 #include "../Library.Desktop/EventInput.h"
 #include "EventMessageAttributed.h"
+#include "LuaBind.h"
 
 #include "Sprite.h"
 #include "SpriteSheet.h"
@@ -23,8 +24,11 @@
 #include <math.h>
 
 using namespace GameEngine;
+using namespace GameEngine::Lua;
 using namespace std;
 using namespace glm;
+
+extern void RegisterLua(LuaBind& bind);
 
 /// <summary>
 /// Init OpenGL, load shader and set projection matrix and view matrix
@@ -86,6 +90,10 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR command
 
 
 	InitGraphics();
+
+	// Bind Lua
+	LuaBind bind;
+	RegisterLua(bind);
 
 	// Capture memory snapshot after messing up the static memory
 	_CrtMemState startMemState;

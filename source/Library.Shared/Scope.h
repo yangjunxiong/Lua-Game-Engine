@@ -14,6 +14,7 @@ namespace GameEngine
 	/// Scope can have child scopes stored in datum entry and therefore form a hierarchical structure.
 	/// User can retreive scope entry by passing std::string as key or by passing unsigned int as index
 	/// </summary>
+	CLASS()
 	class Scope : public RTTI
 	{
 		RTTI_DECLARATIONS(Scope, RTTI);
