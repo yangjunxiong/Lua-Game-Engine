@@ -242,7 +242,7 @@ namespace GameEngine::Lua
 		lua_newtable(L);
 		lua_rawset(L, -3);
 
-		// Set constructor
+		// Set default constructor as invalid
 		lua_pushstring(L, "New");
 		lua_pushcfunction(L, &LuaWrapper<T>::__new);
 		lua_rawset(L, -3);
@@ -280,13 +280,18 @@ namespace GameEngine::Lua
 	template <typename T>
 	void LuaWrapper<T>::Unregister(lua_State* L)
 	{
-		assert(!sName.empty());
-
 		// Remove metatable
 		if (L != nullptr)
 		{
 			lua_pushnil(L);
 			lua_setfield(L, LUA_REGISTRYINDEX, sName.c_str());
+		}
+
+		// Remove static table
+		if (L != nullptr)
+		{
+			lua_pushnil(L);
+			lua_setglobal(L, LuaWrapper<T>::sName.c_str());
 		}
 
 		// Fix type link in registry
@@ -318,14 +323,8 @@ namespace GameEngine::Lua
 	template <typename T>
 	int LuaWrapper<T>::__new(lua_State* L)
 	{
-		LuaWrapper<T>* pointer = static_cast<LuaWrapper<T>*>(lua_newuserdata(L, sizeof(LuaWrapper<T>)));
-		new(pointer) LuaWrapper<T>(true, new T);
-
-		int newTable = luaL_newmetatable(L, sName.c_str());
-		assert(!newTable);
-		lua_setmetatable(L, -2);
-
-		return 1;
+		luaL_error(L, "Class \"%s\" has no registered constructor", LuaWrapper<T>::sName.c_str());
+		return 0;
 	}
 
 	template <typename T>

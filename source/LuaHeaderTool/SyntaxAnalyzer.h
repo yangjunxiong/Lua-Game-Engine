@@ -12,7 +12,8 @@ namespace GameEngine::HeaderTool
 			Class,
 			EndClass,
 			Variable,
-			Function
+			Function,
+			Constructor
 		};
 
 		enum class AccessLevel : uint8_t
@@ -41,6 +42,7 @@ namespace GameEngine::HeaderTool
 			std::string mMemberType;
 			bool mWritable = true;
 			bool mStatic = false;
+			std::vector<std::string> mArgumentList;
 		};
 
 		void Run(const std::vector<HeaderTokenizer::Token>& tokens, std::vector<Item>& output);
@@ -61,7 +63,11 @@ namespace GameEngine::HeaderTool
 
 			InFunctionMark,
 			BeforeFunction,
-			InFunctionSignature
+			InFunctionSignature,
+
+			InConstructorMark,
+			BeforeConstructor,
+			InConstructorSignature
 		};
 
 		using StateFunction = void (SyntaxAnalyzer::*)(size_t index);
@@ -77,12 +83,14 @@ namespace GameEngine::HeaderTool
 		void InFunctionMarkState(size_t index);
 		void BeforeFunctionState(size_t index);
 		void InFunctionSignatureState(size_t index);
+		void InConstructorMarkState(size_t index);
+		void BeforeConstructorState(size_t index);
 
 		inline void Reset();
 		inline void ResetClass();
 		inline void ResetMember();
 
-		inline bool ProcessType(const HeaderTokenizer::Token& token);
+		inline bool ProcessType(std::string& typeString, const HeaderTokenizer::Token& token);
 
 		const std::vector<HeaderTokenizer::Token>* mInput = nullptr;
 		std::vector<Item>* mOutput = nullptr;
@@ -102,5 +110,7 @@ namespace GameEngine::HeaderTool
 		bool mStatic = false;
 		std::string mType;
 		bool mAfterDoubleColon = false;
+		bool mExpectType = false;
+		bool mExpectTypename = false;
 	};
 }

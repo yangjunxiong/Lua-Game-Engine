@@ -18,6 +18,7 @@ namespace GameEngine::HeaderTool
 		void EndClassState(const SyntaxAnalyzer::Item& item, std::ofstream& file);
 		void VariableState(const SyntaxAnalyzer::Item& item, std::ofstream& file);
 		void FunctionState(const SyntaxAnalyzer::Item& item, std::ofstream& file);
+		void ConstructorState(const SyntaxAnalyzer::Item& item, std::ofstream& file);
 
 		int mIndentation = 0;
 	};

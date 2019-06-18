@@ -13,7 +13,8 @@ const std::vector<CodeGenerator::StateFunction> CodeGenerator::sFunctions =
 	&CodeGenerator::ClassState,
 	&CodeGenerator::EndClassState,
 	&CodeGenerator::VariableState,
-	&CodeGenerator::FunctionState
+	&CodeGenerator::FunctionState,
+	&CodeGenerator::ConstructorState
 };
 
 void CodeGenerator::GenerateCPP(const std::vector<Item>& items, const std::string& source, const std::string& outputPath)
@@ -27,6 +28,10 @@ void CodeGenerator::GenerateCPP(const std::vector<Item>& items, const std::strin
 	file << "#include \"LuaBind.h\"" << endl;
 	file << endl;
 
+	// Output namespace
+	file << "namespace GameEngine" << endl;
+	file << "{" << endl;
+
 	for (size_t i = 0; i < items.size(); ++i)
 	{
 		const Item& item = items[i];
@@ -36,6 +41,9 @@ void CodeGenerator::GenerateCPP(const std::vector<Item>& items, const std::strin
 			(this->*func)(item, file);
 		}
 	}
+
+	// End namespace
+	file << "}" << endl;
 
 	file.close();
 }
@@ -129,4 +137,16 @@ void CodeGenerator::FunctionState(const SyntaxAnalyzer::Item& item, std::ofstrea
 		file << "<" << item.mClassName << ">";
 	}
 	file << "(\"" << item.mToken.String << "\", &" << item.mClassName << "::" << item.mToken.String << ");" << endl;
+}
+
+void CodeGenerator::ConstructorState(const SyntaxAnalyzer::Item& item, std::ofstream& file)
+{
+	WriteIndentation(file);
+	file << "bind.SetConstructor<";
+	file << item.mClassName;
+	for (const auto& arg : item.mArgumentList)
+	{
+		file << ", " << arg;
+	}
+	file << ">();" << endl;
 }

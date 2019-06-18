@@ -25,13 +25,20 @@ int main(int argc, const char* argv[])
 	cout << "LuaRegister.cpp file include path: " << includePath << endl;
 
 	BatchGenerator batch;
-	cout << "Clearing old generated files ......" << endl;
-	batch.ClearGenerated(generatedDir);
-	cout << "Parsing C++ header files ......" << endl;
-	batch.BatchParse(sourceDir);
-	cout << "Generating C++ binding code ......" << endl;
-	batch.BatchWriteCPP(generatedDir);
-	batch.WriteRegister(registerFile, includePath);
+	try
+	{
+		cout << "Clearing old generated files ......" << endl;
+		batch.ClearGenerated(generatedDir);
+		cout << "Parsing C++ header files ......" << endl;
+		batch.BatchParse(sourceDir);
+		cout << "Generating C++ binding code ......" << endl;
+		batch.BatchWriteCPP(generatedDir);
+		batch.WriteRegister(registerFile, includePath);
+	}
+	catch (const runtime_error& e)
+	{
+		cout << "ERROR: " << e.what() << endl;
+	}
 
 	cout << "Lua header tool runs successfully!" << endl;
 }

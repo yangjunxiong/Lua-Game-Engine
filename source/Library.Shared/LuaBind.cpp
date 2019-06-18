@@ -174,4 +174,9 @@ void LuaBind::_RegisterPrimitiveType()
 	LuaWrapper<double>::Register(mLuaState);
 	LuaWrapper<bool>::Register(mLuaState);
 	LuaWrapper<char>::Register(mLuaState);
+	LuaWrapper<unsigned int>::Register(mLuaState);
+	LuaWrapper<unsigned long long>::Register(mLuaState);
+	LuaWrapper<unsigned char>::Register(mLuaState);
+	LuaWrapper<glm::vec4>::Register(mLuaState);
+	_AdditionalRegister<glm::vec4>(*this);
 }

@@ -61,10 +61,23 @@ const std::unordered_map<std::string, HeaderTokenizer::TokenType> HeaderTokenize
 	{ "public", TokenType::Keyword_Public },
 	{ "protected", TokenType::Keyword_Protected },
 	{ "private", TokenType::Keyword_Private },
+	{ "explicit", TokenType::Keyword_Explicit },
+	{ "volatile", TokenType::Keyword_Volatile },
+	{ "mutable", TokenType::Keyword_Mutable },
+	{ "final", TokenType::Keyword_Final },
+	{ "using", TokenType::Keyword_Using },
+	{ "namespace", TokenType::Keyword_Namespace },
+	{ "enum", TokenType::Keyword_Enum },
+	{ "auto", TokenType::Keyword_Auto },
+	{ "register", TokenType::Keyword_Register },
+	{ "void", TokenType::Keyword_Void },
+	{ "template", TokenType::Keyword_Template },
+	{ "typename", TokenType::Keyword_Typename },
 
 	{ "CLASS", TokenType::Mark_Class },
 	{ "PROPERTY", TokenType::Mark_Property },
 	{ "FUNCTION", TokenType::Mark_Function },
+	{ "CONSTRUCTOR", TokenType::Mark_Constructor }
 };
 
 HeaderTokenizer::Token::Token(const std::string& str, TokenType type) :

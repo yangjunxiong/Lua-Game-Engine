@@ -12,21 +12,27 @@ namespace GameEngine
 	class Action;
 	class WorldState;
 
+	CLASS();
 	/// <summary>
 	/// An entity represents a base individual object in the game.
 	/// It can contain actions
 	/// </summary>
-	CLASS()
 	class Entity : public Attributed
 	{
 		RTTI_DECLARATIONS(Entity, Attributed);
 
 	public:
+		CONSTRUCTOR();
+		/// <summary>
+		/// Default constructor, builds a free entity object without parent or child
+		/// </summary>
+		Entity();
+
 		/// <summary>
 		/// Default constructor. Takes a type argument for inheriting purpose
 		/// </summary>
 		/// <param name="type">Actual type of object</param>
-		explicit Entity(RTTI::IdType type = Entity::TypeIdClass());
+		explicit Entity(RTTI::IdType type);
 
 		/// <summary>
 		/// Copy constructor
@@ -59,18 +65,18 @@ namespace GameEngine
 		/// </summary>
 		virtual ~Entity() = default;
 
+		FUNCTION();
 		/// <summary>
 		/// Get the name of this Entity
 		/// </summary>
 		/// <returns>The name of this Entity</returns>
-		FUNCTION()
 		const std::string& Name() const;
 
+		FUNCTION();
 		/// <summary>
 		/// Set the name of this Entity
 		/// </summary>
 		/// <param name="name">New name of this Entity</param>
-		FUNCTION()
 		void SetName(const std::string& name);
 
 		/// <summary>
@@ -97,10 +103,15 @@ namespace GameEngine
 		glm::vec4 GetPosition() const;
 		glm::vec4 GetRotation() const;
 		glm::vec4 GetScale() const;
+
+		FUNCTION()
 		bool IsActive() const;
+
 		void SetPosition(const glm::vec4& pos);
 		void SetRotation(const glm::vec4& rot);
 		void SetScale(const glm::vec4& scale);
+
+		FUNCTION()
 		void SetActive(bool active);
 
 		/// <summary>

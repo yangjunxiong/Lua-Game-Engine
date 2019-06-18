@@ -17,6 +17,9 @@ const std::vector<SyntaxAnalyzer::StateFunction> SyntaxAnalyzer::sStateFunctions
 	&SyntaxAnalyzer::AfterPropertyState,
 	&SyntaxAnalyzer::InFunctionMarkState,
 	&SyntaxAnalyzer::BeforeFunctionState,
+	&SyntaxAnalyzer::InFunctionSignatureState,
+	&SyntaxAnalyzer::InConstructorMarkState,
+	&SyntaxAnalyzer::BeforeConstructorState,
 	&SyntaxAnalyzer::InFunctionSignatureState
 };
 
@@ -51,6 +54,18 @@ void SyntaxAnalyzer::Run(const std::vector<HeaderTokenizer::Token>& tokens, std:
 		assert(func != nullptr);
 		(this->*func)(i);
 	}
+	if (mOutput->size() != 0 && mOutput->back().mType != ItemType::EndClass)
+	{
+		std::string str;
+		str.reserve(1024);
+		for (const auto& item : *mOutput)
+		{
+			char msg[1024];
+			sprintf_s(msg, "Last class %s, item type %d, item name %s", mClassName.c_str(), (int)item.mType, item.mToken.String.c_str());
+			str.append(msg);
+		}
+		throw std::runtime_error(str.c_str());
+	}
 }
 
 void SyntaxAnalyzer::Reset()
@@ -74,42 +89,53 @@ void SyntaxAnalyzer::ResetMember()
 	mStatic = false;
 	mType.clear();
 	mAfterDoubleColon = false;
+	mExpectType = true;
+	mExpectTypename = true;
 }
 
-bool SyntaxAnalyzer::ProcessType(const HeaderTokenizer::Token& token)
+bool SyntaxAnalyzer::ProcessType(std::string& typeString, const HeaderTokenizer::Token& token)
 {
-	if (mType.empty())
+	assert(mExpectType);
+
+	switch (token.Type)
 	{
-		mType = token.String;
-		return false;
-	}
-	else
-	{
-		switch (token.Type)
+	case TokenType::DoubleColon:
+		if (mAfterDoubleColon)
 		{
-		case TokenType::DoubleColon:
-			if (mAfterDoubleColon)
-			{
-				throw std::runtime_error("Following \"::\" must be a type name");
-			}
-			mAfterDoubleColon = true;
-			mType.append(token.String);
-			return false;
-		case TokenType::Name:
-			if (mAfterDoubleColon)
-			{
-				mAfterDoubleColon = false;
-				mType.append(token.String);
-				return false;
-			}
-			return true;
-		case TokenType::Star:
-		case TokenType::Ampersand:
-			mType.append(token.String);
+			char msg[1024];
+			sprintf_s(msg, "Error in class \"%s\": Following \"::\" must be a type name", mClassName.c_str());
+			throw std::runtime_error(msg);
+		}
+		mAfterDoubleColon = true;
+		typeString.append(token.String);
+		return false;
+	case TokenType::Name:
+		if (mExpectTypename)
+		{
+			mExpectTypename = false;
+			typeString.append(token.String);
 			return false;
 		}
+		else if (mAfterDoubleColon)
+		{
+			mAfterDoubleColon = false;
+			typeString.append(token.String);
+			return false;
+		}
+		return true;
+	case TokenType::Star:
+	case TokenType::Ampersand:
+		typeString.append(token.String);
+		return false;
+	case TokenType::Keyword_Const:
+		typeString.append(" " + token.String + " ");
+		return false;
+	case TokenType::Keyword_Void:
+		typeString.append(token.String);
+		mExpectTypename = false;
 		return false;
 	}
+	return false;
 }
 
 void SyntaxAnalyzer::BeforeClassMarkState(size_t index)
@@ -214,6 +240,9 @@ void SyntaxAnalyzer::InClassState(size_t index)
 	case TokenType::Mark_Function:
 		mState = State::InFunctionMark;
 		break;
+	case TokenType::Mark_Constructor:
+		mState = State::InConstructorMark;
+		break;
 	case TokenType::Keyword_Public:
 		mAccessLevel = AccessLevel::Public;
 		break;
@@ -263,8 +292,9 @@ void SyntaxAnalyzer::BeforePropertyState(size_t index)
 	case TokenType::DoubleColon:
 	case TokenType::Star:
 	case TokenType::Ampersand:
-		if (ProcessType(token))
+		if (!mExpectType || ProcessType(mType, token))
 		{
+			mExpectType = false;
 			mOutput->emplace_back(ItemType::Variable, token, mClassName, mParentClass, mType, mAccessLevel, !mConst, mStatic);
 			mState = State::AfterProperty;
 		}
@@ -315,8 +345,11 @@ void SyntaxAnalyzer::BeforeFunctionState(size_t index)
 	case TokenType::DoubleColon:
 	case TokenType::Star:
 	case TokenType::Ampersand:
-		if (ProcessType(token))
+	case TokenType::Keyword_Void:
+	case TokenType::Keyword_Const:
+		if (!mExpectType || ProcessType(mType, token))
 		{
+			mExpectType = false;
 			mOutput->emplace_back(ItemType::Function, token, mClassName, mParentClass, mType, mAccessLevel, !mConst, mStatic);
 			mState = State::InFunctionSignature;
 		}
@@ -327,6 +360,9 @@ void SyntaxAnalyzer::BeforeFunctionState(size_t index)
 void SyntaxAnalyzer::InFunctionSignatureState(size_t index)
 {
 	const Token& token = mInput->at(index);
+	Item& lastItem = mOutput->back();
+	assert(lastItem.mType == ItemType::Constructor || lastItem.mType == ItemType::Function);
+
 	switch (token.Type)
 	{
 	case TokenType::Left_Parenthesis:
@@ -339,5 +375,78 @@ void SyntaxAnalyzer::InFunctionSignatureState(size_t index)
 			mState = State::InClass;
 		}
 		break;
+	case TokenType::Comma:
+		if (mParenthesisLevel == 1)
+		{
+			lastItem.mArgumentList.emplace_back();
+			mAfterDoubleColon = false;
+			mExpectType = true;
+			mExpectTypename = true;
+		}
+		break;
+	case TokenType::Name:
+	case TokenType::DoubleColon:
+	case TokenType::Star:
+	case TokenType::Ampersand:
+	case TokenType::Keyword_Const:
+	case TokenType::Keyword_Void:
+		// If this is right after the first parenthesis, it's first argument
+		if (lastItem.mArgumentList.size() == 0 && mParenthesisLevel == 1)
+		{
+			lastItem.mArgumentList.emplace_back();
+			mAfterDoubleColon = false;
+			mExpectType = true;
+			mExpectTypename = true;
+		}
+		if (mExpectType)
+		{
+			std::string& type = lastItem.mArgumentList.back();
+			if (ProcessType(type, token))
+			{
+				mExpectType = false;
+			}
+		}
+		break;
 	}
+}
+
+void SyntaxAnalyzer::InConstructorMarkState(size_t index)
+{
+	const Token& token = mInput->at(index);
+	if (token.Type == TokenType::Left_Parenthesis)
+	{
+		++mParenthesisLevel;
+	}
+	else if (token.Type == TokenType::Right_Parenthesis)
+	{
+		--mParenthesisLevel;
+		if (mParenthesisLevel == 0)
+		{
+			mState = State::BeforeConstructor;
+			ResetMember();
+		}
+	}
+	else
+	{
+		// TODO Additional marks
+	}
+}
+
+void SyntaxAnalyzer::BeforeConstructorState(size_t index)
+{
+	const Token& token = mInput->at(index);
+	if ((token.Type >= TokenType::Keyword_START && token.Type <= TokenType::Keyword_END) || token.Type == TokenType::Semicolon)
+	{
+		return;
+	}
+
+	if (token.Type != TokenType::Name || token.String != mClassName)
+	{
+		char msg[256];
+		sprintf_s(msg, "Constructor for class \"%s\" has actual name \"%s\"", mClassName.c_str(), token.String.c_str());
+		throw std::runtime_error(msg);
+	}
+	
+	mOutput->emplace_back(ItemType::Constructor, token, mClassName, mParentClass, mType, mAccessLevel, false, false);
+	mState = State::InConstructorSignature;
 }

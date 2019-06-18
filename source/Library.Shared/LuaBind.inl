@@ -60,6 +60,27 @@ lua_pushcclosure(mLuaState, wrapper, 1);																						 \
 lua_rawset(mLuaState, -3);																										 \
 lua_pop(mLuaState, 1);
 
+#define SET_CONSTRUCTOR_BODY(...)                                                                                                \
+auto factory = [](lua_State* L) -> int																						     \
+{																																 \
+	LuaWrapper<Class>* pointer = static_cast<LuaWrapper<Class>*>(lua_newuserdata(L, sizeof(LuaWrapper<Class>)));				 \
+	new(pointer) LuaWrapper<Class>(true, new Class(__VA_ARGS__));																 \
+																																 \
+	int newTable = luaL_newmetatable(L, LuaWrapper<Class>::sName.c_str());														 \
+	assert(!newTable);																											 \
+	lua_setmetatable(L, -2);																									 \
+																																 \
+	return 1;																													 \
+};																																 \
+lua_getglobal(mLuaState, LuaWrapper<Class>::sName.c_str());																		  \
+assert(lua_istable(mLuaState, -1));																								  \
+lua_getmetatable(mLuaState, -1);																								  \
+assert(lua_rawequal(mLuaState, -1, -2));																						  \
+lua_pushstring(mLuaState, "New");																								  \
+lua_pushcfunction(mLuaState, factory);																							  \
+lua_rawset(mLuaState, -3);																										  \
+lua_pop(mLuaState, 2);
+
 namespace GameEngine::Lua
 {
 	template <typename Ret>
@@ -199,6 +220,48 @@ namespace GameEngine::Lua
 		lua_pop(mLuaState, 2);
 	}
 
+	template <typename Class>
+	void LuaBind::SetConstructor()
+	{
+		SET_CONSTRUCTOR_BODY(EXP());
+	}
+
+	template <typename Class, typename Param1>
+	void LuaBind::SetConstructor()
+	{
+		SET_CONSTRUCTOR_BODY(EXP(_FromLuaStack<Param1>(L, 1)));
+	}
+
+	template <typename Class, typename Param1, typename Param2>
+	void LuaBind::SetConstructor()
+	{
+		SET_CONSTRUCTOR_BODY(EXP(_FromLuaStack<Param1>(L, 1), _FromLuaStack<Param2>(L, 2)));
+	}
+
+	template <typename Class, typename Param1, typename Param2, typename Param3>
+	void LuaBind::SetConstructor()
+	{
+		SET_CONSTRUCTOR_BODY(EXP(_FromLuaStack<Param1>(L, 1), _FromLuaStack<Param2>(L, 2), _FromLuaStack<Param3>(L, 3)));
+	}
+
+	template <typename Class, typename Param1, typename Param2, typename Param3, typename Param4>
+	void LuaBind::SetConstructor()
+	{
+		SET_CONSTRUCTOR_BODY(EXP(_FromLuaStack<Param1>(L, 1), _FromLuaStack<Param2>(L, 2), _FromLuaStack<Param3>(L, 3), _FromLuaStack<Param4>(L, 4)));
+	}
+
+	template <typename Class, typename Param1, typename Param2, typename Param3, typename Param4, typename Param5>
+	void LuaBind::SetConstructor()
+	{
+		SET_CONSTRUCTOR_BODY(EXP(_FromLuaStack<Param1>(L, 1), _FromLuaStack<Param2>(L, 2), _FromLuaStack<Param3>(L, 3), _FromLuaStack<Param4>(L, 4), _FromLuaStack<Param5>(L, 5)));
+	}
+
+	template <typename Class, typename Param1, typename Param2, typename Param3, typename Param4, typename Param5, typename Param6>
+	void LuaBind::SetConstructor()
+	{
+		SET_CONSTRUCTOR_BODY(EXP(_FromLuaStack<Param1>(L, 1), _FromLuaStack<Param2>(L, 2), _FromLuaStack<Param3>(L, 3), _FromLuaStack<Param4>(L, 4), _FromLuaStack<Param5>(L, 5), _FromLuaStack<Param6>(L, 6)));
+	}
+
 	template <typename Ret>
 	static inline int LuaBind::_CallCFunction(lua_State* L, const std::function<Ret(lua_State*)>& wrap)
 	{
@@ -327,7 +390,7 @@ namespace GameEngine::Lua
 		assert(("Must register class type before setting an object as property", !newTable));
 
 		// Set const version getter and const error setter
-		_SetPropertyFunction(key, address, "__propget", &_PropertyGetter<Class, const T>);
+		_SetPropertyFunction(key, address, "__propget", &_PropertyGetter<Class, T, int>);
 		_SetPropertyFunction(key, address, "__propset", &_ConstPropertySetter<Class>);
 
 		// Pop class metatable, restore stack
@@ -364,7 +427,7 @@ namespace GameEngine::Lua
 		assert(("Must register class type before setting an object as property", lua_istable(mLuaState, -1)));
 
 		// Set getter and setter
-		_SetStaticPropertyFunction(key, const_cast<T*>(address), "__propget", &LuaBind::_StaticPropertyGetter<const T>);
+		_SetStaticPropertyFunction(key, const_cast<T*>(address), "__propget", &LuaBind::_StaticPropertyGetter<T, int>);
 		_SetStaticPropertyFunction(key, const_cast<T*>(address), "__propset", &LuaBind::_ConstPropertySetter<Class>);
 
 		// Pop class metatable, restore stack
@@ -427,21 +490,32 @@ namespace GameEngine::Lua
 	}
 
 	template <typename Class, typename T>
-	int LuaBind::_PropertyGetter(lua_State* L)
+	static inline int LuaBind::_PropertyGetter(lua_State* L)
 	{
 		auto* wrapper = static_cast<LuaWrapper<Class>*>(lua_touserdata(L, 1));
-		T Class::* address = *static_cast<T Class::**>(lua_touserdata(L, lua_upvalueindex(1)));
+		T Class::* address = *static_cast<T Class:: * *>(lua_touserdata(L, lua_upvalueindex(1)));
 		LuaBind* bind = static_cast<LuaBind*>(lua_touserdata(L, lua_upvalueindex(3)));
 		Class* obj = wrapper->mObject;
-		bind->_ToLuaStack(L, obj->*address);
+		bind->_ToLuaStack(L, (T*)&(obj->*address), 0);
+		return 1;
+	}
+
+	template <typename Class, typename T, typename Flag>
+	static inline int LuaBind::_PropertyGetter(lua_State* L)
+	{
+		auto* wrapper = static_cast<LuaWrapper<Class>*>(lua_touserdata(L, 1));
+		const T Class::* address = *static_cast<const T Class::**>(lua_touserdata(L, lua_upvalueindex(1)));
+		LuaBind* bind = static_cast<LuaBind*>(lua_touserdata(L, lua_upvalueindex(3)));
+		Class* obj = wrapper->mObject;
+		bind->_ToLuaStack(L, const_cast<T*>((const T*) & (obj->*address)), 0);
 		return 1;
 	}
 
 	template <typename Class, typename T>
-	int LuaBind::_PropertySetter(lua_State* L)
+	static inline int LuaBind::_PropertySetter(lua_State* L)
 	{
 		auto* wrapper = static_cast<LuaWrapper<Class>*>(lua_touserdata(L, 1));
-		T Class::* address = *static_cast<T Class::**>(lua_touserdata(L, lua_upvalueindex(1)));
+		T Class::* address = *static_cast<T Class:: * *>(lua_touserdata(L, lua_upvalueindex(1)));
 		LuaBind* bind = static_cast<LuaBind*>(lua_touserdata(L, lua_upvalueindex(3)));
 		Class* obj = wrapper->mObject;
 		obj->*address = bind->_FromLuaStack<T>(L, 2);
@@ -449,16 +523,25 @@ namespace GameEngine::Lua
 	}
 
 	template <typename T>
-	int LuaBind::_StaticPropertyGetter(lua_State* L)
+	static inline int LuaBind::_StaticPropertyGetter(lua_State* L)
 	{
 		T* address = static_cast<T*>(lua_touserdata(L, lua_upvalueindex(1)));
 		LuaBind* bind = static_cast<LuaBind*>(lua_touserdata(L, lua_upvalueindex(3)));
-		bind->_ToLuaStack(L, *address);
+		bind->_ToLuaStack(L, address, 0);
+		return 1;
+	}
+
+	template <typename T, typename Flag>
+	static inline int LuaBind::_StaticPropertyGetter(lua_State* L)
+	{
+		const T* address = static_cast<const T*>(lua_touserdata(L, lua_upvalueindex(1)));
+		LuaBind* bind = static_cast<LuaBind*>(lua_touserdata(L, lua_upvalueindex(3)));
+		bind->_ToLuaStack(L, const_cast<T*>(address), 0);
 		return 1;
 	}
 
 	template <typename T>
-	int LuaBind::_StaticPropertySetter(lua_State* L)
+	static inline int LuaBind::_StaticPropertySetter(lua_State* L)
 	{
 		T* address = static_cast<T*>(lua_touserdata(L, lua_upvalueindex(1)));
 		LuaBind* bind = static_cast<LuaBind*>(lua_touserdata(L, lua_upvalueindex(3)));
@@ -511,6 +594,21 @@ namespace GameEngine::Lua
 		return static_cast<char>(luaL_checknumber(L, index));
 	}
 
+	template<> static inline unsigned int LuaBind::_FromLuaStack(lua_State* L, int index)
+	{
+		return static_cast<unsigned int>(luaL_checknumber(L, index));
+	}
+
+	template<> static inline unsigned long long LuaBind::_FromLuaStack(lua_State* L, int index)
+	{
+		return static_cast<unsigned long long>(luaL_checknumber(L, index));
+	}
+
+	template<> static inline unsigned char LuaBind::_FromLuaStack(lua_State* L, int index)
+	{
+		return static_cast<unsigned char>(luaL_checknumber(L, index));
+	}
+
 	template<> static inline char* LuaBind::_FromLuaStack(lua_State* L, int index)
 	{
 		return const_cast<char*>(luaL_checkstring(L, index));
@@ -528,64 +626,62 @@ namespace GameEngine::Lua
 #pragma endregion
 
 #pragma region ToLuaStack
-	template <typename... Args>
-	static void LuaBind::_ToLuaStack(lua_State* L, Args&&... args)
-	{
-		size_t count = sizeof...(Args);
-		if (count > 0)
-		{
-			_ToLuaStackStep(L, args...);
-		}
-	}
-
-	template <typename T, typename... Args>
-	static inline void LuaBind::_ToLuaStackStep(lua_State* L, T value, Args&&... args)
-	{
-		_ToLuaStackTerminal(L, value);
-		_ToLuaStackStep(L, args...);
-	}
-
-	template<> static inline void LuaBind::_ToLuaStackTerminal(lua_State* L, int value)
+	template<> static inline void LuaBind::_ToLuaStack(lua_State* L, int value)
 	{
 		lua_pushinteger(L, static_cast<lua_Integer>(value));
 	}
 
-	template<> static inline void LuaBind::_ToLuaStackTerminal(lua_State* L, long long value)
+	template<> static inline void LuaBind::_ToLuaStack(lua_State* L, long long value)
 	{
 		lua_pushinteger(L, value);
 	}
 
-	template<> static inline void LuaBind::_ToLuaStackTerminal(lua_State* L, float value)
+	template<> static inline void LuaBind::_ToLuaStack(lua_State* L, float value)
 	{
 		lua_pushnumber(L, static_cast<lua_Number>(value));
 	}
 
-	template<> static inline void LuaBind::_ToLuaStackTerminal(lua_State* L, double value)
+	template<> static inline void LuaBind::_ToLuaStack(lua_State* L, double value)
 	{
 		lua_pushnumber(L, value);
 	}
 
-	template<> static inline void LuaBind::_ToLuaStackTerminal(lua_State* L, bool value)
+	template<> static inline void LuaBind::_ToLuaStack(lua_State* L, bool value)
 	{
 		lua_pushboolean(L, value);
 	}
 
-	template<> static inline void LuaBind::_ToLuaStackTerminal(lua_State* L, char value)
+	template<> static inline void LuaBind::_ToLuaStack(lua_State* L, char value)
 	{
 		lua_pushlstring(L, &value, 1);
 	}
 
-	template<> static inline void LuaBind::_ToLuaStackTerminal(lua_State* L, char* value)
+	template<> static inline void LuaBind::_ToLuaStack(lua_State* L, unsigned int value)
+	{
+		lua_pushinteger(L, static_cast<lua_Integer>(value));
+	}
+
+	template<> static inline void LuaBind::_ToLuaStack(lua_State* L, unsigned long long value)
+	{
+		lua_pushinteger(L, static_cast<lua_Integer>(value));
+	}
+
+	template<> static inline void LuaBind::_ToLuaStack(lua_State* L, unsigned char value)
+	{
+		lua_pushinteger(L, static_cast<lua_Integer>(value));
+	}
+
+	template<> static inline void LuaBind::_ToLuaStack(lua_State* L, char* value)
 	{
 		lua_pushstring(L, value);
 	}
 
-	template<> static inline void LuaBind::_ToLuaStackTerminal(lua_State* L, const char* value)
+	template<> static inline void LuaBind::_ToLuaStack(lua_State* L, const char* value)
 	{
 		lua_pushstring(L, value);
 	}
 
-	template<> static inline void LuaBind::_ToLuaStackTerminal(lua_State* L, std::string value)
+	template<> static inline void LuaBind::_ToLuaStack(lua_State* L, std::string value)
 	{
 		lua_pushstring(L, value.c_str());
 	}

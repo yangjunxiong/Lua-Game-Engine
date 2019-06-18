@@ -153,6 +153,21 @@ namespace GameEngine::Lua
 		void SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2, Param3, Param4, Param5) const);
 		template <typename Class, typename Ret, typename Param1, typename Param2, typename Param3, typename Param4, typename Param5, typename Param6>
 		void SetFunction(const std::string& key, Ret(Class::* value)(Param1, Param2, Param3, Param4, Param5, Param6) const);
+
+		template <typename Class>
+		void SetConstructor();
+		template <typename Class, typename Param1>
+		void SetConstructor();
+		template <typename Class, typename Param1, typename Param2>
+		void SetConstructor();
+		template <typename Class, typename Param1, typename Param2, typename Param3>
+		void SetConstructor();
+		template <typename Class, typename Param1, typename Param2, typename Param3, typename Param4>
+		void SetConstructor();
+		template <typename Class, typename Param1, typename Param2, typename Param3, typename Param4, typename Param5>
+		void SetConstructor();
+		template <typename Class, typename Param1, typename Param2, typename Param3, typename Param4, typename Param5, typename Param6>
+		void SetConstructor();
 		
 		/// <summary>
 		/// Set static member function. Lua can invoke the function by ClassName.FunctionName()
@@ -181,6 +196,12 @@ namespace GameEngine::Lua
 		void _SetLuaValue(std::function<void()> func, const std::string& key);
 
 		/// <summary>
+		/// Register some functions and properties for native types
+		/// </summary>
+		template <typename T>
+		static inline void _AdditionalRegister(class LuaBind& bind) {};
+
+		/// <summary>
 		/// Debug function to check Lua run time userdata type. Expensive so turn it off in release mode
 		/// </summary>
 		template <typename T>
@@ -195,12 +216,16 @@ namespace GameEngine::Lua
 		inline void _SetPropertyFunction(const std::string& key, T Class::* address, const char* tableName, int(*func)(lua_State*));
 		template <typename Class, typename T>
 		static inline int _PropertyGetter(lua_State* L);
+		template <typename Class, typename T, typename Flag>
+		static inline int _PropertyGetter(lua_State* L);
 		template <typename Class, typename T>
 		static inline int _PropertySetter(lua_State* L);
 		template <typename Class>
 		static inline int _ConstPropertySetter(lua_State* L);
 		inline void _SetStaticPropertyFunction(const std::string& key, void* address, const char* tableName, int(*func)(lua_State*));
 		template <typename T>
+		static inline int _StaticPropertyGetter(lua_State* L);
+		template <typename T, typename Flag>
 		static inline int _StaticPropertyGetter(lua_State* L);
 		template <typename T>
 		static inline int _StaticPropertySetter(lua_State* L);
@@ -220,13 +245,10 @@ namespace GameEngine::Lua
 		/// <summary>
 		/// Push argument to Lua stack, used to report return value for function call from Lua
 		/// </summary>
-		template <typename... Args>
-		static void _ToLuaStack(lua_State* L, Args&&... args);
-		template <typename T, typename... Args>
-		static void _ToLuaStackStep(lua_State* L, T value, Args&&... args);
-		static void _ToLuaStackStep(lua_State*) {};
 		template <typename T>
-		static inline void _ToLuaStackTerminal(lua_State* L, T value) { static_assert(false, "Unsupported type, please register your type"); };
+		static inline void _ToLuaStack(lua_State* L, T value) { static_assert(false, "Unsupported type, please register your type"); };
+		template <typename T>
+		static inline void _ToLuaStack(lua_State* L, T* address, int flag) { static_assert(false, "Unsupported type, please register your type"); };
 	};
 }
 

@@ -47,6 +47,14 @@ void f() {};
 class Dummy
 {
 public:
+	Dummy() {};
+	Dummy(int a) { mDoCount = a; };
+	Dummy(int a, int b) { mDoCount = a - b; };
+	Dummy(int a, int b, int c) { mDoCount = a - b + c; };
+	Dummy(int a, int b, int c, int d) { mDoCount = a - b + c - d; };
+	Dummy(int a, int b, int c, int d, int e) { mDoCount = a - b + c - d + e; };
+	Dummy(int a, int b, int c, int d, int e, int f) { mDoCount = a - b + c - d + e - f; };
+
 	int mDoCount = 0;
 	std::string mText = "Hello";
 	int Do()
@@ -97,6 +105,7 @@ public:
 	}
 };
 DECLARE_LUA_WRAPPER(Dummy, "Dummy");
+LUA_DEFINE_CUSTOM_OBJECT_TYPE(Dummy);
 
 class A
 {
@@ -109,6 +118,7 @@ public:
 	static int Foo(int a) { return a + 1; }
 };
 DECLARE_LUA_WRAPPER(A, "A");
+LUA_DEFINE_CUSTOM_OBJECT_TYPE(A);
 
 class B : public A
 {
@@ -121,6 +131,7 @@ public:
 	static int Foo(int a) { return a + 2; }
 };
 DECLARE_LUA_WRAPPER(B, "B");
+LUA_DEFINE_CUSTOM_OBJECT_TYPE(B);
 
 class C : public B
 {
@@ -138,6 +149,7 @@ public:
 	static int Foo(int a) { return a + 3; }
 };
 DECLARE_LUA_WRAPPER(C, "C");
+LUA_DEFINE_CUSTOM_OBJECT_TYPE(C);
 
 class ConstClass
 {
@@ -149,10 +161,26 @@ public:
 	static inline const int d = 10;
 	static inline int e = 11;
 
+	ConstClass()
+	{
+		mDummy = new Dummy();
+	}
+
+	~ConstClass()
+	{
+		delete mDummy;
+	}
+
+	glm::vec4 mVec { 0, 1, 2, 3 };
+	const Dummy* mDummy;
+	const static inline glm::vec4 sVec { 3, 2, 1, 0 };
+	static inline Dummy sDummy;
+
 	void Do() { c += 10; };
 	void DoConst() const { int r = c + 10; r; };
 };
 DECLARE_LUA_WRAPPER(ConstClass, "ConstClass");
+LUA_DEFINE_CUSTOM_OBJECT_TYPE(ConstClass);
 
 namespace UnitTestLibraryDesktop
 {
@@ -489,6 +517,7 @@ namespace UnitTestLibraryDesktop
 		{
 			LuaBind bind;
 			LuaWrapper<Dummy>::Register(bind.LuaState());
+			bind.SetConstructor<Dummy>();
 			bind.SetFunction("CheckNumber", std::function(CheckNumber));
 			bind.SetFunction("Do", &Dummy::Do);
 			bind.SetFunction("Do2", &Dummy::Do2);
@@ -522,6 +551,7 @@ namespace UnitTestLibraryDesktop
 		{
 			LuaBind bind;
 			LuaWrapper<Dummy>::Register(bind.LuaState());
+			bind.SetConstructor<Dummy>();
 			bind.SetFunction("Check", function(Check));
 			bind.SetFunction("CheckNumber", std::function(CheckNumber));
 			bind.SetProperty("mDoCount", &Dummy::mDoCount);
@@ -547,6 +577,9 @@ namespace UnitTestLibraryDesktop
 			LuaWrapper<A>::Register(bind.LuaState());
 			LuaWrapper<B>::Register<A>(bind.LuaState());
 			LuaWrapper<C>::Register<B>(bind.LuaState());
+			bind.SetConstructor<A>();
+			bind.SetConstructor<B>();
+			bind.SetConstructor<C>();
 			bind.SetFunction("DoA", &A::DoA);
 			bind.SetFunction("DoB", &B::DoB);
 			bind.SetFunction("DoC", &C::DoC);
@@ -639,6 +672,7 @@ namespace UnitTestLibraryDesktop
 			bind.SetFunction("Check", function(Check));
 			bind.SetFunction("CheckNumber", function(CheckNumber));
 			LuaWrapper<ConstClass>::Register(bind.LuaState());
+			bind.SetConstructor<ConstClass>();
 			bind.SetProperty("a", &ConstClass::a);
 			bind.SetProperty("b", &ConstClass::b);
 			bind.SetProperty("c", &ConstClass::c);
@@ -667,6 +701,118 @@ namespace UnitTestLibraryDesktop
 			)#";
 			bind.LoadString(lua);
 			CheckNumber(12, ConstClass::e);
+		}
+
+		TEST_METHOD(TestConstructor)
+		{
+			LuaBind bind;
+			bind.SetFunction("CheckNumber", function(CheckNumber));
+			LuaWrapper<Dummy>::Register(bind.LuaState());
+
+			bind.SetConstructor<Dummy>();
+			bind.SetProperty("mDoCount", &Dummy::mDoCount);
+			string lua = R"#(
+				local dummy = Dummy.New()
+				CheckNumber(0, dummy.mDoCount)
+			)#";
+			bind.LoadString(lua);
+
+			bind.SetConstructor<Dummy, int>();
+			bind.SetProperty("mDoCount", &Dummy::mDoCount);
+			lua = R"#(
+				local dummy = Dummy.New(1)
+				CheckNumber(1, dummy.mDoCount)
+			)#";
+			bind.LoadString(lua);
+
+			bind.SetConstructor<Dummy, int, int>();
+			bind.SetProperty("mDoCount", &Dummy::mDoCount);
+			lua = R"#(
+				local dummy = Dummy.New(1, 2)
+				CheckNumber(-1, dummy.mDoCount)
+			)#";
+			bind.LoadString(lua);
+
+			bind.SetConstructor<Dummy, int, int, int>();
+			bind.SetProperty("mDoCount", &Dummy::mDoCount);
+			lua = R"#(
+				local dummy = Dummy.New(1, 2, 3)
+				CheckNumber(2, dummy.mDoCount)
+			)#";
+			bind.LoadString(lua);
+
+			bind.SetConstructor<Dummy, int, int, int, int>();
+			bind.SetProperty("mDoCount", &Dummy::mDoCount);
+			lua = R"#(
+				local dummy = Dummy.New(1, 2, 3, 4)
+				CheckNumber(-2, dummy.mDoCount)
+			)#";
+			bind.LoadString(lua);
+
+			bind.SetConstructor<Dummy, int, int, int, int, int>();
+			bind.SetProperty("mDoCount", &Dummy::mDoCount);
+			lua = R"#(
+				local dummy = Dummy.New(1, 2, 3, 4, 5)
+				CheckNumber(3, dummy.mDoCount)
+			)#";
+			bind.LoadString(lua);
+
+			bind.SetConstructor<Dummy, int, int, int, int, int, int>();
+			bind.SetProperty("mDoCount", &Dummy::mDoCount);
+			lua = R"#(
+				local dummy = Dummy.New(1, 2, 3, 4, 5, 6)
+				CheckNumber(-3, dummy.mDoCount)
+			)#";
+			bind.LoadString(lua);
+		}
+
+		TEST_METHOD(TestNestedClass)
+		{
+			LuaBind bind;
+			bind.SetFunction("CheckNumber", function(CheckNumber));
+			LuaWrapper<Dummy>::Register(bind.LuaState());
+			LuaWrapper<ConstClass>::Register(bind.LuaState());
+			bind.SetConstructor<Dummy>();
+			bind.SetProperty("mVec", &ConstClass::mVec);
+			bind.SetProperty("mDummy", &ConstClass::mDummy);
+			bind.SetProperty<ConstClass>("sVec", &ConstClass::sVec);
+			bind.SetProperty<ConstClass>("sDummy", &ConstClass::sDummy);
+			bind.SetProperty("mDoCount", &Dummy::mDoCount);
+			ConstClass test;
+			bind.SetProperty("test", &test);
+			string lua = R"#(
+				CheckNumber(0, test.mVec.x)
+				CheckNumber(1, test.mVec.y)
+				CheckNumber(2, test.mVec.z)
+				CheckNumber(3, test.mVec.w)
+				test.mVec.x = 10
+				test.mVec.y = 11
+				test.mVec.z = 12
+				test.mVec.w = 13
+				CheckNumber(10, test.mVec.x)
+				CheckNumber(11, test.mVec.y)
+				CheckNumber(12, test.mVec.z)
+				CheckNumber(13, test.mVec.w)
+
+				test.mVec = vec4.New(1, 2, 3, 4)
+
+				CheckNumber(0, test.mDummy.mDoCount);
+				test.mDummy.mDoCount = 10
+				CheckNumber(10, test.mDummy.mDoCount);
+
+				CheckNumber(3, ConstClass.sVec.x)
+				CheckNumber(2, ConstClass.sVec.y)
+				CheckNumber(1, ConstClass.sVec.z)
+				CheckNumber(0, ConstClass.sVec.w)
+
+				CheckNumber(0, ConstClass.sDummy.mDoCount)
+				ConstClass.sDummy.mDoCount = 10
+				CheckNumber(10, ConstClass.sDummy.mDoCount)
+				ConstClass.sDummy = Dummy.New()
+			)#";
+			bind.LoadString(lua);
+			Assert::AreEqual(glm::vec4(1, 2, 3, 4), test.mVec);
+			Assert::AreEqual(0, ConstClass::sDummy.mDoCount);
 		}
 
 	private:

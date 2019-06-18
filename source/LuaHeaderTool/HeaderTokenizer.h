@@ -36,6 +36,7 @@ namespace GameEngine::HeaderTool
 			Mark_Class,
 			Mark_Property,
 			Mark_Function,
+			Mark_Constructor,
 
 			Keyword_Class,
 			Keyword_Struct,
@@ -45,10 +46,27 @@ namespace GameEngine::HeaderTool
 			Keyword_Public,
 			Keyword_Protected,
 			Keyword_Private,
+			Keyword_Void,
+			Keyword_Template,
+			Keyword_Typename,
+			Keyword_Explicit,
+			Keyword_Volatile,
+			Keyword_Mutable,
+			Keyword_Final,
+			Keyword_Using,
+			Keyword_Namespace,
+			Keyword_Enum,
+			Keyword_Auto,
+			Keyword_Register,
 			
 			Name,
 			Literal_Number,
-			Literal_String
+			Literal_String,
+
+			Mark_START = Mark_Class,
+			Mark_END = Mark_Constructor,
+			Keyword_START = Keyword_Class,
+			Keyword_END = Keyword_Register
 		};
 
 		/// <summary>

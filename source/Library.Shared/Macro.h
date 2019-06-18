@@ -29,22 +29,61 @@ template<> static inline const _type& GameEngine::Lua::LuaBind::_FromLuaStack(lu
 	TYPE_CHECK(CheckArgType<_type>(L, index));  \
 	return *static_cast<const LuaWrapper<_type>*>(lua_touserdata(L, index))->mObject;	 \
 }																															 \
-template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStackTerminal(lua_State* L, _type* value)						 \
+template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStack(lua_State* L, _type* value)						 \
 {																															 \
 	_SetProperty(L, value);																									 \
 }																															 \
-template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStackTerminal(lua_State* L, const _type* value)				 \
+template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStack(lua_State* L, const _type* value)				 \
 {																															 \
 	_SetProperty(L, const_cast<_type*>(value));																				 \
 }																															 \
-template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStackTerminal(lua_State* L, _type& value)						 \
+template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStack(lua_State* L, _type& value)						 \
 {																															 \
 	_SetProperty(L, &value);																								 \
 }																															 \
-template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStackTerminal(lua_State* L, const _type& value)				 \
+template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStack(lua_State* L, const _type& value)				 \
 {																															 \
 	_SetProperty(L, &const_cast<_type&>(value));																			 \
+}																															  \
+
+
+#define LUA_DEFINE_NATIVE_OBJECT_TYPE(_type)																				  \
+template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStack(lua_State* L, _type* address, int /*flag*/)              \
+{																															  \
+	_ToLuaStack(L, *address);																								  \
 }
+
+#define LUA_DEFINE_CUSTOM_OBJECT_TYPE(_type)																				  \
+template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStack(lua_State* L, _type* address, int /*flag*/)              \
+{																															  \
+	_SetProperty(L, address);																								  \
+}																															   \
+template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStack(lua_State* L, _type** address, int /*flag*/)              \
+{																															  \
+	_SetProperty(L, *address);																								  \
+}																															   \
+template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStack(lua_State* L, const _type* address, int /*flag*/)              \
+{																															  \
+	_SetProperty(L, const_cast<_type*>(address));																								  \
+}																															   \
+template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStack(lua_State* L, const _type** address, int /*flag*/)              \
+{																															  \
+	_SetProperty(L, *const_cast<_type**>(address));																								  \
+}																															   \
+template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStack(lua_State* L, _type value)									\
+{																																\
+	LuaWrapper<_type>* pointer = static_cast<LuaWrapper<_type>*>(lua_newuserdata(L, sizeof(LuaWrapper<_type>)));					\
+	new(pointer) LuaWrapper<_type>(true, new _type(value));																			\
+	int newTable = luaL_newmetatable(L, LuaWrapper<_type>::sName.c_str());														 \
+	assert(!newTable);																											 \
+	lua_setmetatable(L, -2);																									 \
+}																															  \
+template<> static inline _type GameEngine::Lua::LuaBind::_FromLuaStack(lua_State* L, int index)								   \
+{																															   \
+	TYPE_CHECK(CheckArgType<_type>(L, index));																				   \
+	return *static_cast<LuaWrapper<_type>*>(lua_touserdata(L, index))->mObject;												   \
+}
+
 
 #define DECLARE_LUA_WRAPPER(_type, _name)                            \
 const std::string GameEngine::Lua::LuaWrapper<_type>::sName = _name; \
@@ -54,3 +93,4 @@ LUA_DEFINE_POINTER_TYPE(_type)
 #define CLASS(...) __VA_ARGS__
 #define PROPERTY(...) __VA_ARGS__
 #define FUNCTION(...) __VA_ARGS__
+#define CONSTRUCTOR(...) __VA_ARGS__

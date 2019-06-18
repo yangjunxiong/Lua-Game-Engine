@@ -9,6 +9,9 @@ using namespace GameEngine;
 
 RTTI_DEFINITIONS(Entity);
 
+Entity::Entity() : Entity(Entity::TypeIdClass())
+{}
+
 Entity::Entity(RTTI::IdType type) : Attributed(type)
 {
 	assert(mDatumPointers[ACTION_TABLE_INDEX]->first == ACTION_TABLE_KEY);
