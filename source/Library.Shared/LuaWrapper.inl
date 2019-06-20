@@ -7,6 +7,9 @@ namespace GameEngine::Lua
 		int hasMetatable = lua_getmetatable(L, 1);  // Userdata pointer is at 1, get its metatable and push to 3
 		assert(hasMetatable);
 
+		assert(lua_isuserdata(L, 1) || lua_istable(L, 1));
+		bool staticMember = lua_istable(L, 1);
+
 		int result = 0;
 		while (result == 0)                         // Loop while can't find the required key
 		{
@@ -14,21 +17,28 @@ namespace GameEngine::Lua
 			lua_rawget(L, 3);                           // Metatable for userdata is at 3, look for the key in metatable
 			if (lua_isnil(L, -1))                       // Can't find the key in metatable, which means it's not a function, might be a property
 			{
-				lua_pushstring(L, "__propget");
+				lua_pushstring(L, staticMember ? STATIC_MEMBER_GETTER : MEMBER_GETTER);
 				lua_rawget(L, 3);                       // Get __propget table from metatable
 				lua_pushvalue(L, 2);                    // Copy key to stack top
 				lua_rawget(L, -2);                      // Look up the key in __propget table
 				if (!lua_isnil(L, -1))                  // Find the key in __propget table
 				{
 					assert(lua_iscfunction(L, -1));          // Must be a LuaWrapper getter function
-					lua_pushvalue(L, 1);                     // Copy the user object to stack top, it serves as getter function argument
-					lua_call(L, 1, 1);                       // Call lua function with 1 argument and 1 return value
+					if (staticMember)
+					{
+						lua_call(L, 0, 1);
+					}
+					else
+					{
+						lua_pushvalue(L, 1);                     // Copy the user object to stack top, it serves as getter function argument
+						lua_call(L, 1, 1);                       // Call lua function with 1 argument and 1 return value
+					}
 					result = 1;
 				}
-				else                                    // Can't find key, go to parent table
+				else if (!staticMember)                 // Can't find key, go to parent table
 				{
 					lua_pop(L, 3);                      // Pop nil, __propget table, and nil, now metatable is at top
-					lua_pushstring(L, "__parent");
+					lua_pushstring(L, PARENT);
 					int type = lua_rawget(L, 3);        // Get parent table, it sits at 4
 					if (type != LUA_TTABLE)             // No parent metatable, end of search
 					{
@@ -37,14 +47,14 @@ namespace GameEngine::Lua
 					lua_remove(L, 3);                   // Remove current metatable, so now parent metatable becomes new metatable for next iteration
 					assert(lua_gettop(L) == 3 && lua_istable(L, 3));
 				}
-			}
-			else if (lua_iscfunction(L, -1))
-			{
-				result = 1;
+				else                                    // For static member search, don't go to parent table
+				{
+					break;
+				}
 			}
 			else
 			{
-				assert(("__index metatable should only contain function", false));
+				result = 1;
 			}
 		}
 
@@ -56,88 +66,75 @@ namespace GameEngine::Lua
 		int hasMetatable = lua_getmetatable(L, 1);  // Userdata pointer is at 1, get its metatable and push to 4
 		assert(hasMetatable);
 
+		assert(lua_isuserdata(L, 1) || lua_istable(L, 1));
+		bool staticMember = lua_istable(L, 1);
+
+		bool fromC = true;
 		while (true)
 		{
 			lua_pushvalue(L, 2);                        // Key is at 2, value is at 3, copy key and push to 5
 			lua_rawget(L, 4);                           // Metatable for userdata is at 4, look for the key in metatable
 			if (lua_isnil(L, -1))
 			{
-				lua_pushstring(L, "__propset");
+				lua_pushstring(L, staticMember ? STATIC_MEMBER_SETTER : MEMBER_SETTER);
 				lua_rawget(L, 4);                       // Get __propset table from metatable
 				lua_pushvalue(L, 2);                    // Copy key to stack top
 				lua_rawget(L, -2);                      // Look up the key in __propset table
 				if (!lua_isnil(L, -1))
 				{
 					assert(lua_iscfunction(L, -1));          // Must be a LuaWrapper setter function
-					lua_pushvalue(L, 1);                     // Copy the user object to stack top, it serves as first setter function argument
-					lua_pushvalue(L, 3);                     // Copy new value to stack top, it serves as second setter function argument
-					lua_call(L, 2, 0);                       // Call lua function with 2 arguments and no return value
+					if (staticMember)
+					{
+						lua_pushvalue(L, 3);                     // Copy value from argument place to top of stack, as the argument of static member setter function
+						lua_call(L, 1, 0);                       // Call lua function, this will push the result to stack
+					}
+					else
+					{
+						lua_pushvalue(L, 1);                     // Copy the user object to stack top, it serves as first setter function argument
+						lua_pushvalue(L, 3);                     // Copy new value to stack top, it serves as second setter function argument
+						lua_call(L, 2, 0);                       // Call lua function with 2 arguments and no return value
+					}
 					break;
 				}
-				else                                    // Can't find in current table, go to parent table
+				else if (!staticMember)                                   // Can't find in current table, go to parent table
 				{
 					lua_pop(L, 3);                      // Pop nil, __propset table, and nil, now metatable is at top
-					lua_pushstring(L, "__parent");
+					lua_pushstring(L, PARENT);
 					int type = lua_rawget(L, 4);         // Get parent table, it now sits at 5
 					if (type != LUA_TTABLE)              // No parent metatable, can't find target member, error
 					{
-						lua_pushstring(L, "Name");
-						lua_rawget(L, 4);
-						lua_call(L, 0, 1);
-						lua_pushfstring(L, "Attemp to modify non-existant variable \"%s\" in class \"%s\"", lua_tostring(L, 2), lua_tostring(L, -1));
-						lua_error(L);
+						fromC = false;
+						break;
 					}
 					lua_remove(L, 4);                   // Remove current metatable, so now parent metatable becomes new metatable for next iteration
 					assert(lua_gettop(L) == 4 && lua_istable(L, 4));
 				}
+				else
+				{
+					fromC = false;
+					break;
+				}
 			}
-			else
+			else if (lua_iscfunction(L, -1))
 			{
-				lua_pushstring(L, "Name");
+				lua_pushstring(L, NAME_METHOD);
 				lua_rawget(L, 4);
 				lua_call(L, 0, 1);
 				lua_pushfstring(L, "Attemp to modify function \"%s\" in class \"%s\"", lua_tostring(L, 2), lua_tostring(L, -1));
 				lua_error(L);
 			}
+			else
+			{
+				fromC = false;
+				break;
+			}
 		}
 
-		return 0;
-	}
-
-	int MetaFunction::StaticIndex(lua_State* L)
-	{
-		lua_getmetatable(L, 1);
-		assert(lua_rawequal(L, 1, 3));  // Static table is its metatable
-
-		int result = 0;
-		lua_pushstring(L, "__propget");
-		lua_rawget(L, 3);                       // Get __propget table from metatable
-		lua_pushvalue(L, 2);                    // Copy key to stack top
-		lua_rawget(L, -2);                      // Look up the key in __propget table
-		if (!lua_isnil(L, -1))
+		if (!fromC)
 		{
-			assert(lua_iscfunction(L, -1));          // Must be a Lua static member variable getter function
-			lua_call(L, 0, 1);                       // Call lua function, this will push the result to stack
-			result = 1;
-		}
-
-		return result;
-	}
-
-	int MetaFunction::StaticNewIndex(lua_State* L)
-	{
-		lua_getmetatable(L, 1);
-		assert(lua_rawequal(L, 1, 4));  // Static table is its metatable
-
-		lua_pushstring(L, "__propset");
-		lua_rawget(L, 4);                       // Get __propset table from metatable
-		lua_pushvalue(L, 2);                    // Copy key to stack top
-		lua_rawget(L, -2);                      // Look up the key in __propset table
-		if (!lua_isnil(L, -1))
-		{
-			assert(lua_iscfunction(L, -1));          // Must be a Lua static member variable getter function
-			lua_pushvalue(L, 3);                     // Copy value from argument place to top of stack, as the argument of static member setter function
-			lua_call(L, 1, 0);                       // Call lua function, this will push the result to stack
+			lua_pushvalue(L, 2);
+			lua_pushvalue(L, 3);
+			lua_rawset(L, 4);
 		}
 
 		return 0;
@@ -163,10 +160,14 @@ namespace GameEngine::Lua
 	void LuaWrapper<T>::Register(lua_State* L)
 	{
 		assert(!sName.empty());
+		assert(lua_gettop(L) == 0);
 
-		// Create member metatable
+		// Create class metatable and set it as itself's metatable
 		int newTable = luaL_newmetatable(L, sName.c_str());
 		assert(("Each class mapped to Lua must have unique name", newTable));
+		lua_pushvalue(L, -1);
+		lua_setmetatable(L, -2);
+		assert(lua_gettop(L) == 1);
 
 		// Set __index metafunction
 		lua_pushcfunction(L, &MetaFunction::Index);
@@ -177,12 +178,22 @@ namespace GameEngine::Lua
 		lua_setfield(L, -2, "__newindex");
 
 		// Set __propget metatable, for member variable get
-		lua_pushstring(L, "__propget");
+		lua_pushstring(L, MEMBER_GETTER);
 		lua_newtable(L);
 		lua_rawset(L, -3);
 
 		// Set __progset metatable, for member variable set
-		lua_pushstring(L, "__propset");
+		lua_pushstring(L, MEMBER_SETTER);
+		lua_newtable(L);
+		lua_rawset(L, -3);
+
+		// Set static member getter table
+		lua_pushstring(L, STATIC_MEMBER_GETTER);
+		lua_newtable(L);
+		lua_rawset(L, -3);
+
+		// Set static member setter table
+		lua_pushstring(L, STATIC_MEMBER_SETTER);
 		lua_newtable(L);
 		lua_rawset(L, -3);
 
@@ -202,7 +213,7 @@ namespace GameEngine::Lua
 		lua_rawset(L, -3);
 
 		// Set name function
-		lua_pushstring(L, "TypeName");
+		lua_pushstring(L, NAME_METHOD);
 		lua_pushcfunction(L, &LuaWrapper<T>::__name);
 		lua_rawset(L, -3);
 
@@ -216,39 +227,14 @@ namespace GameEngine::Lua
 		lua_pushcfunction(L, &LuaWrapper<T>::__get);
 		lua_rawset(L, -3);
 
-		// Pop metatable
-		lua_pop(L, 1);
-
-		// Create static member metatable
-		lua_newtable(L);
-		lua_pushvalue(L, -1);
-		lua_setmetatable(L, -2);
-
-		// Set static member variable index function
-		lua_pushcfunction(L, &MetaFunction::StaticIndex);
-		lua_setfield(L, -2, "__index");
-
-		// Set static member variable newindex function
-		lua_pushcfunction(L, &MetaFunction::StaticNewIndex);
-		lua_setfield(L, -2, "__newindex");
-
-		// Set static member variable get function
-		lua_pushstring(L, "__propget");
-		lua_newtable(L);
-		lua_rawset(L, -3);
-
-		// Set static member variable set function
-		lua_pushstring(L, "__propset");
-		lua_newtable(L);
-		lua_rawset(L, -3);
-
 		// Set default constructor as invalid
-		lua_pushstring(L, "New");
+		lua_pushstring(L, NEW_METHOD);
 		lua_pushcfunction(L, &LuaWrapper<T>::__new);
 		lua_rawset(L, -3);
 
-		// Set global static table
+		// Set the name of class as alias of metatable as global table
 		lua_setglobal(L, sName.c_str());
+		assert(lua_gettop(L) == 0);
 
 		// Add type info to registry
 		const std::string& name = LuaWrapper<T>::sName;
@@ -265,10 +251,11 @@ namespace GameEngine::Lua
 		// Set parent metatable
 		assert(("Hey you can't parent yourself", sName != LuaWrapper<Parent>::sName));
 		luaL_newmetatable(L, sName.c_str());
-		lua_pushstring(L, "__parent");
+		lua_pushstring(L, PARENT);
 		int newParentTable = luaL_newmetatable(L, LuaWrapper<Parent>::sName.c_str());
 		assert(("Must register parent type before registering child type", !newParentTable));
 		lua_rawset(L, -3);
+		lua_pop(L, 1);
 
 		// Build type link in registry
 		Registry::TypeNode& node = Registry::sTypeRegistry.Find(LuaWrapper<T>::sName)->second;

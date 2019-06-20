@@ -783,6 +783,7 @@ namespace UnitTestLibraryDesktop
 			bind.SetProperty<ConstClass>("sVec", &ConstClass::sVec);
 			bind.SetProperty<ConstClass>("sDummy", &ConstClass::sDummy);
 			bind.SetProperty("mDoCount", &Dummy::mDoCount);
+			bind.SetFunction("Do", &ConstClass::Do);
 			ConstClass test;
 			bind.SetProperty("test", &test);
 			string lua = R"#(
@@ -818,6 +819,35 @@ namespace UnitTestLibraryDesktop
 			bind.LoadString(lua);
 			Assert::AreEqual(glm::vec4(1, 2, 3, 4), test.mVec);
 			Assert::AreEqual(0, ConstClass::sDummy.mDoCount);
+		}
+
+		TEST_METHOD(TestExtendC)
+		{
+			LuaBind bind;
+			bind.SetFunction("Check", function(Check));
+			bind.SetFunction("CheckNumber", function(CheckNumber));
+			LuaWrapper<Dummy>::Register(bind.LuaState());
+			LuaWrapper<ConstClass>::Register(bind.LuaState());
+			
+			bind.SetConstructor<ConstClass>();
+			bind.SetProperty("mVec", &ConstClass::mVec);
+			bind.SetProperty("mDummy", &ConstClass::mDummy);
+			bind.SetProperty<ConstClass>("sVec", &ConstClass::sVec);
+			bind.SetProperty<ConstClass>("sDummy", &ConstClass::sDummy);
+			bind.SetFunction("DoConst", &ConstClass::DoConst);
+
+			bind.SetConstructor<Dummy>();
+			bind.SetProperty("mDoCount", &Dummy::mDoCount);
+			bind.SetFunction("Do", &Dummy::Do);
+			bind.SetFunction("Do2", &Dummy::Do2);
+			bind.SetFunction("Do3", &Dummy::Do3);
+			bind.SetFunction("Do4", &Dummy::Do4);
+			bind.SetFunction("Do5", &Dummy::Do5);
+			bind.SetFunction("Do6", &Dummy::Do6);
+			bind.SetFunction("Do7", &Dummy::Do7);
+			bind.SetFunction("Do", &ConstClass::Do);
+			
+			bind.LoadFile("content/Lua/TestExtend.lua");
 		}
 
 	private:

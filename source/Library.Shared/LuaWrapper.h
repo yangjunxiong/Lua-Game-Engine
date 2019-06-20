@@ -3,6 +3,15 @@
 #include "vector.h"
 #include "HashMap.h"
 
+#define MEMBER_GETTER "__propget"
+#define MEMBER_SETTER "__propset"
+#define STATIC_MEMBER_GETTER "__staticget"
+#define STATIC_MEMBER_SETTER "__staticset"
+#define PARENT "__parent"
+
+#define NEW_METHOD "New"
+#define NAME_METHOD "TypeName"
+
 namespace GameEngine::Lua
 {
 	class MetaFunction final
@@ -10,8 +19,6 @@ namespace GameEngine::Lua
 	public:
 		static inline int Index(lua_State* L);
 		static inline int NewIndex(lua_State* L);
-		static inline int StaticIndex(lua_State* L);
-		static inline int StaticNewIndex(lua_State* L);
 	};
 
 	template <typename T>

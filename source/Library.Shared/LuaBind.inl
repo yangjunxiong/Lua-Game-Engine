@@ -76,7 +76,7 @@ lua_getglobal(mLuaState, LuaWrapper<Class>::sName.c_str());																		  \
 assert(lua_istable(mLuaState, -1));																								  \
 lua_getmetatable(mLuaState, -1);																								  \
 assert(lua_rawequal(mLuaState, -1, -2));																						  \
-lua_pushstring(mLuaState, "New");																								  \
+lua_pushstring(mLuaState, NEW_METHOD);																								  \
 lua_pushcfunction(mLuaState, factory);																							  \
 lua_rawset(mLuaState, -3);																										  \
 lua_pop(mLuaState, 2);
@@ -368,14 +368,14 @@ namespace GameEngine::Lua
 		assert(("Must register class type before setting an object as property", !newTable));
 
 		// Set getter and getter depends on writability
-		_SetPropertyFunction(key, address, "__propget", &_PropertyGetter<Class, T>);
+		_SetPropertyFunction(key, address, MEMBER_GETTER, &_PropertyGetter<Class, T>);
 		if (writable)
 		{
-			_SetPropertyFunction(key, address, "__propset", &_PropertySetter<Class, T>);
+			_SetPropertyFunction(key, address, MEMBER_SETTER, &_PropertySetter<Class, T>);
 		}
 		else
 		{
-			_SetPropertyFunction(key, address, "__propset", &_ConstPropertySetter<Class>);
+			_SetPropertyFunction(key, address, MEMBER_SETTER, &_ConstPropertySetter<Class>);
 		}
 
 		// Pop class metatable, restore stack
@@ -390,8 +390,8 @@ namespace GameEngine::Lua
 		assert(("Must register class type before setting an object as property", !newTable));
 
 		// Set const version getter and const error setter
-		_SetPropertyFunction(key, address, "__propget", &_PropertyGetter<Class, T, int>);
-		_SetPropertyFunction(key, address, "__propset", &_ConstPropertySetter<Class>);
+		_SetPropertyFunction(key, address, MEMBER_GETTER, &_PropertyGetter<Class, T, int>);
+		_SetPropertyFunction(key, address, MEMBER_SETTER, &_ConstPropertySetter<Class>);
 
 		// Pop class metatable, restore stack
 		lua_pop(mLuaState, 1);
@@ -405,14 +405,14 @@ namespace GameEngine::Lua
 		assert(("Must register class type before setting an object as property", lua_istable(mLuaState, -1)));
 
 		// Set getter and setter
-		_SetStaticPropertyFunction(key, address, "__propget", &LuaBind::_StaticPropertyGetter<T>);
+		_SetStaticPropertyFunction(key, address, STATIC_MEMBER_GETTER, &LuaBind::_StaticPropertyGetter<T>);
 		if (writable)
 		{
-			_SetStaticPropertyFunction(key, address, "__propset", &LuaBind::_StaticPropertySetter<T>);
+			_SetStaticPropertyFunction(key, address, STATIC_MEMBER_SETTER, &LuaBind::_StaticPropertySetter<T>);
 		}
 		else
 		{
-			_SetStaticPropertyFunction(key, address, "__propset", &LuaBind::_ConstPropertySetter<Class>);
+			_SetStaticPropertyFunction(key, address, STATIC_MEMBER_SETTER, &LuaBind::_ConstPropertySetter<Class>);
 		}
 
 		// Pop class metatable, restore stack
@@ -427,8 +427,8 @@ namespace GameEngine::Lua
 		assert(("Must register class type before setting an object as property", lua_istable(mLuaState, -1)));
 
 		// Set getter and setter
-		_SetStaticPropertyFunction(key, const_cast<T*>(address), "__propget", &LuaBind::_StaticPropertyGetter<T, int>);
-		_SetStaticPropertyFunction(key, const_cast<T*>(address), "__propset", &LuaBind::_ConstPropertySetter<Class>);
+		_SetStaticPropertyFunction(key, const_cast<T*>(address), STATIC_MEMBER_GETTER, &LuaBind::_StaticPropertyGetter<T, int>);
+		_SetStaticPropertyFunction(key, const_cast<T*>(address), STATIC_MEMBER_SETTER, &LuaBind::_ConstPropertySetter<Class>);
 
 		// Pop class metatable, restore stack
 		lua_pop(mLuaState, 1);
