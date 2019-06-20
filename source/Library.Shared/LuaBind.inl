@@ -558,6 +558,69 @@ namespace GameEngine::Lua
 	}
 #pragma endregion
 
+#pragma region CallLuaFunction
+	template <typename Ret, typename... Args>
+	Ret LuaBind::CallFunction(const std::string& name, Args&&... args)
+	{
+		// Get Lua function to stack
+		if (mTableStack.IsEmpty())
+		{
+			lua_getglobal(mLuaState, name.c_str());
+		}
+		else
+		{
+			lua_getfield(mLuaState, mTableStack.Peak().mIndex, name.c_str());
+		}
+		if (!lua_isfunction(mLuaState, -1))
+		{
+			throw std::runtime_error("Lua function can't be found");
+		}
+
+		// Call function
+		int argCount = 0;
+		_PushFunctionArgument(argCount, std::forward<Args>(args)...);
+		int error = lua_pcall(mLuaState, argCount, 1, 0);
+		_ProcessError(error);
+		return _FromLuaStack<Ret>(mLuaState, -1);
+	}
+
+	template <typename... Args>
+	void LuaBind::CallFunctionNoReturn(const std::string& name, Args&&... args)
+	{
+		// Get Lua function to stack
+		if (mTableStack.IsEmpty())
+		{
+			lua_getglobal(mLuaState, name.c_str());
+		}
+		else
+		{
+			lua_getfield(mLuaState, mTableStack.Peak().mIndex, name.c_str());
+		}
+		if (!lua_isfunction(mLuaState, -1))
+		{
+			throw std::runtime_error("Lua function can't be found");
+		}
+
+		// Call function
+		int argCount = 0;
+		_PushFunctionArgument(argCount, std::forward<Args>(args)...);
+		int error = lua_pcall(mLuaState, argCount, 1, 0);
+		_ProcessError(error);
+	}
+
+	template <typename T, typename... Args>
+	void LuaBind::_PushFunctionArgument(int& count, T&& t, Args&&... args)
+	{
+		++count;
+		_ToLuaStack(mLuaState, t);
+		_PushFunctionArgument(count, std::forward<Args>(args)...);
+	}
+
+	void LuaBind::_PushFunctionArgument(int& /*count*/)
+	{}
+#pragma endregion
+
+
 #pragma region FromLuaStack
 	template<> static inline int LuaBind::_FromLuaStack(lua_State* L, int index)
 	{

@@ -850,6 +850,23 @@ namespace UnitTestLibraryDesktop
 			bind.LoadFile("content/Lua/TestExtend.lua");
 		}
 
+		TEST_METHOD(TestCallLua)
+		{
+			LuaBind bind;
+			bind.SetFunction("Check", function(Check));
+			bind.SetFunction("CheckNumber", function(CheckNumber));
+			LuaWrapper<Dummy>::Register(bind.LuaState());
+			bind.SetProperty("mDoCount", &Dummy::mDoCount);
+			bind.LoadFile("content/Lua/TestCallLua.lua");
+			Dummy dummy;
+			dummy.mDoCount = 10;
+			Dummy dummy2;
+			dummy2.mDoCount = 20;
+			int ret = bind.CallFunction<int>("Main", 1, 2, "Hello World", dummy, &dummy2);
+			Assert::AreEqual(3, ret);
+			bind.CallFunctionNoReturn("Main", 1, 2, "Hello World", dummy, &dummy2);
+		}
+
 	private:
 		static _CrtMemState sStartMemState;
 	};

@@ -101,6 +101,14 @@ If C++ function accepts pass-by-value object, one temporary copy object will be 
 If C++ function returns an object by value, a Lua ref is created with that return value and that object's life cycle is then controlled by Lua.
 */
 #define LUA_DEFINE_CUSTOM_COPY_TYPE(_type)																						 \
+template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStack(lua_State* L, _type value)									\
+{																																\
+LuaWrapper<_type>* pointer = static_cast<LuaWrapper<_type>*>(lua_newuserdata(L, sizeof(LuaWrapper<_type>)));					\
+new(pointer) LuaWrapper<_type>(true, new _type(value));																			\
+int newTable = luaL_newmetatable(L, LuaWrapper<_type>::sName.c_str());														 \
+assert(!newTable);																											 \
+lua_setmetatable(L, -2);																									 \
+}																															  \
 template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStack(lua_State* L, _type&& value)									\
 {																																\
 LuaWrapper<_type>* pointer = static_cast<LuaWrapper<_type>*>(lua_newuserdata(L, sizeof(LuaWrapper<_type>)));					\

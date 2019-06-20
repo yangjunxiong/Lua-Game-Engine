@@ -177,6 +177,11 @@ namespace GameEngine::Lua
 		template <typename Class, typename T>
 		void SetFunction(const std::string& key, T func);
 
+		template <typename Ret, typename... Args>
+		Ret CallFunction(const std::string& name, Args&&... args);
+		template <typename... Args>
+		void CallFunctionNoReturn(const std::string& name, Args&&... args);
+
 		void LoadFile(const std::string& fileName);
 		void LoadString(const std::string& str);
 
@@ -249,6 +254,10 @@ namespace GameEngine::Lua
 		static inline void _ToLuaStack(lua_State* L, T value) { static_assert(false, "Unsupported type, please register your type"); };
 		template <typename T>
 		static inline void _ToLuaStack(lua_State* L, T* address, int flag) { static_assert(false, "Unsupported type, please register your type"); };
+
+		template <typename T, typename... Args>
+		inline void _PushFunctionArgument(int& count, T&& t, Args&&... args);
+		inline void _PushFunctionArgument(int& count);
 	};
 }
 

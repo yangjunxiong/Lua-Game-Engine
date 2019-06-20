@@ -245,6 +245,7 @@ xcopy /E /Y "$(ProjectDir)content" "$(OutputPath)content"</Command>
     <None Include="content\jsonTest.json" />
     <None Include="content\LoadJsonTest.json" />
     <None Include="content\Lua\Test.lua" />
+    <None Include="content\Lua\TestCallLua.lua" />
     <None Include="content\Lua\TestExtend.lua" />
     <None Include="content\Lua\TestSetValue.lua" />
     <None Include="content\Lua\TestString.lua" />

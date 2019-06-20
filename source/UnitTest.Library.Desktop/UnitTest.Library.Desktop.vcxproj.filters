@@ -145,5 +145,8 @@
     <None Include="content\Lua\TestExtend.lua">
       <Filter>Content\Lua</Filter>
     </None>
+    <None Include="content\Lua\TestCallLua.lua">
+      <Filter>Content\Lua</Filter>
+    </None>
   </ItemGroup>
 </Project>
