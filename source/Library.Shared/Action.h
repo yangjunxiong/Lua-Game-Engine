@@ -7,6 +7,7 @@ namespace GameEngine
 	class Entity;
 	class WorldState;
 
+	CLASS();
 	/// <summary>
 	/// Action represents the logic to perform on entities
 	/// </summary>

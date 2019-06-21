@@ -48,7 +48,7 @@ void SyntaxAnalyzer::Run(const std::vector<HeaderTokenizer::Token>& tokens, std:
 	mInput = &tokens;
 	mOutput = &output;
 
-	for (int i = 0; i < tokens.size(); ++i)
+	for (size_t i = 0; i < tokens.size(); ++i)
 	{
 		auto func = sStateFunctions[static_cast<size_t>(mState)];
 		assert(func != nullptr);

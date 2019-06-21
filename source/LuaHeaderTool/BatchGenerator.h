@@ -13,8 +13,9 @@ namespace GameEngine::HeaderTool
 		void Reset();
 		void BatchParse(const std::string& dir);
 		void BatchWriteCPP(const std::string& dir);
+		void BatchWriteLua(const std::string& dir);
 		void WriteRegister(const std::string& filePath, const std::string& generatedFilePath);
-		void ClearGenerated(const std::string& dir);
+		void ClearGenerated(const std::vector<std::string>& dirs);
 
 	private:
 		struct ParsedFile

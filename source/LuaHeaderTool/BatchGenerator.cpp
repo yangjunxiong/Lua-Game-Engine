@@ -59,6 +59,39 @@ void BatchGenerator::BatchWriteCPP(const std::string& dir)
 	}
 }
 
+void BatchGenerator::BatchWriteLua(const std::string& dir)
+{
+	// First make sure the existance of directory
+	auto folder = filesystem::directory_entry(dir);
+	filesystem::create_directory(folder.path());
+
+	// Iterate through all parsed files and output generated file
+	CodeGenerator generator;
+	for (const auto& source : mParsedFileList)
+	{
+		if (source.mItems.size() > 0)
+		{
+			generator.GenerateLua(source.mItems, dir + source.mFileName + ".lua");
+		}
+	}
+
+	// Write register lua file
+	ofstream file;
+	file.open(dir + "__Include__.lua");
+	if (file.bad())
+	{
+		throw std::runtime_error("Lua register file is invalid");
+	}
+	for (const auto& source : mParsedFileList)
+	{
+		if (source.mItems.size() > 0)
+		{
+			file << "require(\"Class/" << source.mFileName << "\")" << endl;
+		}
+	}
+	file.close();
+}
+
 void BatchGenerator::WriteRegister(const std::string& filePath, const std::string& generatedFilePath)
 {
 	ofstream file;
@@ -68,9 +101,51 @@ void BatchGenerator::WriteRegister(const std::string& filePath, const std::strin
 		throw runtime_error("Register file path is invalid");
 	}
 
-	// Write include
+	// Write comment
+	file << "// Genereated register code" << endl;
+	file << "// Don't change this file manually" << endl << endl;
+
+	// Write basic include
 	file << "#include \"pch.h\"" << endl;
 	file << "#include \"LuaBind.h\"" << endl;
+	for (const auto& parsedFile : mParsedFileList)
+	{
+		if (parsedFile.mItems.size() > 0)
+		{
+			file << "#include \"" << parsedFile.mFileName << ".h\"" << endl;
+		}
+	}
+
+	file << "using namespace GameEngine;" << endl;
+	file << "using namespace GameEngine::Lua;" << endl << endl;
+
+	// Write class template specialization definition, must do this before including those generated classes, because there might be cicular dependency
+	for (const auto& parsedFile : mParsedFileList)
+	{
+		string currentClass;
+		for (const auto& item : parsedFile.mItems)
+		{
+			if (item.mType == ItemType::Class)
+			{
+				currentClass = item.mClassName;
+				file << "DECLARE_LUA_WRAPPER(" << item.mClassName << ", \"" << item.mClassName << "\");" << endl;
+				file << "LUA_DEFINE_CUSTOM_OBJECT_TYPE(" << item.mClassName << ");" << endl;
+			}
+			else if (item.mType == ItemType::Constructor)
+			{
+				if (item.mClassName == currentClass)
+				{
+					file << "LUA_DEFINE_CUSTOM_COPY_TYPE(" << item.mClassName << ");" << endl;
+				}
+			}
+			else if (item.mType == ItemType::EndClass)
+			{
+				currentClass.clear();
+			}
+		}
+	}
+
+	// Include generated class files
 	for (const auto& parsedFile : mParsedFileList)
 	{
 		if (parsedFile.mItems.size() > 0)
@@ -78,7 +153,6 @@ void BatchGenerator::WriteRegister(const std::string& filePath, const std::strin
 			file << "#include \"" << generatedFilePath << parsedFile.mFileName << "_generated.h" << "\"" << endl;
 		}
 	}
-	file << "using namespace GameEngine::Lua;" << endl;
 
 	// Write function header
 	file << "void " << REGISTER_FUNCTION << "(LuaBind& bind)" << endl;
@@ -115,14 +189,24 @@ void BatchGenerator::WriteRegister(const std::string& filePath, const std::strin
 	file.close();
 }
 
-void BatchGenerator::ClearGenerated(const std::string& dir)
+void BatchGenerator::ClearGenerated(const std::vector<std::string>& dirs)
 {
-	if (filesystem::exists(dir))
+	for (const auto& dir : dirs)
 	{
-		auto folder = filesystem::directory_entry(dir);
-		for (const auto& file : filesystem::directory_iterator(folder))
+		if (filesystem::exists(dir))
 		{
-			filesystem::remove(file);
+			auto entry = filesystem::directory_entry(dir);
+			if (entry.is_directory())
+			{
+				for (const auto& file : filesystem::directory_iterator(entry))
+				{
+					filesystem::remove(file);
+				}
+			}
+			else
+			{
+				filesystem::remove(entry);
+			}
 		}
 	}
 }

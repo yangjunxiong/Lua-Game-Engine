@@ -33,6 +33,9 @@
     <Filter Include="Resources\Shaders">
       <UniqueIdentifier>{863b556e-a0a6-4e75-9e8f-8ebb21b23ed1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Lua">
+      <UniqueIdentifier>{3440de47-1afe-43f9-bcfd-4891c464b459}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Config\Entry.json">
@@ -43,6 +46,9 @@
     </None>
     <None Include="Resources\Shaders\SpriteVextexShader.shader">
       <Filter>Resources\Shaders</Filter>
+    </None>
+    <None Include="Lua\Main.lua">
+      <Filter>Lua</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

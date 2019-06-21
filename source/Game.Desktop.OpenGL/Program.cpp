@@ -45,6 +45,11 @@ void CleanupGraphics();
 /// </summary>
 void RenderCallback(const Transform& trans, const ActionRender::RenderParam& param);
 
+void Log(const char* msg)
+{
+	OutputDebugStringA(msg);
+}
+
 GLuint vertexShader;
 GLuint fragmentShader;
 GLuint shaderProgram;
@@ -72,7 +77,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR command
 	{
 		return -1;
 	}
-
+	
 	GLFWwindow* window = glfwCreateWindow(game.WindowWidth(), game.WindowHeight(), "Gun Vs. Sword", nullptr, nullptr);
 	if (window == nullptr)
 	{
@@ -90,10 +95,6 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR command
 
 
 	InitGraphics();
-
-	// Bind Lua
-	LuaBind bind;
-	RegisterLua(bind);
 
 	// Capture memory snapshot after messing up the static memory
 	_CrtMemState startMemState;
@@ -121,11 +122,30 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR command
 		world->Start();
 	}
 	
-	//SoundTest(world);
+	// Bind Lua
+	LuaBind* bind = new LuaBind;
+	RegisterLua(*bind);
+	bind->SetFunction("Log", function(Log));
+	bind->SetProperty("World", game.mWorld);
+	bind->LoadFile("Lua/Main.lua");
+
+	// Test code
+	Log("Start C++ loop\n");
+	auto startTime = time.CurrentTime();
+	const size_t times = 1000000;
+	for (size_t i = 0; i < times; ++i)
+	{
+		auto* worldState = world->GetWorldState();
+		worldState;
+	}
+	clock.UpdateGameTime(time);
+	char msg[1024];
+	sprintf_s(msg, "End C++ loop, elapsed time: %d\n", (int)time.ElapsedGameTime().count());
+	Log(msg);
 
 	// Main game loop
-	const vec4 clearColor = vec4(0.f, 0.f, 0.f, 1.0f);
-
+	vec4 clearColor = vec4(0.f, 0.f, 0.f, 1.0f);
+	bind->SetProperty("BgColor", &clearColor);
 	while (!glfwWindowShouldClose(window))
 	{
 		glClearBufferfv(GL_COLOR, 0, &clearColor[0]);
@@ -133,6 +153,11 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR command
 		// Update game logic
 		clock.UpdateGameTime(time);
 		world->Update();
+
+		// Call Lua update
+		bind->ClearStack();
+		bind->OpenTable("Main");
+		bind->CallFunctionNoReturn("Update");
 
 		// Update viewport based on window size
 		int width, height;
@@ -149,12 +174,13 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR command
 	
 	// Free world resource, now memory should match with the beginning snapshot
 	world = nullptr;
+	delete bind;
 
 	CollisionManager::DestroyInstance();
 	Event<CollisionMessage>::UnsubscribeAll();
 	Event<EventInput>::UnsubscribeAll();
 	Event<EventMessageAttributed>::UnsubscribeAll();
-
+	
 	// Check memory difference only for game loop logic
 	_CrtMemState endMemState, diffMemState;
 	diffMemState;

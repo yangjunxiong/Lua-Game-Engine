@@ -9,6 +9,7 @@ namespace GameEngine
 	class Action;
 	class GameTime;
 
+	CLASS();
 	/// <summary>
 	/// A WorldState is simply the data carrier throughout a game loop, so that each participant can easilly access data
 	/// </summary>
@@ -33,24 +34,28 @@ namespace GameEngine
 		/// <returns>GameTime object</returns>
 		const GameTime& GetGameTime() const;
 
+		FUNCTION();
 		/// <summary>
 		/// Get the World currently being updated
 		/// </summary>
 		/// <returns>The World currently being updated</returns>
 		World* GetWorld();
 
+		FUNCTION();
 		/// <summary>
 		/// Get the Sector currently being updated
 		/// </summary>
 		/// <returns>The Sector currently being updated</returns>
 		Sector* GetSector();
 
+		FUNCTION();
 		/// <summary>
 		/// Get the Entity currently being updated
 		/// </summary>
 		/// <returns>The Entity currently being updated</returns>
 		Entity* GetEntity();
 
+		FUNCTION();
 		/// <summary>
 		/// Get the Action currently being updated
 		/// </summary>

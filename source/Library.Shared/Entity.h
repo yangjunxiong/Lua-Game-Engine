@@ -100,15 +100,26 @@ namespace GameEngine
 		Transform& GetTransform();
 		const Transform& GetTransform() const;
 		void SetTransform(const Transform& trans);
+
+		FUNCTION();
 		glm::vec4 GetPosition() const;
+
+		FUNCTION();
 		glm::vec4 GetRotation() const;
+
+		FUNCTION();
 		glm::vec4 GetScale() const;
 
 		FUNCTION()
 		bool IsActive() const;
 
+		FUNCTION();
 		void SetPosition(const glm::vec4& pos);
+
+		FUNCTION();
 		void SetRotation(const glm::vec4& rot);
+
+		FUNCTION();
 		void SetScale(const glm::vec4& scale);
 
 		FUNCTION()
@@ -151,11 +162,13 @@ namespace GameEngine
 		/// <returns>Signature list for Entity type</returns>
 		static const Vector<Attributed::Signature> Signatures();
 
+		PROPERTY();
 		/// <summary>
 		/// The special key in Scope that maps to the actions datum
 		/// </summary>
 		static inline const std::string ACTION_TABLE_KEY = "Actions";
 
+		PROPERTY();
 		/// <summary>
 		/// The special index in Scope that maps to the actions datum
 		/// </summary>

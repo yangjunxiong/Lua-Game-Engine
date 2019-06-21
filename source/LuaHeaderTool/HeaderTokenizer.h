@@ -57,6 +57,8 @@ namespace GameEngine::HeaderTool
 			Keyword_Namespace,
 			Keyword_Enum,
 			Keyword_Auto,
+			Keyword_Virtual,
+			Keyword_Override,
 			Keyword_Register,
 			
 			Name,

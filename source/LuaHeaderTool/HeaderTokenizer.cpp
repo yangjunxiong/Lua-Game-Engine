@@ -48,7 +48,8 @@ const std::map<char, HeaderTokenizer::ParseState> HeaderTokenizer::sCharacterSta
 	{ '*', ParseState::Star },
 	{ '&', ParseState::Ampersand },
 	{ ':', ParseState::Colon },
-	{ '/', ParseState::Slash }
+	{ '/', ParseState::Slash },
+	{ '_', ParseState::Word }
 };
 
 const std::unordered_map<std::string, HeaderTokenizer::TokenType> HeaderTokenizer::sKeywordMap =
@@ -73,6 +74,8 @@ const std::unordered_map<std::string, HeaderTokenizer::TokenType> HeaderTokenize
 	{ "void", TokenType::Keyword_Void },
 	{ "template", TokenType::Keyword_Template },
 	{ "typename", TokenType::Keyword_Typename },
+	{ "virtual", TokenType::Keyword_Virtual },
+	{ "override", TokenType::Keyword_Override },
 
 	{ "CLASS", TokenType::Mark_Class },
 	{ "PROPERTY", TokenType::Mark_Property },
@@ -188,7 +191,7 @@ void HeaderTokenizer::IgnoreState(char c)
 
 void HeaderTokenizer::WordState(char c)
 {
-	if (IsLetter(c) || IsDigit(c))
+	if (IsLetter(c) || IsDigit(c) || c == '_')
 	{
 		mBuffer[mBufferLength++] = c;
 	}

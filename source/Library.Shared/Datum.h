@@ -5,12 +5,14 @@
 #include <initializer_list>
 #include "glm/fwd.hpp"
 #include "vector.h"
+#include "Macro.h"
 
 namespace GameEngine
 {
 	class RTTI;
 	class Scope;
 
+	CLASS();
 	/// <summary>
 	/// Datum is a data wrapper that can polymorphically represent different data types at runtime.
 	/// Datum suppor int32_t, float, OpenGL vec4, OpenGL mat4, and RTTI*
