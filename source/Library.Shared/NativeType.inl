@@ -19,6 +19,7 @@ namespace GameEngine::Lua
 		new(pointer) LuaWrapper(true, new int(value));
 
 		int newTable = luaL_newmetatable(L, sName.c_str());
+		(newTable);
 		assert(!newTable);
 		lua_setmetatable(L, -2);
 
@@ -62,6 +63,7 @@ namespace GameEngine::Lua
 		new(pointer) LuaWrapper(true, new unsigned int(value));
 
 		int newTable = luaL_newmetatable(L, sName.c_str());
+		(newTable);
 		assert(!newTable);
 		lua_setmetatable(L, -2);
 
@@ -107,6 +109,7 @@ namespace GameEngine::Lua
 		new(pointer) LuaWrapper(true, new long long(value));
 
 		int newTable = luaL_newmetatable(L, sName.c_str());
+		(newTable);
 		assert(!newTable);
 		lua_setmetatable(L, -2);
 
@@ -150,6 +153,7 @@ namespace GameEngine::Lua
 		new(pointer) LuaWrapper(true, new unsigned long long(value));
 
 		int newTable = luaL_newmetatable(L, sName.c_str());
+		(newTable);
 		assert(!newTable);
 		lua_setmetatable(L, -2);
 
@@ -195,6 +199,7 @@ namespace GameEngine::Lua
 		new(pointer) LuaWrapper(true, new float(value));
 
 		int newTable = luaL_newmetatable(L, sName.c_str());
+		(newTable);
 		assert(!newTable);
 		lua_setmetatable(L, -2);
 
@@ -240,6 +245,7 @@ namespace GameEngine::Lua
 		new(pointer) LuaWrapper(true, new double(value));
 
 		int newTable = luaL_newmetatable(L, sName.c_str());
+		(newTable);
 		assert(!newTable);
 		lua_setmetatable(L, -2);
 
@@ -285,6 +291,7 @@ namespace GameEngine::Lua
 		new(pointer) LuaWrapper(true, new bool(value));
 
 		int newTable = luaL_newmetatable(L, sName.c_str());
+		(newTable);
 		assert(!newTable);
 		lua_setmetatable(L, -2);
 
@@ -337,6 +344,7 @@ namespace GameEngine::Lua
 		new(pointer) LuaWrapper(true, new char(value));
 
 		int newTable = luaL_newmetatable(L, sName.c_str());
+		(newTable);
 		assert(!newTable);
 		lua_setmetatable(L, -2);
 
@@ -380,6 +388,7 @@ namespace GameEngine::Lua
 		new(pointer) LuaWrapper(true, new unsigned char(value));
 
 		int newTable = luaL_newmetatable(L, sName.c_str());
+		(newTable);
 		assert(!newTable);
 		lua_setmetatable(L, -2);
 
@@ -429,6 +438,7 @@ namespace GameEngine::Lua
 		new(pointer) LuaWrapper(true, new std::string(temp));
 
 		int newTable = luaL_newmetatable(L, sName.c_str());
+		(newTable);
 		assert(!newTable);
 		lua_setmetatable(L, -2);
 
@@ -490,6 +500,7 @@ namespace GameEngine::Lua
 		new(pointer) LuaWrapper(true, new glm::vec4(value));
 
 		int newTable = luaL_newmetatable(L, sName.c_str());
+		(newTable);
 		assert(!newTable);
 		lua_setmetatable(L, -2);
 

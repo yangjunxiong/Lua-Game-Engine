@@ -129,6 +129,7 @@ namespace GameEngine
 		/// <returns>Pointer to the new clone</returns>
 		virtual gsl::owner<Scope*> Clone() const;
 
+		FUNCTION();
 		/// <summary>
 		/// Search for the table and find the pair with given key, return the corresponding Datum pointer
 		/// </summary>
@@ -179,6 +180,7 @@ namespace GameEngine
 		/// <exception cref="std::exception">The Datum with same exists and it's not table type</exception>
 		Scope& AppendScope(const std::string& key);
 
+		FUNCTION();
 		/// <summary>
 		/// Adopt a Scope and push it back to the Datum at given key. Will reparent the Scope to this one
 		/// </summary>
@@ -189,12 +191,14 @@ namespace GameEngine
 		/// <exception cref="std::exception">Adopt self or ancestor</exception>
 		void Adopt(Scope& child, const std::string& key);
 
+		FUNCTION();
 		/// <summary>
 		/// Remove a nested Scope from parent scope
 		/// </summary>
 		/// <param name="child">The child Scope to remove</param>
 		void Orphan(Scope& child);
 
+		FUNCTION();
 		/// <summary>
 		/// Get the parent Scope of this Scope
 		/// </summary>
@@ -208,6 +212,7 @@ namespace GameEngine
 		template <typename T>
 		T* GetParent() const;
 
+		FUNCTION();
 		/// <summary>
 		/// Get the size of table
 		/// </summary>
@@ -243,6 +248,7 @@ namespace GameEngine
 		/// <returns>True if passed in scope is ancestor of this one, false otherwise</returns>
 		bool IsDescendentOf(Scope& other);
 
+		FUNCTION();
 		/// <summary>
 		/// Destroy all table entries, delete all nested scopes. Don't necessarily free all memory allocated by container
 		/// </summary>

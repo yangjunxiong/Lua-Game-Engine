@@ -1,0 +1,41 @@
+{
+	"Name": {
+		"type": "string",
+		"value": "LevelObstaclesConfig"
+	},
+	"Entities": {
+		"type": "table",
+		"value": [
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleCenter.json"
+					/*
+				"Name": {
+					"type": "string",
+					"value": "ObstacleCenter"
+				},
+				"Position": {
+					"type": "vector",
+					"value": "vec4(0, 1, 0, 1)"
+				},
+				"Rotation": {
+					"type": "vector",
+					"value": "vec4(0, 0, 0, 1)"
+				},
+				"Scale": {
+					"type": "vector",
+					"value": "vec4(1, 1, 1, 1)"
+				},
+				"Actions": {
+					"type": "table",
+					"value": [
+						{
+							"class": "ActionRender",
+							"file": "Resources/Config/RenderTest.json"
+						}
+					]
+				}*/
+			}
+		]
+	}
+}

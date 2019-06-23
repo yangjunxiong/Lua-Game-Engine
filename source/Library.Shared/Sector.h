@@ -19,6 +19,7 @@ namespace GameEngine
 		RTTI_DECLARATIONS(Sector, Attributed);
 
 	public:
+		CONSTRUCTOR();
 		/// <summary>
 		/// Default constructor
 		/// </summary>
@@ -55,19 +56,24 @@ namespace GameEngine
 		/// </summary>
 		~Sector() = default;
 
+		FUNCTION();
 		/// <summary>
 		/// Get the name of this Sector
 		/// </summary>
 		/// <returns>The name of this Sector</returns>
 		const std::string& Name() const;
 
+		FUNCTION();
 		/// <summary>
 		/// Set the name of this Sector
 		/// </summary>
 		/// <param name="name">New name of this Sector</param>
 		void SetName(const std::string& name);
 
+		FUNCTION();
 		void SetActive(bool active);
+
+		FUNCTION();
 		bool IsActive() const;
 
 		/// <summary>
@@ -82,6 +88,7 @@ namespace GameEngine
 		/// <returns>The Datum containing the Entity</returns>
 		const Datum& Entities() const;
 
+		FUNCTION();
 		/// <summary>
 		/// Create a new Entity with given name and make it a child of this Sector
 		/// </summary>
@@ -89,6 +96,7 @@ namespace GameEngine
 		/// <returns>The Entity created</returns>
 		Entity* CreateEntity(const std::string& className, const std::string& instanceName);
 
+		FUNCTION();
 		/// <summary>
 		/// Set the World this Sector belongs to. Will remove this Sector from previous World
 		/// </summary>
@@ -123,6 +131,7 @@ namespace GameEngine
 		/// <returns>Signature list for Sector type</returns>
 		static const Vector<Attributed::Signature> Signatures();
 
+		PROPERTY();
 		/// <summary>
 		/// The special key in Scope that maps to the Entity datum
 		/// </summary>

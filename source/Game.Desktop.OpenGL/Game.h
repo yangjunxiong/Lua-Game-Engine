@@ -29,6 +29,7 @@ namespace GameEngine
 
 		void SetProjectionMatrix(const glm::mat4& proj);
 		void SetViewMatrix(const glm::mat4& view);
+		void LoadSpriteSheet();
 
 		GLuint mShaderProgram = 0;
 		World* mWorld = nullptr;

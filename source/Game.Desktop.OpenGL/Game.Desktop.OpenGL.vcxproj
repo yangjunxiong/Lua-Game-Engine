@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="JsonSpriteParseHelper.cpp" />
     <ClCompile Include="LuaRegister.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -35,6 +36,7 @@
   <ItemGroup>
     <ClInclude Include="ActionHeader.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="JsonSpriteParseHelper.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteSet.h" />

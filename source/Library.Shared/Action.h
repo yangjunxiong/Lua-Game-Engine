@@ -28,12 +28,14 @@ namespace GameEngine
 		/// Get the name of the action
 		/// </summary>
 		/// <returns>The name of the action</returns>
+		FUNCTION();
 		const std::string& Name() const;
 
 		/// <summary>
 		/// Set the name of the action
 		/// </summary>
 		/// <param name="name">New name of the action</param>
+		FUNCTION();
 		void SetName(const std::string& name);
 
 		/// <summary>

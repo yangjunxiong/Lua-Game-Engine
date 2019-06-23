@@ -149,6 +149,7 @@ namespace GameEngine
 		/// <returns>Signature list for World type</returns>
 		static const Vector<Attributed::Signature> Signatures();
 
+		PROPERTY();
 		/// <summary>
 		/// The special key in Scope that maps to the sectors datum
 		/// </summary>
@@ -159,6 +160,7 @@ namespace GameEngine
 		/// </summary>
 		inline static const size_t SECTOR_TABLE_INDEX = 2;
 
+		PROPERTY();
 		inline static const std::string ACTION_TABLE_KEY = "Actions";
 		inline static const size_t ACTION_TABLE_INDEX = 3;
 

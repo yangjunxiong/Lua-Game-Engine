@@ -78,7 +78,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR command
 		return -1;
 	}
 	
-	GLFWwindow* window = glfwCreateWindow(game.WindowWidth(), game.WindowHeight(), "Gun Vs. Sword", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(game.WindowWidth(), game.WindowHeight(), "LuaBindTest", nullptr, nullptr);
 	if (window == nullptr)
 	{
 		return -1;
@@ -95,6 +95,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR command
 
 
 	InitGraphics();
+	game.LoadSpriteSheet();
 
 	// Capture memory snapshot after messing up the static memory
 	_CrtMemState startMemState;
@@ -126,7 +127,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR command
 	LuaBind* bind = new LuaBind;
 	RegisterLua(*bind);
 	bind->SetFunction("Log", function(Log));
-	bind->SetProperty("World", game.mWorld);
+	bind->SetProperty("CurrentWorld", game.mWorld);
 	bind->LoadFile("Lua/Main.lua");
 
 	// Test code
@@ -173,8 +174,8 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR command
 	}
 	
 	// Free world resource, now memory should match with the beginning snapshot
-	world = nullptr;
 	delete bind;
+	world = nullptr;
 
 	CollisionManager::DestroyInstance();
 	Event<CollisionMessage>::UnsubscribeAll();

@@ -1,7 +1,6 @@
 #pragma once
 
 #pragma region Function
-#define EXP(...) __VA_ARGS__
 #define SET_FUNCTION_BODY(_params, ...)                                                                                \
 _SetLuaValue([this, &value]()																						   \
 {																													   \
@@ -32,6 +31,7 @@ auto wrapper = [](lua_State* L) -> int																						   \
 };																																\
 																																 \
 int newTable = luaL_newmetatable(mLuaState, LuaWrapper<Class>::sName.c_str());													 \
+		(newTable);\
 assert(("Must register the class type before binding its member function", !newTable));											 \
 lua_pushstring(mLuaState, key.c_str());																							 \
 new (lua_newuserdata(mLuaState, sizeof(value))) (Ret(Class::*)(__VA_ARGS__))(value);											 \
@@ -53,6 +53,7 @@ auto wrapper = [](lua_State* L) -> int																						   \
 };																																\
 \
 int newTable = luaL_newmetatable(mLuaState, LuaWrapper<Class>::sName.c_str());													 \
+		(newTable);\
 assert(("Must register the class type before binding its member function", !newTable));											 \
 lua_pushstring(mLuaState, key.c_str());																							 \
 new (lua_newuserdata(mLuaState, sizeof(value))) (Ret(Class::*)(__VA_ARGS__)const)(value);											 \
@@ -67,6 +68,7 @@ auto factory = [](lua_State* L) -> int																						     \
 	new(pointer) LuaWrapper<Class>(true, new Class(__VA_ARGS__));																 \
 																																 \
 	int newTable = luaL_newmetatable(L, LuaWrapper<Class>::sName.c_str());														 \
+		(newTable);\
 	assert(!newTable);																											 \
 	lua_setmetatable(L, -2);																									 \
 																																 \
@@ -365,6 +367,7 @@ namespace GameEngine::Lua
 	{
 		// Get metatable for target class
 		int newTable = luaL_newmetatable(mLuaState, LuaWrapper<Class>::sName.c_str());
+		(newTable);
 		assert(("Must register class type before setting an object as property", !newTable));
 
 		// Set getter and getter depends on writability
@@ -443,6 +446,7 @@ namespace GameEngine::Lua
 
 		// Set metatable for this wrapper
 		int newTable = luaL_newmetatable(L, LuaWrapper<T>::sName.c_str());
+		(newTable);
 		assert(("Must register class type before setting an object as property", !newTable));
 		lua_setmetatable(L, -2);
 

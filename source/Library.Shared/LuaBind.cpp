@@ -22,7 +22,7 @@ LuaBind::~LuaBind()
 {
 	assert(mLuaState != nullptr);
 	lua_close(mLuaState);
-	Registry::sTypeRegistry.Clear();
+	Registry::sTypeRegistry.clear();
 }
 
 lua_State* LuaBind::LuaState() const
@@ -95,6 +95,7 @@ void LuaBind::OpenTable(const std::string& path)
 			int oldSize = lua_gettop(mLuaState);
 			int tableIndex = mTableStack.Peak().mIndex;
 			lua_getfield(mLuaState, tableIndex, front.c_str());
+			(oldSize);
 			assert(lua_gettop(mLuaState) == oldSize + 1);
 		}
 

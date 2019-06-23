@@ -1,0 +1,303 @@
+{
+	"State": {
+		"type": "table",
+		"value": [
+			{
+				"class": "AnimState",
+				"Name": {
+					"type": "string",
+					"value": "Idle"
+				},
+				"Loop": {
+					"type": "integer",
+					"value": 1
+				},
+				"Clip": {
+					"type": "table",
+					"value": [
+						{
+							"class": "AnimClip",
+							"Texture": {
+								"type": "integer",
+								"value": 4
+							},
+							"Row": {
+								"type": "integer",
+								"value": 0
+							},
+							"Column": {
+								"type": "integer",
+								"value": 0
+							},
+							"Duration": {
+								"type": "integer",
+								"value": 100
+							}
+						}
+					]
+				}
+			},
+			{
+
+				"class": "AnimState",
+				"Name": {
+					"type": "string",
+					"value": "Moving"
+				},
+				"Loop": {
+					"type": "integer",
+					"value": 1
+				},
+				"Clip": {
+					"type": "table",
+					"value": [
+						{
+							"class": "AnimClip",
+							"Texture": {
+								"type": "integer",
+								"value": 4
+							},
+							"Row": {
+								"type": "integer",
+								"value": 1
+							},
+							"Column": {
+								"type": "integer",
+								"value": 0
+							},
+							"Duration": {
+								"type": "integer",
+								"value": 100
+							}
+						},
+						{
+							"class": "AnimClip",
+							"Texture": {
+								"type": "integer",
+								"value": 4
+							},
+							"Row": {
+								"type": "integer",
+								"value": 1
+							},
+							"Column": {
+								"type": "integer",
+								"value": 1
+							},
+							"Duration": {
+								"type": "integer",
+								"value": 100
+							}
+						},
+						{
+							"class": "AnimClip",
+							"Texture": {
+								"type": "integer",
+								"value": 4
+							},
+							"Row": {
+								"type": "integer",
+								"value": 1
+							},
+							"Column": {
+								"type": "integer",
+								"value": 2
+							},
+							"Duration": {
+								"type": "integer",
+								"value": 100
+							}
+						},
+						{
+							"class": "AnimClip",
+							"Texture": {
+								"type": "integer",
+								"value": 4
+							},
+							"Row": {
+								"type": "integer",
+								"value": 1
+							},
+							"Column": {
+								"type": "integer",
+								"value": 3
+							},
+							"Duration": {
+								"type": "integer",
+								"value": 100
+							}
+						}
+					]
+				}
+			},
+			{
+				"class": "AnimState",
+				"Name": {
+					"type": "string",
+					"value": "Death"
+				},
+				"Loop": {
+					"type": "integer",
+					"value": 0
+				},
+				"Clip": {
+					"type": "table",
+					"value": [
+						{
+							"class": "AnimClip",
+							"Texture": {
+								"type": "integer",
+								"value": 4
+							},
+							"Row": {
+								"type": "integer",
+								"value": 2
+							},
+							"Column": {
+								"type": "integer",
+								"value": 0
+							},
+							"Duration": {
+								"type": "integer",
+								"value": 100
+							}
+						},
+						{
+							"class": "AnimClip",
+							"Texture": {
+								"type": "integer",
+								"value": 4
+							},
+							"Row": {
+								"type": "integer",
+								"value": 2
+							},
+							"Column": {
+								"type": "integer",
+								"value": 1
+							},
+							"Duration": {
+								"type": "integer",
+								"value": 100
+							}
+						},
+						{
+							"class": "AnimClip",
+							"Texture": {
+								"type": "integer",
+								"value": 4
+							},
+							"Row": {
+								"type": "integer",
+								"value": 2
+							},
+							"Column": {
+								"type": "integer",
+								"value": 2
+							},
+							"Duration": {
+								"type": "integer",
+								"value": 100
+							}
+						},
+						{
+							"class": "AnimClip",
+							"Texture": {
+								"type": "integer",
+								"value": 4
+							},
+							"Row": {
+								"type": "integer",
+								"value": 2
+							},
+							"Column": {
+								"type": "integer",
+								"value": 3
+							},
+							"Duration": {
+								"type": "integer",
+								"value": 100
+							}
+						},
+						{
+							"class": "AnimClip",
+							"Texture": {
+								"type": "integer",
+								"value": 4
+							},
+							"Row": {
+								"type": "integer",
+								"value": 3
+							},
+							"Column": {
+								"type": "integer",
+								"value": 0
+							},
+							"Duration": {
+								"type": "integer",
+								"value": 100
+							}
+						},
+						{
+							"class": "AnimClip",
+							"Texture": {
+								"type": "integer",
+								"value": 4
+							},
+							"Row": {
+								"type": "integer",
+								"value": 3
+							},
+							"Column": {
+								"type": "integer",
+								"value": 1
+							},
+							"Duration": {
+								"type": "integer",
+								"value": 100
+							}
+						},
+						{
+							"class": "AnimClip",
+							"Texture": {
+								"type": "integer",
+								"value": 4
+							},
+							"Row": {
+								"type": "integer",
+								"value": 3
+							},
+							"Column": {
+								"type": "integer",
+								"value": 2
+							},
+							"Duration": {
+								"type": "integer",
+								"value": 100
+							}
+						},
+						{
+							"class": "AnimClip",
+							"Texture": {
+								"type": "integer",
+								"value": 4
+							},
+							"Row": {
+								"type": "integer",
+								"value": 3
+							},
+							"Column": {
+								"type": "integer",
+								"value": 3
+							},
+							"Duration": {
+								"type": "integer",
+								"value": 100
+							}
+						}
+					]
+				}
+			}
+		]
+	}
+}

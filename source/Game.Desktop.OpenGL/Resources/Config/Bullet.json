@@ -1,0 +1,44 @@
+{
+	"Actions": {
+		"type": "table",
+		"value": [
+			{
+				"class": "ActionRender",
+				"Texture": {
+					"type": "integer",
+					"value": 1
+				},
+				"Row": {
+					"type": "integer",
+					"value": 1
+				},
+				"Column": {
+					"type": "integer",
+					"value": 1
+				}
+			},
+			{
+				"class": "ActionBoxCollision",
+				"Width": {
+					"type": "float",
+					"value": 0.1
+				},
+				"Length": {
+					"type": "float",
+					"value": 0.1
+				},
+				"IsStatic": {
+					"type": "integer",
+					"value": 0
+				},
+				"IsSensor": {
+					"type": "integer",
+					"value": 1
+				}
+			},
+			{
+				"class": "ReactionBullet"
+			}
+		]
+	}
+}

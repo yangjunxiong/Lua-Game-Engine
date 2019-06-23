@@ -14,6 +14,7 @@
 #include "../Game.Shared/Player.h"
 #include "HealthUI.h"
 #include <algorithm>
+#include "JsonSpriteParseHelper.h"
 
 using namespace GameEngine;
 using namespace std;
@@ -203,6 +204,24 @@ const shared_ptr<Sprite> Game:: GetSprite(int textureId, int x, int y) const
 	}
 
 	return nullptr;
+}
+
+void Game::LoadSpriteSheet()
+{
+	JsonSpriteParseHelper helper;
+	auto sprites = helper.ParseSpriteJson("Resources/Config/Sprite.json");
+	string rootPath = "Resources/Sprites/";
+	for (size_t i = 0; i < sprites.Size(); ++i)
+	{
+		const auto& info = sprites[i];
+		string path = rootPath + info.mName;
+		size_t width = info.mSize;
+		auto it = mSpriteSheetList.PushBack(make_shared<SpriteSheet>(path.c_str(), width, width));
+		for (auto& sprite : info.mSprites)
+		{
+			mSpriteMap.Insert(make_pair(make_tuple(int(i), sprite.first, sprite.second), (*it)->GetSprite(size_t(sprite.first), size_t(sprite.second))));
+		}
+	}
 }
 
 void Game::SetProjectionMatrix(const glm::mat4& proj)

@@ -1,7 +1,6 @@
 #pragma once
 #include "Attributed.h"
 #include "Factory.h"
-//#include "Material.h"
 #include <glm/fwd.hpp>
 #include "Transform.h"
 #include "World.h"
@@ -97,8 +96,12 @@ namespace GameEngine
 		/// <returns>Datum storing list of actions</returns>
 		const Datum& Actions() const;
 
+		FUNCTION();
 		Transform& GetTransform();
+
 		const Transform& GetTransform() const;
+
+		FUNCTION();
 		void SetTransform(const Transform& trans);
 
 		FUNCTION();
@@ -131,6 +134,7 @@ namespace GameEngine
 		/// <param name="className">Class name of the action to create</param>
 		/// <param name="instanceName">Instance name of the new action</param>
 		/// <returns>The newly created action</returns>
+		FUNCTION();
 		Action* CreateAction(std::string className, std::string instanceName);
 
 		/// <summary>

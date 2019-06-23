@@ -1,0 +1,18 @@
+{
+	"Width": {
+		"type": "float",
+		"value": 0.5
+	},
+	"Length": {
+		"type": "float",
+		"value": 0.5
+	},
+	"IsStatic": {
+		"type": "integer",
+		"value": 1
+	},
+	"IsSensor": {
+		"type": "integer",
+		"value": 0
+	}
+}

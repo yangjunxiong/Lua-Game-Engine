@@ -1,0 +1,291 @@
+{
+	"Name": {
+		"type": "string",
+		"value": "Level1"
+	},
+	"Entities": {
+		"type": "table",
+		"value": [
+			{
+				"class": "Entity",
+				"file": "Resources/Config/JsonGunManControls.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/JsonSwordManControls.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/JsonTitle.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleBackground.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleCenter.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleCenterBottom.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleCenterLeft.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleCenterTop.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleCenterRight.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleLeftIBlock1.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleLeftIBlock2.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleLeftIBlock3.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleRightIBlock1.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleRightIBlock2.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleRightIBlock3.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleBottomRightLBlock1.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleBottomRightLBlock2.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleBottomRightLBlock3.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleBottomLeftLBlock1.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleBottomLeftLBlock2.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleBottomLeftLBlock3.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleTopLeftLBlock1.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleTopLeftLBlock2.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleTopLeftLBlock3.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleTopRightLBlock1.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleTopRightLBlock2.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleTopRightLBlock3.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleBottomLeftCornerBlock1.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleBottomLeftCornerBlock2.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleTopLeftCornerBlock1.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleTopLeftCornerBlock2.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleTopRightCornerBlock1.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleTopRightCornerBlock2.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleBottomRightCornerBlock1.json"
+			},
+			{
+				"class": "Entity",
+				"file": "Resources/Config/ObstacleJson/JsonObstacleBottomRightCornerBlock2.json"
+			},
+			{
+				"class": "InputManager"
+			},
+			{
+				"class": "Player",
+				"Name": {
+					"type": "string",
+					"value": "Player1"
+				},
+				"PlayerID": {
+					"type": "integer",
+					"value": 0
+				},
+				"Position": {
+					"type": "vector",
+					"value": "vec4(-2, 0, 0, 1)"
+				},
+				"Actions": {
+					"type": "table",
+					"value": [
+						{
+							"class": "ActionRender",
+							"Texture": {
+								"type": "integer",
+								"value": 1
+							},
+							"Row": {
+								"type": "integer",
+								"value": 0
+							},
+							"Column": {
+								"type": "integer",
+								"value": 0
+							}
+						},
+						{
+							"class": "ActionTriangleCollision",
+							"Vertices": {
+								"type": "vector",
+								"value": [
+									"vec4(0, 0.5, 0, 0)",
+									"vec4(-0.5, -0.5, 0, 0)",
+									"vec4(0.5, -0.5, 0, 0)"
+								]
+							},
+							"IsStatic": {
+								"type": "integer",
+								"value": 0
+							}
+						},
+						{
+							"class": "ActionAnimation",
+							"file": "Resources/Config/GunManAnimationConfig.json"
+						}
+					]
+				}
+			},
+			{
+				"class": "Player",
+				"Name": {
+					"type": "string",
+					"value": "Player2"
+				},
+				"PlayerID": {
+					"type": "integer",
+					"value": 1
+				},
+				"Position": {
+					"type": "vector",
+					"value": "vec4(2, 0, 0, 1)"
+				},
+				"Actions": {
+					"type": "table",
+					"value": [
+						{
+							"class": "ActionRender",
+							"Texture": {
+								"type": "integer",
+								"value": 1
+							},
+							"Row": {
+								"type": "integer",
+								"value": 0
+							},
+							"Column": {
+								"type": "integer",
+								"value": 1
+							}
+						},
+						{
+							"class": "ActionCircleCollision",
+							"Radius": {
+								"type": "float",
+								"value": 0.3
+							},
+							"IsStatic": {
+								"type": "integer",
+								"value": 0
+							}
+						},
+						{
+							"class": "ActionAnimation",
+							"file": "Resources/Config/SwordManAnimationConfig.json"
+						},
+						{
+							"class": "ReactionSword"
+						}
+					]
+				}
+			},
+			{
+				"class": "HealthUI",
+				"Position": {
+					"type": "vector",
+					"value": "vec4(-6, -8, 0, 1)"
+				},
+				"Health": {
+					"type": "integer",
+					"value": 3
+				},
+				"PlayerId": {
+					"type": "integer",
+					"value": 0
+				}
+			},
+			{
+				"class": "HealthUI",
+				"Position": {
+					"type": "vector",
+					"value": "vec4(4, -8, 0, 1)"
+				},
+				"Health": {
+					"type": "integer",
+					"value": 3
+				},
+				"PlayerId": {
+					"type": "integer",
+					"value": 1
+				}
+			}
+		]
+	}
+}

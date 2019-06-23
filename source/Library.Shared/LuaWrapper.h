@@ -1,7 +1,7 @@
 #pragma once
 #include "Macro.h"
 #include "vector.h"
-#include "HashMap.h"
+#include <map>
 
 #define MEMBER_GETTER "__propget"
 #define MEMBER_SETTER "__propset"
@@ -51,6 +51,7 @@ namespace GameEngine::Lua
 		static int __set(lua_State* L);
 		static int __get(lua_State* L);
 		static int __tostring(lua_State* L);
+		static int __cast(lua_State* L);
 	};
 
 	class Registry final
@@ -73,8 +74,15 @@ namespace GameEngine::Lua
 			inline bool BFS(std::function<Link*(TypeNode*)> getLinkFunc, uint64_t expectType);
 		};
 
-		static inline HashMap<std::string, TypeNode> sTypeRegistry;
+		static inline std::map<std::string, TypeNode> sTypeRegistry;
 		static inline bool Is(lua_State* L, int index, uint64_t expectType);
+
+		static inline void IncrementObjectCounter(void* address);
+		static inline void DecrementObjectCounter(void* address);
+		static inline bool IsValid(void* address);
+
+	private:
+		static inline std::map<void*, size_t> sObjectCounter;
 	};
 }
 

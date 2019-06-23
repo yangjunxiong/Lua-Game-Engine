@@ -1,13 +1,16 @@
 #pragma once
+#include "Macro.h"
 #include <glm/fwd.hpp>
 
 namespace GameEngine
 {
+	CLASS();
 	class Transform final
 	{
 		friend class Entity;
 
 	public:
+		CONSTRUCTOR();
 		Transform() = default;
 		Transform(const glm::mat4& matrix);
 		Transform(const glm::vec4& position, const glm::vec4& rotation, const glm::vec4& scale);
@@ -18,16 +21,27 @@ namespace GameEngine
 		glm::vec4 operator*(const glm::vec4& point) const;
 		Transform operator*(const Transform& trans) const;
 
+		FUNCTION();
 		void SetPosition(const glm::vec4& position);
 		void SetPosition(float x, float y, float z);
+
+		FUNCTION();
 		void SetRotation(const glm::vec4& rotation);
 		void SetRotation(float x, float y, float z);
+
+		FUNCTION();
 		void SetScale(const glm::vec4& scale);
 		void SetScale(float x, float y, float z);
 
+		FUNCTION();
 		const glm::vec4& GetPosition() const;
+
+		FUNCTION();
 		const glm::vec4& GetRotation() const;
+
+		FUNCTION();
 		const glm::vec4& GetScale() const;
+
 		const glm::mat4& GetMatrix() const;
 
 		static bool Equal(float f1, float f2);

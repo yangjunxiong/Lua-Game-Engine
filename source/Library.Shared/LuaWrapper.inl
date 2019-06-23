@@ -5,6 +5,7 @@ namespace GameEngine::Lua
 	int MetaFunction::Index(lua_State* L)
 	{
 		int hasMetatable = lua_getmetatable(L, 1);  // Userdata pointer is at 1, get its metatable and push to 3
+		(hasMetatable);
 		assert(hasMetatable);
 
 		assert(lua_isuserdata(L, 1) || lua_istable(L, 1));
@@ -64,6 +65,7 @@ namespace GameEngine::Lua
 	int MetaFunction::NewIndex(lua_State* L)
 	{
 		int hasMetatable = lua_getmetatable(L, 1);  // Userdata pointer is at 1, get its metatable and push to 4
+		(hasMetatable);
 		assert(hasMetatable);
 
 		assert(lua_isuserdata(L, 1) || lua_istable(L, 1));
@@ -144,7 +146,13 @@ namespace GameEngine::Lua
 	LuaWrapper<T>::LuaWrapper(bool luaObject, T* ptr) :
 		mLuaObject(luaObject),
 		mObject(ptr)
-	{};
+	{
+		// Add pointer counter
+		if (mLuaObject)
+		{
+			Registry::IncrementObjectCounter(ptr);
+		}
+	};
 
 	template <typename T>
 	LuaWrapper<T>::~LuaWrapper()
@@ -152,7 +160,11 @@ namespace GameEngine::Lua
 		assert(mObject != nullptr);
 		if (mLuaObject)
 		{
-			delete mObject;
+			Registry::DecrementObjectCounter(mObject);
+			if (!Registry::IsValid(mObject))
+			{
+				delete mObject;
+			}
 		}
 	}
 
@@ -164,6 +176,7 @@ namespace GameEngine::Lua
 
 		// Create class metatable and set it as itself's metatable
 		int newTable = luaL_newmetatable(L, sName.c_str());
+		(newTable);
 		assert(("Each class mapped to Lua must have unique name", newTable));
 		lua_pushvalue(L, -1);
 		lua_setmetatable(L, -2);
@@ -227,6 +240,11 @@ namespace GameEngine::Lua
 		lua_pushcfunction(L, &LuaWrapper<T>::__get);
 		lua_rawset(L, -3);
 
+		// Set cast type function
+		lua_pushstring(L, "Cast");
+		lua_pushcfunction(L, &LuaWrapper<T>::__cast);
+		lua_rawset(L, -3);
+
 		// Set default constructor as invalid
 		lua_pushstring(L, NEW_METHOD);
 		lua_pushcfunction(L, &LuaWrapper<T>::__new);
@@ -238,7 +256,7 @@ namespace GameEngine::Lua
 
 		// Add type info to registry
 		const std::string& name = LuaWrapper<T>::sName;
-		Registry::sTypeRegistry.Insert(std::make_pair(name, Registry::TypeNode(name, LuaWrapper<T>::sTypeId)));
+		Registry::sTypeRegistry.insert(std::make_pair(name, Registry::TypeNode(name, LuaWrapper<T>::sTypeId)));
 	}
 
 	template <typename T>
@@ -253,13 +271,14 @@ namespace GameEngine::Lua
 		luaL_newmetatable(L, sName.c_str());
 		lua_pushstring(L, PARENT);
 		int newParentTable = luaL_newmetatable(L, LuaWrapper<Parent>::sName.c_str());
+		(newParentTable);
 		assert(("Must register parent type before registering child type", !newParentTable));
 		lua_rawset(L, -3);
 		lua_pop(L, 1);
 
 		// Build type link in registry
-		Registry::TypeNode& node = Registry::sTypeRegistry.Find(LuaWrapper<T>::sName)->second;
-		Registry::TypeNode& parentNode = Registry::sTypeRegistry.Find(LuaWrapper<Parent>::sName)->second;
+		Registry::TypeNode& node = Registry::sTypeRegistry.find(LuaWrapper<T>::sName)->second;
+		Registry::TypeNode& parentNode = Registry::sTypeRegistry.find(LuaWrapper<Parent>::sName)->second;
 		node.mUpLink.PushBack(&parentNode);
 		parentNode.mDownLink.PushBack(&node);
 	}
@@ -282,13 +301,13 @@ namespace GameEngine::Lua
 		}
 
 		// Fix type link in registry
-		auto it = Registry::sTypeRegistry.Find(LuaWrapper<T>::sName)->second;
+		auto it = Registry::sTypeRegistry.find(LuaWrapper<T>::sName)->second;
 		auto& node = it->second;
 		for (const auto* parentNode : node.mUpLink)
 		{
 			for (const auto* childNode : node.mDownLink)
 			{
-				if (parentNode->mDownLink.Find(childNode) != parentNode->mDownLink.end())
+				if (parentNode->mDownLink.find(childNode) != parentNode->mDownLink.end())
 				{
 					parentNode->mDownLink.PushBack(childNode);
 				}
@@ -298,13 +317,13 @@ namespace GameEngine::Lua
 		{
 			for (const auto* parentNode : node.mUpLink)
 			{
-				if (childNode->mUpLink.Find(parentNode) != childNode->mUpLink.end())
+				if (childNode->mUpLink.find(parentNode) != childNode->mUpLink.end())
 				{
 					childNode->mUpLink.PushBack(parentNode);
 				}
 			}
 		}
-		Registry::sTypeRegistry.Remove(it);
+		Registry::sTypeRegistry.erase(it);
 	}
 
 	template <typename T>
@@ -364,6 +383,28 @@ namespace GameEngine::Lua
 		return 0;
 	}
 
+	template <typename T>
+	int LuaWrapper<T>::__cast(lua_State* L)
+	{
+#ifdef RUN_TIME_TYPE_CHECK
+		if (!Registry::Is(L, 1, sTypeId))
+		{
+			luaL_checkudata(L, 1, sName.c_str());  // Gurantee to fail, so will trigger lua runtime error
+		}
+#endif // RUN_TIME_TYPE_CHECK
+
+		// Cast to this type and return a new wrapper of it
+		LuaWrapper* pointer = static_cast<LuaWrapper*>(lua_touserdata(L, 1));
+		T* obj = static_cast<T*>(pointer->mObject);
+		new(pointer) LuaWrapper(true, obj);
+		int newTable = luaL_newmetatable(L, sName.c_str());
+		(newTable);
+		assert(!newTable);
+		lua_setmetatable(L, -2);
+
+		return 1;
+	}
+
 #pragma region Registry
 	Registry::TypeNode::TypeNode(const std::string& name, uint64_t id) :
 		mName(name),
@@ -415,10 +456,10 @@ namespace GameEngine::Lua
 			if (type == LUA_TSTRING)
 			{
 				std::string name = lua_tostring(L, -1);
-				auto it = sTypeRegistry.Find(name);
+				auto it = sTypeRegistry.find(name);
 				if (it != sTypeRegistry.end())
 				{
-					if (it->second.IsDescedant(expectType))
+					if (it->second.IsDescedant(expectType) || it->second.IsAncestor(expectType))
 					{
 						lua_pop(L, 2);  // Remove string and metatable
 						return true;
@@ -428,6 +469,26 @@ namespace GameEngine::Lua
 		}
 
 		return false;
+	}
+
+	void Registry::IncrementObjectCounter(void* address)
+	{
+		++sObjectCounter[address];
+	}
+
+	void Registry::DecrementObjectCounter(void* address)
+	{
+		assert(sObjectCounter.find(address) != sObjectCounter.end());
+		--sObjectCounter[address];
+		if (sObjectCounter[address] == 0)
+		{
+			sObjectCounter.erase(address);
+		}
+	}
+
+	bool Registry::IsValid(void* address)
+	{
+		return sObjectCounter.find(address) != sObjectCounter.end();
 	}
 #pragma endregion
 

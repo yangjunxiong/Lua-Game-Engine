@@ -3,6 +3,17 @@ require("Class/__Include__")
 Main = {}
 Main.UpdateList = {}
 Main.EntityList = {}
+Main.CurrentSector = nil
+
+setmetatable(Main, {
+    -- Just for demo purpose, avoid double delete
+    __gc = function()
+        if (not Main.CurrentSector == nil) then
+            CurrentWorld:Orphan(Main.CurrentSector)
+            Main.CurrentSector = nil
+        end
+    end
+})
 
 -- Add a new function to the update list
 function Main.AddUpdate(obj, func)
@@ -25,23 +36,20 @@ end
 
 -- Called from C++ update frame, will dispatch update event to all registered functions
 function Main.Update()
+    local worldState = CurrentWorld:GetWorldState()
     for obj, func in pairs(Main.UpdateList) do
-        func(obj)
+        func(obj, worldState)
     end
 end
 
 -- Called when Lua scripts is loaded
 function Main.Start()
-    table.insert(Main.EntityList, Main.Create("Entity"))
-    table.insert(Main.EntityList, Main.Create("Entity"))
-    table.insert(Main.EntityList, Main.Create("Entity"))
-    table.insert(Main.EntityList, Main.Create("Entity"))
-    table.insert(Main.EntityList, Main.Create("Entity"))
-end
+    Main.CurrentSector = Main.Create(Sector)
+    Main.CurrentSector:SetName(String.New("TestSector"))
 
--- Called when game loop ends
-function Main.End()
-    Main.EntityList = {}
+    local entity = Main.Create(Entity)
+    entity:SetName(String.New("TestEntity"))
+    table.insert(Main.EntityList, entity)
 end
 
 -- Factory method to create a C++ class that is bound to Lua
@@ -64,7 +72,6 @@ function Main.Create(class)
         obj:Init()
     end
 
-    Log("Create object " .. obj.TypeName())
     return obj
 end
 

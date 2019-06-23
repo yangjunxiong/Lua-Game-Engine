@@ -191,10 +191,34 @@ void CodeGenerator::FunctionState(const SyntaxAnalyzer::Item& item, std::ofstrea
 {
 	WriteIndentation(file);
 	file << "bind.SetFunction";
+
+	// Fill in template arguments
+	file << "<";
+	file << item.mClassName << ", ";
 	if (item.mStatic)
 	{
-		file << "<" << item.mClassName << ">";
+		file << "(" << item.mMemberType << "*)";
+		file << "(";
+		for (size_t i = 0; i < item.mArgumentList.size(); ++i)
+		{
+			file << item.mArgumentList[i];
+			if (i < item.mArgumentList.size() - 1)
+			{
+				file << ", ";
+			}
+		}
+		file << ")";
 	}
+	else
+	{
+		file << item.mMemberType;
+		for (const auto& arg : item.mArgumentList)
+		{
+			file << ", " << arg;
+		}
+	}
+	file << ">";
+
 	file << "(\"" << item.mToken.String << "\", &" << item.mClassName << "::" << item.mToken.String << ");" << endl;
 }
 

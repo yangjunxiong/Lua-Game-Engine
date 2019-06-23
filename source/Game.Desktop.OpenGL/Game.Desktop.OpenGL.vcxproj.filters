@@ -8,6 +8,7 @@
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="SpriteSet.cpp" />
     <ClCompile Include="LuaRegister.cpp" />
+    <ClCompile Include="JsonSpriteParseHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -16,6 +17,7 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteSheet.h" />
     <ClInclude Include="SpriteSet.h" />
+    <ClInclude Include="JsonSpriteParseHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resources">

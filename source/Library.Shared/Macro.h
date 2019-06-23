@@ -8,6 +8,8 @@
 #define RUN_TIME_TYPE_CHECK 1
 #define TYPE_CHECK(...) assert(!RUN_TIME_TYPE_CHECK || __VA_ARGS__)
 
+#define EXP(...) __VA_ARGS__
+
 /*
 Allow C++ to bind pointer and reference type to Lua.
 From Lua's perspective, it treats the object, pointer, and reference with no difference
@@ -106,6 +108,7 @@ template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStack(lua_State* L
 LuaWrapper<_type>* pointer = static_cast<LuaWrapper<_type>*>(lua_newuserdata(L, sizeof(LuaWrapper<_type>)));					\
 new(pointer) LuaWrapper<_type>(true, new _type(value));																			\
 int newTable = luaL_newmetatable(L, LuaWrapper<_type>::sName.c_str());														 \
+		(newTable);\
 assert(!newTable);																											 \
 lua_setmetatable(L, -2);																									 \
 }																															  \
@@ -114,6 +117,7 @@ template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStack(lua_State* L
 LuaWrapper<_type>* pointer = static_cast<LuaWrapper<_type>*>(lua_newuserdata(L, sizeof(LuaWrapper<_type>)));					\
 new(pointer) LuaWrapper<_type>(true, new _type(std::move(value)));																			\
 int newTable = luaL_newmetatable(L, LuaWrapper<_type>::sName.c_str());														 \
+		(newTable);\
 assert(!newTable);																											 \
 lua_setmetatable(L, -2);																									 \
 }																															  \
