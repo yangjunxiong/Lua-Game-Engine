@@ -187,6 +187,29 @@ DECLARE_LUA_WRAPPER(ConstClass, "ConstClass");
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(ConstClass);
 LUA_DEFINE_CUSTOM_COPY_TYPE(ConstClass);
 
+class Container
+{
+public:
+	std::vector<int> mInts;
+	std::vector<float> mFloats;
+	std::vector<glm::vec4> mVectors;
+
+	void Set(std::vector<int>& ints, std::vector<float>* floats, std::vector<glm::vec4> vecs)
+	{
+		mInts = ints;
+		floats->clear();
+		vecs.clear();
+	}
+
+	std::vector<int> GetInts() { return mInts; }
+	const std::vector<float>* GetFloats() { return &mFloats; }
+	const std::vector<glm::vec4>* GetVectors() { return &mVectors; }
+};
+DECLARE_LUA_WRAPPER(Container, "Container");
+DECLARE_LUA_VECTOR_WRAPPER(Container, "Container");
+LUA_DEFINE_CUSTOM_OBJECT_TYPE(Container);
+LUA_DEFINE_CUSTOM_COPY_TYPE(Container);
+
 namespace UnitTestLibraryDesktop
 {
 	TEST_CLASS(LuaBindTest)
@@ -865,6 +888,82 @@ namespace UnitTestLibraryDesktop
 			int ret = bind.CallFunction<int>("Main", 1, 2, "Hello World", dummy, &dummy2);
 			Assert::AreEqual(3, ret);
 			bind.CallFunctionNoReturn("Main", 1, 2, "Hello World", dummy, &dummy2);
+		}
+
+		TEST_METHOD(TestVectorBinding)
+		{
+			LuaBind bind;
+			bind.SetFunction("Check", function(Check));
+			bind.SetFunction("CheckNumber", function(CheckNumber));
+			bind.RegisterType<Container>();
+			bind.SetConstructor<Container>();
+			bind.SetProperty("mInts", &Container::mInts);
+			bind.SetProperty("mFloats", &Container::mFloats);
+			bind.SetProperty("mVectors", &Container::mVectors);
+			bind.SetFunction("Set", &Container::Set);
+			bind.SetFunction("GetInts", &Container::GetInts);
+			bind.SetFunction("GetFloats", &Container::GetFloats);
+			bind.SetFunction("GetVectors", &Container::GetVectors);
+
+			std::string lua = R"#(
+				local test = Container.New()
+				CheckNumber(0, test.mInts:Size())
+				CheckNumber(0, test.mFloats:Size())
+				CheckNumber(0, test.mVectors:Size())
+
+				test.mInts:Append(1)
+				CheckNumber(1, test.mInts:Size())
+				CheckNumber(1, test.mInts:Get(0))
+				test.mInts:Append(2)
+				CheckNumber(2, test.mInts:Size())
+				CheckNumber(2, test.mInts:Get(1))
+				
+				test.mInts:Set(0, 10)
+				CheckNumber(10, test.mInts:Get(0))
+				CheckNumber(2, test.mInts:Get(1))
+
+				test.mInts:Insert(1, 20)
+				CheckNumber(3, test.mInts:Size())
+				CheckNumber(10, test.mInts:Get(0))
+				CheckNumber(20, test.mInts:Get(1))
+				CheckNumber(2, test.mInts:Get(2))
+
+				test.mInts:RemoveAt(0)
+				CheckNumber(2, test.mInts:Size())
+				CheckNumber(20, test.mInts:Get(0))
+				CheckNumber(2, test.mInts:Get(1))
+
+				test.mInts:Clear()
+				CheckNumber(0, test.mInts:Size())
+
+				test.mInts:Append(1)
+				test.mInts:Append(2)
+				local ints = test:GetInts()
+				local floats = test:GetFloats()
+				local vectors = test:GetVectors()
+
+				Check("false", tostring(ints == test.mInts))
+				CheckNumber(2, ints:Size())
+				Check("true", tostring(floats == test.mFloats))
+				Check("true", tostring(vectors == test.mVectors))
+
+				floats = Array_float.New()
+				floats:Append(1.25)
+				CheckNumber(1.25, floats:Get(0))
+
+				vectors = Array_vec4.New()
+				vectors:Append(vec4.New(1, 2, 3, 4))
+				CheckNumber(1, vectors:Size())
+				
+				ints:Append(3)
+				test:Set(ints, floats, vectors)
+				ints:Clear()
+				CheckNumber(0, ints:Size())
+				CheckNumber(3, test.mInts:Get(2))
+				CheckNumber(0, floats:Size())
+				CheckNumber(1, vectors:Size())
+			)#";
+			bind.LoadString(lua);
 		}
 
 	private:

@@ -27,6 +27,12 @@ namespace GameEngine::Lua
 		lua_State* LuaState() const;
 
 		/// <summary>
+		/// Register a type to lua binding
+		/// </summary>
+		template <typename T>
+		void RegisterType();
+
+		/// <summary>
 		/// Clear current lua stack
 		/// </summary>
 		void ClearStack();
@@ -185,6 +191,18 @@ namespace GameEngine::Lua
 		void LoadFile(const std::string& fileName);
 		void LoadString(const std::string& str);
 
+		/// <summary>
+		/// Debug function to check Lua run time userdata type. Expensive so turn it off in release mode
+		/// </summary>
+		template <typename T>
+		static inline bool CheckArgType(lua_State* L, int index);
+
+		template <typename T>
+		void PushToLua(T value);
+
+		template <typename T>
+		T GetFromLua(size_t index);
+
 	private:
 		struct LuaTable
 		{
@@ -204,13 +222,13 @@ namespace GameEngine::Lua
 		/// Register some functions and properties for native types
 		/// </summary>
 		template <typename T>
-		static inline void _AdditionalRegister(class LuaBind& bind) {};
+		static inline void _AdditionalRegister(LuaBind& bind) { bind; };
 
 		/// <summary>
-		/// Debug function to check Lua run time userdata type. Expensive so turn it off in release mode
+		/// Register std::vector of given type to Lua
 		/// </summary>
 		template <typename T>
-		static inline bool CheckArgType(lua_State* L, int index);
+		void _RegisterVector();
 
 		/// <summary>
 		/// Helper functions for set property
@@ -258,6 +276,19 @@ namespace GameEngine::Lua
 		template <typename T, typename... Args>
 		inline void _PushFunctionArgument(int& count, T&& t, Args&&... args);
 		inline void _PushFunctionArgument(int& count);
+	};
+
+	template <typename T>
+	class VectorWrapper final
+	{
+	public:
+		static inline int Size(lua_State* L);
+		static inline int Get(lua_State* L);
+		static inline int Set(lua_State* L);
+		static inline int Clear(lua_State* L);
+		static inline int PushBack(lua_State* L);
+		static inline int Insert(lua_State* L);
+		static inline int RemoveAt(lua_State* L);
 	};
 }
 

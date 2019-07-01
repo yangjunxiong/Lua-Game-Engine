@@ -8,7 +8,19 @@
 #define RUN_TIME_TYPE_CHECK 1
 #define TYPE_CHECK(...) assert(!RUN_TIME_TYPE_CHECK || __VA_ARGS__)
 
+// A dummy placeholder to fill in other macro expressions
 #define EXP(...) __VA_ARGS__
+
+// Similar to assert(), but will trigger a Lua error instead of C++ error
+#ifdef _DEBUG
+	#define LUA_ASSERT(L, ...)  \
+	if (!(__VA_ARGS__))			\
+	{							\
+		lua_error(L);			\
+	}
+#else
+	#define LUA_ASSERT(L, ...) ()
+#endif
 
 /*
 Allow C++ to bind pointer and reference type to Lua.
@@ -134,6 +146,14 @@ Define the wrapper type for custom data type with custom name in Lua
 const std::string GameEngine::Lua::LuaWrapper<_type>::sName = _name; \
 const uint64_t GameEngine::Lua::LuaWrapper<_type>::sTypeId = reinterpret_cast<uint64_t>(&GameEngine::Lua::LuaWrapper<_type>::sTypeId);  \
 LUA_DEFINE_POINTER_TYPE(_type)
+
+
+#define DECLARE_LUA_VECTOR_WRAPPER(_type, _name)  \
+const std::string GameEngine::Lua::LuaWrapper<std::vector<_type>>::sName = VECTOR_PREFIX ## _name;  \
+const uint64_t GameEngine::Lua::LuaWrapper<std::vector<_type>>::sTypeId = reinterpret_cast<uint64_t>(&GameEngine::Lua::LuaWrapper<std::vector<_type>>::sTypeId);  \
+LUA_DEFINE_POINTER_TYPE(std::vector<_type>)  \
+LUA_DEFINE_CUSTOM_OBJECT_TYPE(std::vector<_type>);  \
+LUA_DEFINE_CUSTOM_COPY_TYPE(std::vector<_type>);
 
 #define CLASS(...) __VA_ARGS__
 #define PROPERTY(...) __VA_ARGS__

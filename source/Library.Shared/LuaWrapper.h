@@ -1,6 +1,6 @@
 #pragma once
 #include "Macro.h"
-#include "vector.h"
+#include <vector>
 #include <map>
 
 #define MEMBER_GETTER "__propget"
@@ -8,6 +8,7 @@
 #define STATIC_MEMBER_GETTER "__staticget"
 #define STATIC_MEMBER_SETTER "__staticset"
 #define PARENT "__parent"
+#define VECTOR_PREFIX "Array_"
 
 #define NEW_METHOD "New"
 #define NAME_METHOD "TypeName"

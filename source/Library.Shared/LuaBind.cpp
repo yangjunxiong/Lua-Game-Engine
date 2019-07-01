@@ -168,16 +168,15 @@ void LuaBind::_SetLuaValue(std::function<void()> func, const std::string& key)
 
 void LuaBind::_RegisterPrimitiveType()
 {
-	LuaWrapper<std::string>::Register(mLuaState);
-	LuaWrapper<int>::Register(mLuaState);
-	LuaWrapper<long long>::Register(mLuaState);
-	LuaWrapper<float>::Register(mLuaState);
-	LuaWrapper<double>::Register(mLuaState);
-	LuaWrapper<bool>::Register(mLuaState);
-	LuaWrapper<char>::Register(mLuaState);
-	LuaWrapper<unsigned int>::Register(mLuaState);
-	LuaWrapper<unsigned long long>::Register(mLuaState);
-	LuaWrapper<unsigned char>::Register(mLuaState);
-	LuaWrapper<glm::vec4>::Register(mLuaState);
-	_AdditionalRegister<glm::vec4>(*this);
+	RegisterType<std::string>();
+	RegisterType<int>();
+	RegisterType<long long>();
+	RegisterType<float>();
+	RegisterType<double>();
+	RegisterType<bool>();
+	RegisterType<char>();
+	RegisterType<unsigned int>();
+	RegisterType<unsigned long long>();
+	RegisterType<unsigned char>();
+	RegisterType<glm::vec4>();
 }

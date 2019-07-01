@@ -467,6 +467,25 @@ namespace GameEngine::Lua
 				}
 			}
 		}
+		else
+		{
+			switch (type)
+			{
+			case LUA_TNUMBER:
+				if (expectType == LuaWrapper<int>::sTypeId || expectType == LuaWrapper<unsigned int>::sTypeId
+					|| expectType == LuaWrapper<float>::sTypeId || expectType == LuaWrapper<double>::sTypeId
+					|| expectType == LuaWrapper<long long>::sTypeId || expectType == LuaWrapper<unsigned long long>::sTypeId
+					|| expectType == LuaWrapper<char>::sTypeId || expectType == LuaWrapper<unsigned char>::sTypeId)
+				{
+					return true;
+				}
+			case LUA_TSTRING:
+				if (expectType == LuaWrapper<char>::sTypeId || expectType == LuaWrapper<std::string>::sTypeId)
+				{
+					return true;
+				}
+			}
+		}
 
 		return false;
 	}

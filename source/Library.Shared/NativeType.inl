@@ -1,10 +1,12 @@
 #pragma once
 #include "glm/glm.hpp"
+#include <vector>
 
 namespace GameEngine::Lua
 {
 #pragma region int
 	DECLARE_LUA_WRAPPER(int, "int32");
+	DECLARE_LUA_VECTOR_WRAPPER(int, "int32");
 	LUA_DEFINE_NATIVE_OBJECT_TYPE(int);
 
 	template<> static inline int LuaWrapper<int>::__new(lua_State* L)
@@ -49,6 +51,7 @@ namespace GameEngine::Lua
 	}
 
 	DECLARE_LUA_WRAPPER(unsigned int, "uint32");
+	DECLARE_LUA_VECTOR_WRAPPER(unsigned int, "uint32");
 	LUA_DEFINE_NATIVE_OBJECT_TYPE(unsigned int);
 
 	template<> static inline int LuaWrapper<unsigned int>::__new(lua_State* L)
@@ -95,6 +98,7 @@ namespace GameEngine::Lua
 
 #pragma region int64
 	DECLARE_LUA_WRAPPER(long long, "int64");
+	DECLARE_LUA_VECTOR_WRAPPER(long long, "int64");
 	LUA_DEFINE_NATIVE_OBJECT_TYPE(long long);
 
 	template<> static inline int LuaWrapper<long long>::__new(lua_State* L)
@@ -139,6 +143,7 @@ namespace GameEngine::Lua
 	}
 
 	DECLARE_LUA_WRAPPER(unsigned long long, "uint64");
+	DECLARE_LUA_VECTOR_WRAPPER(unsigned long long, "uint64");
 	LUA_DEFINE_NATIVE_OBJECT_TYPE(unsigned long long);
 
 	template<> static inline int LuaWrapper<unsigned long long>::__new(lua_State* L)
@@ -185,6 +190,7 @@ namespace GameEngine::Lua
 
 #pragma region float
 	DECLARE_LUA_WRAPPER(float, "float");
+	DECLARE_LUA_VECTOR_WRAPPER(float, "float");
 	LUA_DEFINE_NATIVE_OBJECT_TYPE(float);
 
 	template<> static inline int LuaWrapper<float>::__new(lua_State* L)
@@ -231,6 +237,7 @@ namespace GameEngine::Lua
 
 #pragma region double
 	DECLARE_LUA_WRAPPER(double, "double");
+	DECLARE_LUA_VECTOR_WRAPPER(double, "double");
 	LUA_DEFINE_NATIVE_OBJECT_TYPE(double);
 
 	template<> static inline int LuaWrapper<double>::__new(lua_State* L)
@@ -277,6 +284,7 @@ namespace GameEngine::Lua
 
 #pragma region bool
 	DECLARE_LUA_WRAPPER(bool, "bool");
+	DECLARE_LUA_VECTOR_WRAPPER(bool, "bool");
 	LUA_DEFINE_NATIVE_OBJECT_TYPE(bool);
 
 	template<> static inline int LuaWrapper<bool>::__new(lua_State* L)
@@ -331,6 +339,7 @@ namespace GameEngine::Lua
 	const std::string LuaWrapper<char>::sName = "char";
 	const uint64_t LuaWrapper<char>::sTypeId = reinterpret_cast<uint64_t>(&LuaWrapper<char>::sTypeId);
 	LUA_DEFINE_NATIVE_OBJECT_TYPE(char);
+	DECLARE_LUA_VECTOR_WRAPPER(char, "char");
 
 	template<> static inline int LuaWrapper<char>::__new(lua_State* L)
 	{
@@ -375,6 +384,8 @@ namespace GameEngine::Lua
 
 	const std::string LuaWrapper<unsigned char>::sName = "uchar";
 	const uint64_t LuaWrapper<unsigned char>::sTypeId = reinterpret_cast<uint64_t>(&LuaWrapper<unsigned char>::sTypeId);
+	LUA_DEFINE_NATIVE_OBJECT_TYPE(unsigned char);
+	DECLARE_LUA_VECTOR_WRAPPER(unsigned char, "uchar");
 
 	template<> static inline int LuaWrapper<unsigned char>::__new(lua_State* L)
 	{
@@ -421,6 +432,7 @@ namespace GameEngine::Lua
 #pragma region std::string
 	DECLARE_LUA_WRAPPER(std::string, "String");
 	LUA_DEFINE_NATIVE_OBJECT_TYPE(std::string);
+	DECLARE_LUA_VECTOR_WRAPPER(std::string, "String");
 
 	template<> static inline int LuaWrapper<std::string>::__new(lua_State* L)
 	{
@@ -472,6 +484,7 @@ namespace GameEngine::Lua
 	DECLARE_LUA_WRAPPER(glm::vec4, "vec4");
 	LUA_DEFINE_CUSTOM_OBJECT_TYPE(glm::vec4);
 	LUA_DEFINE_CUSTOM_COPY_TYPE(glm::vec4);
+	DECLARE_LUA_VECTOR_WRAPPER(glm::vec4, "vec4");
 
 	template<> static inline void LuaBind::_AdditionalRegister<glm::vec4>(LuaBind& bind)
 	{
