@@ -3,6 +3,9 @@
 
 #include "pch.h"
 #include "LuaBind.h"
+#include "Event.h"
+#include "IEventSubscriber.h"
+#include "InputData.h"
 #include "Action.h"
 #include "ActionRender.h"
 #include "Attributed.h"
@@ -17,6 +20,15 @@
 using namespace GameEngine;
 using namespace GameEngine::Lua;
 
+class LuaMonitor final {
+public:
+std::vector<IEventSubscriber*> subscribers;
+};
+std::map<LuaBind*, LuaMonitor*> gMonitors;
+DECLARE_LUA_WRAPPER(MouseInput, "MouseInput");
+LUA_DEFINE_CUSTOM_OBJECT_TYPE(MouseInput);
+LUA_DEFINE_CUSTOM_COPY_TYPE(MouseInput);
+DECLARE_LUA_VECTOR_WRAPPER_ALL(MouseInput, "MouseInput");
 DECLARE_LUA_WRAPPER(Action, "Action");
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(Action);
 DECLARE_LUA_WRAPPER(ActionRender, "ActionRender");
@@ -45,6 +57,7 @@ DECLARE_LUA_WRAPPER(World, "World");
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(World);
 DECLARE_LUA_WRAPPER(WorldState, "WorldState");
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(WorldState);
+#include "./generated/InputData_generated.h"
 #include "./generated/Action_generated.h"
 #include "./generated/ActionRender_generated.h"
 #include "./generated/Attributed_generated.h"
@@ -59,6 +72,7 @@ LUA_DEFINE_CUSTOM_OBJECT_TYPE(WorldState);
 void RegisterLua(LuaBind& bind)
 {
 bind;
+MouseInput_generated::Lua_RegisterClass(bind);
 RTTI_generated::Lua_RegisterClass(bind);
 Scope_generated::Lua_RegisterClass(bind);
 Attributed_generated::Lua_RegisterClass(bind);
@@ -70,6 +84,11 @@ Sector_generated::Lua_RegisterClass(bind);
 Transform_generated::Lua_RegisterClass(bind);
 World_generated::Lua_RegisterClass(bind);
 WorldState_generated::Lua_RegisterClass(bind);
+
+LuaMonitor* monitor = new LuaMonitor();
+gMonitors[&bind] = monitor;
+MouseInput_generated::Lua_RegisterMember(bind);
+monitor->subscribers.emplace_back(new MouseInput_event_generated(bind));
 Action_generated::Lua_RegisterMember(bind);
 ActionRender_generated::Lua_RegisterMember(bind);
 Attributed_generated::Lua_RegisterMember(bind);
@@ -81,4 +100,16 @@ Sector_generated::Lua_RegisterMember(bind);
 Transform_generated::Lua_RegisterMember(bind);
 World_generated::Lua_RegisterMember(bind);
 WorldState_generated::Lua_RegisterMember(bind);
+}
+void UnregisterLua(LuaBind& bind, bool all)
+{
+LuaMonitor* monitor = gMonitors[&bind];
+for (const auto sub : monitor->subscribers) {
+delete sub;
+}
+delete monitor;
+gMonitors.erase(&bind);
+if (all) {
+Event<MouseInput>::UnsubscribeAll();
+}
 }

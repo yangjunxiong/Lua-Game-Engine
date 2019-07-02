@@ -108,6 +108,8 @@ void BatchGenerator::WriteRegister(const std::string& filePath, const std::strin
 	// Write basic include
 	file << "#include \"pch.h\"" << endl;
 	file << "#include \"LuaBind.h\"" << endl;
+	file << "#include \"Event.h\"" << endl;
+	file << "#include \"IEventSubscriber.h\"" << endl;
 	for (const auto& parsedFile : mParsedFileList)
 	{
 		if (parsedFile.mItems.size() > 0)
@@ -116,8 +118,16 @@ void BatchGenerator::WriteRegister(const std::string& filePath, const std::strin
 		}
 	}
 
+	// Write alias
 	file << "using namespace GameEngine;" << endl;
 	file << "using namespace GameEngine::Lua;" << endl << endl;
+
+	// Create a lua monitor
+	file << "class LuaMonitor final {" << endl;
+	file << "public:" << endl;
+	file << "std::vector<IEventSubscriber*> subscribers;" << endl;
+	file << "};" << endl;
+	file << "std::map<LuaBind*, LuaMonitor*> gMonitors;" << endl;
 
 	// Write class template specialization definition, must do this before including those generated classes, because there might be cicular dependency
 	for (const auto& parsedFile : mParsedFileList)
@@ -172,6 +182,10 @@ void BatchGenerator::WriteRegister(const std::string& filePath, const std::strin
 		}
 	}
 
+	// Create event monitor
+	file << endl << "LuaMonitor* monitor = new LuaMonitor();" << endl;
+	file << "gMonitors[&bind] = monitor;" << endl;
+
 	// Write class member binding
 	for (const auto& parsedFile : mParsedFileList)
 	{
@@ -180,11 +194,40 @@ void BatchGenerator::WriteRegister(const std::string& filePath, const std::strin
 			if (item.mType == ItemType::Class)
 			{
 				file << item.mClassName << "_generated::Lua_RegisterMember(bind);" << endl;
+				if (SyntaxAnalyzer::Item::HasFlag(item.mFlag, SyntaxAnalyzer::ItemFlag::EventMessage))
+				{
+					file << "monitor->subscribers.emplace_back(new " << item.mClassName << "_event_generated(bind));" << endl;
+				}
 			}
 		}
 	}
 
 	// Write end of function
+	file << "}" << endl;
+
+	// Write unregister function
+	file << "void " << UNREGISTER_FUNCTION << "(LuaBind& bind, bool all)" << endl;
+	file << "{" << endl;
+	file << "LuaMonitor* monitor = gMonitors[&bind];" << endl;
+	file << "for (const auto sub : monitor->subscribers) {" << endl;
+	file << "delete sub;" << endl;
+	file << "}" << endl;
+	file << "delete monitor;" << endl;
+	file << "gMonitors.erase(&bind);" << endl;
+
+	file << "if (all) {" << endl;
+	for (const auto& parsedFile : mParsedFileList)
+	{
+		for (const auto& item : parsedFile.mItems)
+		{
+			if (item.mType == ItemType::Class && SyntaxAnalyzer::Item::HasFlag(item.mFlag, SyntaxAnalyzer::ItemFlag::EventMessage))
+			{
+				file << "Event<" << item.mClassName << ">::UnsubscribeAll();" << endl;
+			}
+		}
+	}
+	file << "}" << endl;
+
 	file << "}" << endl;
 
 	file.close();

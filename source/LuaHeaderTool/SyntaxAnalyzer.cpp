@@ -41,6 +41,22 @@ SyntaxAnalyzer::Item::Item(ItemType type,
 	mStatic(isStatic)
 {}
 
+void SyntaxAnalyzer::Item::AddFlag(int& currentFlag, ItemFlag flag)
+{
+	currentFlag |= 1 << static_cast<int>(flag);
+}
+
+void SyntaxAnalyzer::Item::ClearFlag(int& currentFlag, ItemFlag flag)
+{
+	currentFlag &= 0 << static_cast<int>(flag);
+}
+
+bool SyntaxAnalyzer::Item::HasFlag(int currentFlag, ItemFlag flag)
+{
+	int mask = 0x00000000 | 1 << static_cast<int>(flag);
+	return (currentFlag & mask) > 0;
+}
+
 void SyntaxAnalyzer::Run(const std::vector<HeaderTokenizer::Token>& tokens, std::vector<Item>& output)
 {
 	Reset();
@@ -149,6 +165,7 @@ void SyntaxAnalyzer::BeforeClassMarkState(size_t index)
 	if (token.Type == TokenType::Mark_Class)
 	{
 		mState = State::InClassMark;
+		mFlag = 0;
 	}
 }
 
@@ -170,7 +187,10 @@ void SyntaxAnalyzer::InClassMarkState(size_t index)
 	}
 	else
 	{
-		// TODO Additional marks
+		if (token.String == EVENT_MARK)
+		{
+			Item::AddFlag(mFlag, ItemFlag::EventMessage);
+		}
 	}
 }
 
@@ -194,7 +214,8 @@ void SyntaxAnalyzer::BeforeClassState(size_t index)
 		}
 
 		mClassName = next.String;
-		mOutput->emplace_back(ItemType::Class, next, next.String);
+		auto& item = mOutput->emplace_back(ItemType::Class, next, next.String);
+		item.mFlag = mFlag;
 		mState = State::BeforeParentClass;
 		mAccessLevel = token.Type == TokenType::Keyword_Class ? AccessLevel::Private : AccessLevel::Public;
 	}
@@ -241,12 +262,15 @@ void SyntaxAnalyzer::InClassState(size_t index)
 		break;
 	case TokenType::Mark_Property:
 		mState = State::InPropertyMark;
+		mFlag = 0;
 		break;
 	case TokenType::Mark_Function:
 		mState = State::InFunctionMark;
+		mFlag = 0;
 		break;
 	case TokenType::Mark_Constructor:
 		mState = State::InConstructorMark;
+		mFlag = 0;
 		break;
 	case TokenType::Keyword_Public:
 		mAccessLevel = AccessLevel::Public;
@@ -302,7 +326,8 @@ void SyntaxAnalyzer::BeforePropertyState(size_t index)
 		if (!mExpectType || ProcessType(mType, token))
 		{
 			mExpectType = false;
-			mOutput->emplace_back(ItemType::Variable, token, mClassName, mParentClass, mType, mAccessLevel, !mConst, mStatic);
+			auto& item = mOutput->emplace_back(ItemType::Variable, token, mClassName, mParentClass, mType, mAccessLevel, !mConst, mStatic);
+			item.mFlag = mFlag;
 			mState = State::AfterProperty;
 		}
 		break;
@@ -359,7 +384,8 @@ void SyntaxAnalyzer::BeforeFunctionState(size_t index)
 		if (!mExpectType || ProcessType(mType, token))
 		{
 			mExpectType = false;
-			mOutput->emplace_back(ItemType::Function, token, mClassName, mParentClass, mType, mAccessLevel, !mConst, mStatic);
+			auto& item = mOutput->emplace_back(ItemType::Function, token, mClassName, mParentClass, mType, mAccessLevel, !mConst, mStatic);
+			item.mFlag = mFlag;
 			mState = State::InFunctionSignature;
 		}
 		break;
@@ -458,6 +484,7 @@ void SyntaxAnalyzer::BeforeConstructorState(size_t index)
 		throw std::runtime_error(msg);
 	}
 	
-	mOutput->emplace_back(ItemType::Constructor, token, mClassName, mParentClass, mType, mAccessLevel, false, false);
+	auto& item = mOutput->emplace_back(ItemType::Constructor, token, mClassName, mParentClass, mType, mAccessLevel, false, false);
+	item.mFlag = mFlag;
 	mState = State::InConstructorSignature;
 }

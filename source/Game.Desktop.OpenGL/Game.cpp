@@ -6,13 +6,7 @@
 #include "ActionHeader.h"
 #include "Reaction.h"
 #include "ReactionAttributed.h"
-#include "ReactionSword.h"
 #include "EventMessageAttributed.h"
-#include "Bullet.h"
-#include "ReactionBullet.h"
-#include "../Library.Desktop/EventInput.h"
-#include "../Game.Shared/Player.h"
-#include "HealthUI.h"
 #include <algorithm>
 #include "JsonSpriteParseHelper.h"
 
@@ -64,10 +58,6 @@ void Game::RegisterType()
 	REGISTER_TYPE(World, Attributed);
 	REGISTER_TYPE(Sector, Attributed);
 	REGISTER_TYPE(Entity, Attributed);
-	REGISTER_TYPE(Player, Entity);
-	REGISTER_TYPE(InputManager, Entity);
-	REGISTER_TYPE(Bullet, Entity);
-	REGISTER_TYPE(HealthUI, Entity);
 
 	// Actions
 	REGISTER_TYPE(Action, Attributed);
@@ -90,13 +80,9 @@ void Game::RegisterType()
 	REGISTER_TYPE(ActionAnimation, Action);
 
 	// Reactions
-	REGISTER_TYPE(EventInput, Attributed);
-	REGISTER_TYPE(PlayerMovement, Reaction);
 	REGISTER_TYPE(EventMessageAttributed, Attributed);
 	REGISTER_TYPE(Reaction, ActionList);
 	REGISTER_TYPE(ReactionAttributed, Reaction);
-	REGISTER_TYPE(ReactionBullet, Reaction);
-	REGISTER_TYPE(ReactionSword, Reaction);
 
 	// Other
 	REGISTER_TYPE(AnimState, Attributed);
@@ -111,16 +97,9 @@ void Game::CreateFactory()
 		// Entities
 		new SectorFactory(),
 		new EntityFactory(),
-		new PlayerFactory(),
-		new InputManagerFactory(),
-		new BulletFactory(),
-		new HealthUIFactory(),
 
 		// Reactions
 		new ReactionAttributedFactory(),
-		new PlayerMovementFactory(),
-		new ReactionBulletFactory(),
-		new ReactionSwordFactory(),
 
 		// Actions
 		new ActionAddFactory(),

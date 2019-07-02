@@ -10,7 +10,6 @@
 #include "CollisionManager.h"
 #include "ActionRender.h"
 #include "Event.h"
-#include "../Library.Desktop/EventInput.h"
 #include "EventMessageAttributed.h"
 #include "LuaBind.h"
 
@@ -29,6 +28,7 @@ using namespace std;
 using namespace glm;
 
 extern void RegisterLua(LuaBind& bind);
+extern void UnregisterLua(LuaBind& bind, bool all);
 
 /// <summary>
 /// Init OpenGL, load shader and set projection matrix and view matrix
@@ -147,6 +147,9 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR command
 	// Main game loop
 	vec4 clearColor = vec4(0.f, 0.f, 0.f, 1.0f);
 	bind->SetProperty("BgColor", &clearColor);
+	bind->ClearStack();
+	bind->OpenTable("Main");
+
 	while (!glfwWindowShouldClose(window))
 	{
 		glClearBufferfv(GL_COLOR, 0, &clearColor[0]);
@@ -156,8 +159,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR command
 		world->Update();
 
 		// Call Lua update
-		bind->ClearStack();
-		bind->OpenTable("Main");
+		assert(bind->CurrentTableName() == "Main");
 		bind->CallFunctionNoReturn("Update");
 
 		// Update viewport based on window size
@@ -174,12 +176,12 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR command
 	}
 	
 	// Free world resource, now memory should match with the beginning snapshot
+	UnregisterLua(*bind, true);
 	delete bind;
 	world = nullptr;
 
 	CollisionManager::DestroyInstance();
 	Event<CollisionMessage>::UnsubscribeAll();
-	Event<EventInput>::UnsubscribeAll();
 	Event<EventMessageAttributed>::UnsubscribeAll();
 	
 	// Check memory difference only for game loop logic

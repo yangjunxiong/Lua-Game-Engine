@@ -122,6 +122,8 @@ bool CodeGenerator::FindLine(const std::vector<std::string>& content, const std:
 
 void CodeGenerator::ClassState(const SyntaxAnalyzer::Item& item, std::ofstream& file)
 {
+	WriteEvent(item, file);
+
 	// Write class header
 	file << "class " << item.mClassName << "_generated final" << endl << "{" << endl;
 	++mIndentation;
@@ -227,6 +229,43 @@ void CodeGenerator::ConstructorState(const SyntaxAnalyzer::Item& item, std::ofst
 		file << ", " << arg;
 	}
 	file << ">();" << endl;
+}
+
+void CodeGenerator::WriteEvent(const SyntaxAnalyzer::Item& item, std::ofstream& file)
+{
+	if (!SyntaxAnalyzer::Item::HasFlag(item.mFlag, SyntaxAnalyzer::ItemFlag::EventMessage))
+	{
+		return;
+	}
+
+	std::string className = item.mClassName + "_event_generated";
+	file << "class " << className << " final : public IEventSubscriber" << endl;
+	file << "{" << endl;
+	file << "public:" << endl;
+	file << "LuaBind* bind;" << endl;
+
+	// Constructor
+	file << className << "(LuaBind& b)" << endl;
+	file << "{" << endl;
+	file << "bind = &b;" << endl;
+	file << "Event<" << item.mClassName << ">::Subscribe(*this);" << endl;
+	file << "}" << endl;
+
+	// Destructor
+	file << "~" << className << "()" << endl;
+	file << "{" << endl;
+	file << "Event<" << item.mClassName << ">::Unsubscribe(*this);" << endl;
+	file << "}" << endl;
+
+	// Event notify method
+	file << "virtual void Notify(const BaseEvent& event) override" << endl;
+	file << "{" << endl;
+	file << "const " << item.mClassName << "* msg = &static_cast<const Event<" << item.mClassName << ">&>(event).Message();" << endl;
+	file << "bind->CallFunctionNoReturn(\"EventNotify\", msg);" << endl;
+	file << "}" << endl;
+
+	// End of class
+	file << "};" << endl << endl;
 }
 
 void CodeGenerator::LuaClassState(const SyntaxAnalyzer::Item& item, std::vector<std::string>& content)

@@ -14,21 +14,6 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Bullet.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)HealthSystem.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)HealthUI.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Player.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)PlayerMovement.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ReactionBullet.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ReactionSword.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Bullet.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)HealthSystem.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)HealthUI.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)PlayerMovement.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ReactionBullet.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ReactionSword.cpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)InputData.h" />
   </ItemGroup>
 </Project>

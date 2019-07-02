@@ -281,7 +281,7 @@ DECLARE_LUA_VECTOR_WRAPPER(_type*, _name##"*")					\
 //VECTOR_PASS_BY_VALUE(const _type*);								 \
 //DECLARE_LUA_VECTOR_WRAPPER(const _type*, "const "##_name##"*")
 
-#define CLASS(...) __VA_ARGS__
-#define PROPERTY(...) __VA_ARGS__
-#define FUNCTION(...) __VA_ARGS__
-#define CONSTRUCTOR(...) __VA_ARGS__
+#define CLASS(...)
+#define PROPERTY(...)
+#define FUNCTION(...)
+#define CONSTRUCTOR(...)

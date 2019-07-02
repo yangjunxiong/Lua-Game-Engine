@@ -1,6 +1,8 @@
 #pragma once
 #include "HeaderTokenizer.h"
 
+#define EVENT_MARK "EventMessage"
+
 namespace GameEngine::HeaderTool
 {
 	class SyntaxAnalyzer final
@@ -23,6 +25,11 @@ namespace GameEngine::HeaderTool
 			Private
 		};
 
+		enum class ItemFlag : int
+		{
+			EventMessage = 0
+		};
+
 		struct Item
 		{
 			Item(ItemType type,
@@ -34,6 +41,10 @@ namespace GameEngine::HeaderTool
 				bool writable = true,
 				bool isStatic = false);
 
+			static void AddFlag(int& currentFlag, ItemFlag flag);
+			static void ClearFlag(int& currentFlag, ItemFlag flag);
+			static bool HasFlag(int currentFlag, ItemFlag flag);
+
 			ItemType mType = ItemType::None;
 			AccessLevel mAccessLevel = AccessLevel::Public;
 			HeaderTokenizer::Token mToken;
@@ -43,6 +54,7 @@ namespace GameEngine::HeaderTool
 			bool mWritable = true;
 			bool mStatic = false;
 			std::vector<std::string> mArgumentList;
+			int mFlag = 0;
 		};
 
 		void Run(const std::vector<HeaderTokenizer::Token>& tokens, std::vector<Item>& output);
@@ -101,6 +113,7 @@ namespace GameEngine::HeaderTool
 		std::string mParentClass;
 		int mBracketLevel = 0;
 		int mParenthesisLevel = 0;
+		int mFlag = 0;
 
 		// Class state
 		bool mAfterColon = false;

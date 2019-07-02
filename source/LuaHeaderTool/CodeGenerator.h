@@ -23,6 +23,7 @@ namespace GameEngine::HeaderTool
 		void VariableState(const SyntaxAnalyzer::Item& item, std::ofstream& file);
 		void FunctionState(const SyntaxAnalyzer::Item& item, std::ofstream& file);
 		void ConstructorState(const SyntaxAnalyzer::Item& item, std::ofstream& file);
+		void WriteEvent(const SyntaxAnalyzer::Item& item, std::ofstream& file);
 
 		void LuaClassState(const SyntaxAnalyzer::Item& item, std::vector<std::string>& content);
 		void LuaEndClassState(const SyntaxAnalyzer::Item& item, std::vector<std::string>& content);

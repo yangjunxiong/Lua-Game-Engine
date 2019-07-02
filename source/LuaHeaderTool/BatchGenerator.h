@@ -4,6 +4,7 @@
 #include <set>
 
 #define REGISTER_FUNCTION "RegisterLua"
+#define UNREGISTER_FUNCTION "UnregisterLua"
 
 namespace GameEngine::HeaderTool
 {
