@@ -1,7 +1,4 @@
 #pragma once
-#include "glm/glm.hpp"
-#include <vector>
-
 namespace GameEngine::Lua
 {
 #pragma region int
@@ -338,6 +335,8 @@ namespace GameEngine::Lua
 #pragma region char
 	const std::string LuaWrapper<char>::sName = "char";
 	const uint64_t LuaWrapper<char>::sTypeId = reinterpret_cast<uint64_t>(&LuaWrapper<char>::sTypeId);
+	const std::string LuaWrapper<std::vector<char>>::sName = VECTOR_PREFIX"char";
+	const uint64_t LuaWrapper<std::vector<char>>::sTypeId = reinterpret_cast<uint64_t>(&LuaWrapper<std::vector<char>>::sTypeId);
 	LUA_DEFINE_NATIVE_OBJECT_TYPE(char);
 	DECLARE_LUA_VECTOR_WRAPPER(char, "char");
 
@@ -384,6 +383,8 @@ namespace GameEngine::Lua
 
 	const std::string LuaWrapper<unsigned char>::sName = "uchar";
 	const uint64_t LuaWrapper<unsigned char>::sTypeId = reinterpret_cast<uint64_t>(&LuaWrapper<unsigned char>::sTypeId);
+	const std::string LuaWrapper<std::vector<unsigned char>>::sName = VECTOR_PREFIX"uchar";
+	const uint64_t LuaWrapper<std::vector<unsigned char>>::sTypeId = reinterpret_cast<uint64_t>(&LuaWrapper<std::vector<unsigned char>>::sTypeId);
 	LUA_DEFINE_NATIVE_OBJECT_TYPE(unsigned char);
 	DECLARE_LUA_VECTOR_WRAPPER(unsigned char, "uchar");
 

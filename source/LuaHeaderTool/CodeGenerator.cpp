@@ -127,27 +127,22 @@ void CodeGenerator::ClassState(const SyntaxAnalyzer::Item& item, std::ofstream& 
 	++mIndentation;
 	file << "private:" << endl;
 	WriteIndentation(file);
-	file << "using LuaWrapper = GameEngine::Lua::LuaWrapper<" << item.mClassName << ">;" << endl;
-	WriteIndentation(file);
 	file << "using LuaBind = GameEngine::Lua::LuaBind;" << endl;
 	file << "public:" << endl;
 
 	// Write class register
 	WriteIndentation(file);
-	file << "static void Lua_RegisterClass(lua_State* L)" << endl;
+	file << "static void Lua_RegisterClass(LuaBind& bind)" << endl;
 	WriteIndentation(file);
 	file << "{" << endl;
 	++mIndentation;
 	WriteIndentation(file);
-	file << "LuaWrapper::Register";
-	if (item.mParentClassName.empty())
+	file << "bind.RegisterType<" << item.mClassName;
+	if (!item.mParentClassName.empty())
 	{
-		file << "(L);" << endl;
+		file << ", " << item.mParentClassName;
 	}
-	else
-	{
-		file << "<" << item.mParentClassName << ">(L);" << endl;
-	}
+	file << ">();" << endl;
 	--mIndentation;
 	WriteIndentation(file);
 	file << "};" << endl;

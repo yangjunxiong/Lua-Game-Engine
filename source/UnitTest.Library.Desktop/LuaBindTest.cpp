@@ -11,6 +11,7 @@
 #include "GameTime.h"
 #include <json/json.h>
 #include "LuaBind.h"
+#include "Action.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace GameEngine;
@@ -209,6 +210,9 @@ DECLARE_LUA_WRAPPER(Container, "Container");
 DECLARE_LUA_VECTOR_WRAPPER(Container, "Container");
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(Container);
 LUA_DEFINE_CUSTOM_COPY_TYPE(Container);
+
+DECLARE_LUA_WRAPPER(Action, "Action");
+LUA_DEFINE_CUSTOM_OBJECT_TYPE(Action);
 
 namespace UnitTestLibraryDesktop
 {
@@ -904,7 +908,7 @@ namespace UnitTestLibraryDesktop
 			bind.SetFunction("GetInts", &Container::GetInts);
 			bind.SetFunction("GetFloats", &Container::GetFloats);
 			bind.SetFunction("GetVectors", &Container::GetVectors);
-
+			bind.RegisterType<Action>();
 			std::string lua = R"#(
 				local test = Container.New()
 				CheckNumber(0, test.mInts:Size())

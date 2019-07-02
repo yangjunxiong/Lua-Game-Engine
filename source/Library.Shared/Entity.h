@@ -178,6 +178,8 @@ namespace GameEngine
 		/// </summary>
 		static inline const size_t ACTION_TABLE_INDEX = 6;
 
+		PROPERTY();
+		std::vector<std::string> Tags;
 
 	protected:
 		/// <summary>

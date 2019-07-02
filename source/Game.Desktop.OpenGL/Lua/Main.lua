@@ -49,6 +49,7 @@ function Main.Start()
 
     local entity = Main.Create(Entity)
     entity:SetName(String.New("TestEntity"))
+    entity.Tags:Append("Cube")
     table.insert(Main.EntityList, entity)
 end
 

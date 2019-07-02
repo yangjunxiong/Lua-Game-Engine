@@ -109,7 +109,7 @@ namespace GameEngine::HeaderTool
 		bool mConst = false;
 		bool mStatic = false;
 		std::string mType;
-		bool mAfterDoubleColon = false;
+		bool mAfterMark = false;
 		bool mExpectType = false;
 		bool mExpectTypename = false;
 	};

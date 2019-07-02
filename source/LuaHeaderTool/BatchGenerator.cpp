@@ -136,6 +136,7 @@ void BatchGenerator::WriteRegister(const std::string& filePath, const std::strin
 				if (item.mClassName == currentClass)
 				{
 					file << "LUA_DEFINE_CUSTOM_COPY_TYPE(" << item.mClassName << ");" << endl;
+					file << "DECLARE_LUA_VECTOR_WRAPPER(" << item.mClassName << ", \"" << item.mClassName << "\");" << endl;
 				}
 			}
 			else if (item.mType == ItemType::EndClass)
@@ -289,6 +290,6 @@ void BatchGenerator::WriteWrapperRegister(const SyntaxAnalyzer::Item& item, std:
 	{
 		const Item* stackItem = itemStack.top();
 		itemStack.pop();
-		file << stackItem->mClassName << "_generated::Lua_RegisterClass(bind.LuaState());" << endl;
+		file << stackItem->mClassName << "_generated::Lua_RegisterClass(bind);" << endl;
 	}
 }

@@ -145,15 +145,95 @@ Define the wrapper type for custom data type with custom name in Lua
 #define DECLARE_LUA_WRAPPER(_type, _name)                            \
 const std::string GameEngine::Lua::LuaWrapper<_type>::sName = _name; \
 const uint64_t GameEngine::Lua::LuaWrapper<_type>::sTypeId = reinterpret_cast<uint64_t>(&GameEngine::Lua::LuaWrapper<_type>::sTypeId);  \
-LUA_DEFINE_POINTER_TYPE(_type)
-
-
-#define DECLARE_LUA_VECTOR_WRAPPER(_type, _name)  \
 const std::string GameEngine::Lua::LuaWrapper<std::vector<_type>>::sName = VECTOR_PREFIX ## _name;  \
 const uint64_t GameEngine::Lua::LuaWrapper<std::vector<_type>>::sTypeId = reinterpret_cast<uint64_t>(&GameEngine::Lua::LuaWrapper<std::vector<_type>>::sTypeId);  \
+LUA_DEFINE_POINTER_TYPE(_type)
+
+// If you want to use std::vector of this type, you must use this macro to declare the vector wrapper
+// The class must not be abstract and must have valid copy constructor
+#define DECLARE_LUA_VECTOR_WRAPPER(_type, _name)  \
+template<> static inline void LuaBind::_RegisterVector<_type>(LuaBind& bind)  \
+{  \
+	lua_State* mLuaState = bind.mLuaState;  \
+	int newTable = luaL_newmetatable(mLuaState, (VECTOR_PREFIX + LuaWrapper<_type>::sName).c_str());  \
+	assert(!newTable);																			  \
+	bind.SetConstructor<std::vector<_type>>();															  \
+	lua_pushstring(mLuaState, "Get");															  \
+	lua_pushlightuserdata(mLuaState, &bind);														  \
+	lua_pushcclosure(mLuaState, VectorWrapper<_type>::Get, 1);										  \
+	lua_rawset(mLuaState, -3);																	  \
+	lua_pushstring(mLuaState, "Set");															  \
+	lua_pushlightuserdata(mLuaState, &bind);														  \
+	lua_pushcclosure(mLuaState, VectorWrapper<_type>::Set, 1);										  \
+	lua_rawset(mLuaState, -3);																	  \
+	lua_pushstring(mLuaState, "Size");															  \
+	lua_pushcfunction(mLuaState, VectorWrapper<_type>::Size);										  \
+	lua_rawset(mLuaState, -3);																	  \
+	lua_pushstring(mLuaState, "Clear");															  \
+	lua_pushcfunction(mLuaState, VectorWrapper<_type>::Clear);										  \
+	lua_rawset(mLuaState, -3);																	  \
+	lua_pushstring(mLuaState, "Append");														  \
+	lua_pushlightuserdata(mLuaState, &bind);														  \
+	lua_pushcclosure(mLuaState, VectorWrapper<_type>::PushBack, 1);									  \
+	lua_rawset(mLuaState, -3);																	  \
+	lua_pushstring(mLuaState, "Insert");														  \
+	lua_pushlightuserdata(mLuaState, &bind);														  \
+	lua_pushcclosure(mLuaState, VectorWrapper<_type>::Insert, 1);									  \
+	lua_rawset(mLuaState, -3);																	  \
+	lua_pushstring(mLuaState, "RemoveAt");														  \
+	lua_pushlightuserdata(mLuaState, &bind);														  \
+	lua_pushcclosure(mLuaState, VectorWrapper<_type>::RemoveAt, 1);									  \
+	lua_rawset(mLuaState, -3);																	  \
+	lua_pop(mLuaState, 1);																		   \
+}  \
 LUA_DEFINE_POINTER_TYPE(std::vector<_type>)  \
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(std::vector<_type>);  \
 LUA_DEFINE_CUSTOM_COPY_TYPE(std::vector<_type>);
+
+// Vector functions for primitive types
+// Will pass by value instead of reference
+#define PRIMITIVE_VECTOR_GET_SET(_type)																															  \
+template<> static inline int VectorWrapper<_type>::Get(lua_State* L)																											  \
+{																																								  \
+	LuaWrapper<std::vector<_type>>* obj = static_cast<LuaWrapper<std::vector<_type>>*>(luaL_checkudata(L, 1, (VECTOR_PREFIX + LuaWrapper<_type>::sName).c_str()));\
+	std::vector<_type>& vec = *obj->mObject;																													   \
+	size_t index = luaL_checkinteger(L, 2);																														   \
+	LUA_ASSERT(L, index < vec.size());																															   \
+																																								   \
+	LuaBind* bind = static_cast<LuaBind*>(lua_touserdata(L, lua_upvalueindex(1)));																				   \
+	bind->PushToLua<_type>(vec[index]);																															   \
+	return 1;																																					   \
+}																																									\
+template<> static inline int VectorWrapper<_type>::Set(lua_State* L)																												\
+{																																									\
+	LuaWrapper<std::vector<_type>>* obj = static_cast<LuaWrapper<std::vector<_type>>*>(luaL_checkudata(L, 1, (VECTOR_PREFIX + LuaWrapper<_type>::sName).c_str()));	\
+	std::vector<_type>& vec = *obj->mObject;																														\
+	size_t index = luaL_checkinteger(L, 2);																															\
+	LUA_ASSERT(L, index < vec.size());																																\
+																																									\
+	LuaBind* bind = static_cast<LuaBind*>(lua_touserdata(L, lua_upvalueindex(1)));																					\
+	vec[index] = bind->GetFromLua<_type>(3);																														\
+	return 0;																																						\
+}																																									 \
+template<> static inline int VectorWrapper<_type>::PushBack(lua_State* L)																											 \
+{																																									 \
+	LuaWrapper<std::vector<_type>>* obj = static_cast<LuaWrapper<std::vector<_type>>*>(luaL_checkudata(L, 1, (VECTOR_PREFIX + LuaWrapper<_type>::sName).c_str()));	 \
+	std::vector<_type>& vec = *obj->mObject;																														 \
+	LuaBind* bind = static_cast<LuaBind*>(lua_touserdata(L, lua_upvalueindex(1)));																					 \
+	vec.push_back(bind->GetFromLua<_type>(2));																														 \
+	return 0;																																						 \
+}																																									 \
+template<> static inline int VectorWrapper<_type>::Insert(lua_State* L)																											 \
+{																																									 \
+	LuaWrapper<std::vector<_type>>* obj = static_cast<LuaWrapper<std::vector<_type>>*>(luaL_checkudata(L, 1, (VECTOR_PREFIX + LuaWrapper<_type>::sName).c_str()));	 \
+	std::vector<_type>& vec = *obj->mObject;																														 \
+	size_t index = luaL_checkinteger(L, 2);																															 \
+	LUA_ASSERT(L, index <= vec.size());																																 \
+																																									 \
+	LuaBind* bind = static_cast<LuaBind*>(lua_touserdata(L, lua_upvalueindex(1)));																					 \
+	vec.insert(vec.begin() + index, bind->GetFromLua<_type>(3));																									 \
+	return 0;																																						 \
+}
 
 #define CLASS(...) __VA_ARGS__
 #define PROPERTY(...) __VA_ARGS__

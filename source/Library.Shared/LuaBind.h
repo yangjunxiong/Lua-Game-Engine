@@ -5,6 +5,7 @@
 #include "vector.h"
 #include "HashMap.h"
 #include "LuaWrapper.h"
+#include <glm/glm.hpp>
 
 namespace GameEngine::Lua
 {
@@ -30,6 +31,8 @@ namespace GameEngine::Lua
 		/// Register a type to lua binding
 		/// </summary>
 		template <typename T>
+		void RegisterType();
+		template <typename T, typename Parent>
 		void RegisterType();
 
 		/// <summary>
@@ -199,6 +202,8 @@ namespace GameEngine::Lua
 
 		template <typename T>
 		void PushToLua(T value);
+		template <typename T>
+		void PushRefToLua(T* value);
 
 		template <typename T>
 		T GetFromLua(size_t index);
@@ -228,7 +233,7 @@ namespace GameEngine::Lua
 		/// Register std::vector of given type to Lua
 		/// </summary>
 		template <typename T>
-		void _RegisterVector();
+		static inline void _RegisterVector(LuaBind& bind);
 
 		/// <summary>
 		/// Helper functions for set property
@@ -282,15 +287,16 @@ namespace GameEngine::Lua
 	class VectorWrapper final
 	{
 	public:
-		static inline int Size(lua_State* L);
-		static inline int Get(lua_State* L);
-		static inline int Set(lua_State* L);
-		static inline int Clear(lua_State* L);
-		static inline int PushBack(lua_State* L);
-		static inline int Insert(lua_State* L);
-		static inline int RemoveAt(lua_State* L);
+		static int Size(lua_State* L);
+		static int Get(lua_State* L);
+		static int Set(lua_State* L);
+		static int Clear(lua_State* L);
+		static int PushBack(lua_State* L);
+		static int Insert(lua_State* L);
+		static int RemoveAt(lua_State* L);
 	};
 }
+
 
 #include "LuaBind.inl"
 #include "NativeType.inl"

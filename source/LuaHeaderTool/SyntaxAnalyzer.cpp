@@ -88,7 +88,7 @@ void SyntaxAnalyzer::ResetMember()
 	mConst = false;
 	mStatic = false;
 	mType.clear();
-	mAfterDoubleColon = false;
+	mAfterMark = false;
 	mExpectType = true;
 	mExpectTypename = true;
 }
@@ -100,13 +100,13 @@ bool SyntaxAnalyzer::ProcessType(std::string& typeString, const HeaderTokenizer:
 	switch (token.Type)
 	{
 	case TokenType::DoubleColon:
-		if (mAfterDoubleColon)
+		if (mAfterMark)
 		{
 			char msg[1024];
 			sprintf_s(msg, "Error in class \"%s\": Following \"::\" must be a type name", mClassName.c_str());
 			throw std::runtime_error(msg);
 		}
-		mAfterDoubleColon = true;
+		mAfterMark = true;
 		typeString.append(token.String);
 		return false;
 	case TokenType::Name:
@@ -116,15 +116,20 @@ bool SyntaxAnalyzer::ProcessType(std::string& typeString, const HeaderTokenizer:
 			typeString.append(token.String);
 			return false;
 		}
-		else if (mAfterDoubleColon)
+		else if (mAfterMark)
 		{
-			mAfterDoubleColon = false;
+			mAfterMark = false;
 			typeString.append(token.String);
 			return false;
 		}
 		return true;
 	case TokenType::Star:
 	case TokenType::Ampersand:
+	case TokenType::Right_AngleBracket:
+		typeString.append(token.String);
+		return false;
+	case TokenType::Left_AngleBracket:
+		mAfterMark = true;
 		typeString.append(token.String);
 		return false;
 	case TokenType::Keyword_Const:
@@ -292,6 +297,8 @@ void SyntaxAnalyzer::BeforePropertyState(size_t index)
 	case TokenType::DoubleColon:
 	case TokenType::Star:
 	case TokenType::Ampersand:
+	case TokenType::Left_AngleBracket:
+	case TokenType::Right_AngleBracket:
 		if (!mExpectType || ProcessType(mType, token))
 		{
 			mExpectType = false;
@@ -347,6 +354,8 @@ void SyntaxAnalyzer::BeforeFunctionState(size_t index)
 	case TokenType::Ampersand:
 	case TokenType::Keyword_Void:
 	case TokenType::Keyword_Const:
+	case TokenType::Left_AngleBracket:
+	case TokenType::Right_AngleBracket:
 		if (!mExpectType || ProcessType(mType, token))
 		{
 			mExpectType = false;
@@ -379,7 +388,7 @@ void SyntaxAnalyzer::InFunctionSignatureState(size_t index)
 		if (mParenthesisLevel == 1)
 		{
 			lastItem.mArgumentList.emplace_back();
-			mAfterDoubleColon = false;
+			mAfterMark = false;
 			mExpectType = true;
 			mExpectTypename = true;
 		}
@@ -390,11 +399,13 @@ void SyntaxAnalyzer::InFunctionSignatureState(size_t index)
 	case TokenType::Ampersand:
 	case TokenType::Keyword_Const:
 	case TokenType::Keyword_Void:
+	case TokenType::Left_AngleBracket:
+	case TokenType::Right_AngleBracket:
 		// If this is right after the first parenthesis, it's first argument
 		if (lastItem.mArgumentList.size() == 0 && mParenthesisLevel == 1)
 		{
 			lastItem.mArgumentList.emplace_back();
-			mAfterDoubleColon = false;
+			mAfterMark = false;
 			mExpectType = true;
 			mExpectTypename = true;
 		}
