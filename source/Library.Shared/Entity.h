@@ -181,6 +181,9 @@ namespace GameEngine
 		PROPERTY();
 		std::vector<std::string> Tags;
 
+		PROPERTY();
+		std::vector<Entity*> Targets;
+
 	protected:
 		/// <summary>
 		/// Transform of this entity

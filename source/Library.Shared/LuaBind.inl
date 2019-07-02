@@ -702,13 +702,13 @@ namespace GameEngine::Lua
 	template <typename T>
 	void LuaBind::PushToLua(T value)
 	{
-		_ToLuaStack<T>(mLuaState, value);
+		_ToLuaStack(mLuaState, value);
 	}
 
 	template <typename T>
 	void LuaBind::PushRefToLua(T* value)
 	{
-		_ToLuaStack<T>(mLuaState, value, 0);
+		_ToLuaStack(mLuaState, value, 0);
 	}
 
 	template<> static inline void LuaBind::_ToLuaStack(lua_State* L, int value)
@@ -779,7 +779,7 @@ namespace GameEngine::Lua
 	template <typename T>
 	int VectorWrapper<T>::Size(lua_State* L)
 	{
-		LuaWrapper<std::vector<T>>* obj = static_cast<LuaWrapper<std::vector<T>>*>(luaL_checkudata(L, 1, (VECTOR_PREFIX + LuaWrapper<T>::sName).c_str()));
+		LuaWrapper<std::vector<T>>* obj = static_cast<LuaWrapper<std::vector<T>>*>(luaL_checkudata(L, 1, LuaWrapper<std::vector<T>>::sName.c_str()));
 		std::vector<T>& vec = *obj->mObject;
 		lua_pushinteger(L, vec.size());
 		return 1;
@@ -788,7 +788,7 @@ namespace GameEngine::Lua
 	template <typename T>
 	int VectorWrapper<T>::Get(lua_State* L)
 	{
-		LuaWrapper<std::vector<T>>* obj = static_cast<LuaWrapper<std::vector<T>>*>(luaL_checkudata(L, 1, (VECTOR_PREFIX + LuaWrapper<T>::sName).c_str()));
+		LuaWrapper<std::vector<T>>* obj = static_cast<LuaWrapper<std::vector<T>>*>(luaL_checkudata(L, 1, LuaWrapper<std::vector<T>>::sName.c_str()));
 		std::vector<T>& vec = *obj->mObject;
 		size_t index = luaL_checkinteger(L, 2);
 		LUA_ASSERT(L, index < vec.size());
@@ -801,7 +801,7 @@ namespace GameEngine::Lua
 	template <typename T>
 	int VectorWrapper<T>::Set(lua_State* L)
 	{
-		LuaWrapper<std::vector<T>>* obj = static_cast<LuaWrapper<std::vector<T>>*>(luaL_checkudata(L, 1, (VECTOR_PREFIX + LuaWrapper<T>::sName).c_str()));
+		LuaWrapper<std::vector<T>>* obj = static_cast<LuaWrapper<std::vector<T>>*>(luaL_checkudata(L, 1, LuaWrapper<std::vector<T>>::sName.c_str()));
 		std::vector<T>& vec = *obj->mObject;
 		size_t index = luaL_checkinteger(L, 2);
 		LUA_ASSERT(L, index < vec.size());
@@ -815,7 +815,7 @@ namespace GameEngine::Lua
 	template <typename T>
 	int VectorWrapper<T>::Clear(lua_State* L)
 	{
-		LuaWrapper<std::vector<T>>* obj = static_cast<LuaWrapper<std::vector<T>>*>(luaL_checkudata(L, 1, (VECTOR_PREFIX + LuaWrapper<T>::sName).c_str()));
+		LuaWrapper<std::vector<T>>* obj = static_cast<LuaWrapper<std::vector<T>>*>(luaL_checkudata(L, 1, LuaWrapper<std::vector<T>>::sName.c_str()));
 		std::vector<T>& vec = *obj->mObject;
 		vec.clear();
 		return 0;
@@ -824,7 +824,7 @@ namespace GameEngine::Lua
 	template <typename T>
 	int VectorWrapper<T>::PushBack(lua_State* L)
 	{
-		LuaWrapper<std::vector<T>>* obj = static_cast<LuaWrapper<std::vector<T>>*>(luaL_checkudata(L, 1, (VECTOR_PREFIX + LuaWrapper<T>::sName).c_str()));
+		LuaWrapper<std::vector<T>>* obj = static_cast<LuaWrapper<std::vector<T>>*>(luaL_checkudata(L, 1, LuaWrapper<std::vector<T>>::sName.c_str()));
 		std::vector<T>& vec = *obj->mObject;
 		LuaBind* bind = static_cast<LuaBind*>(lua_touserdata(L, lua_upvalueindex(1)));
 		TYPE_CHECK(bind->CheckArgType<T>(L, 2));
@@ -835,7 +835,7 @@ namespace GameEngine::Lua
 	template <typename T>
 	int VectorWrapper<T>::Insert(lua_State* L)
 	{
-		LuaWrapper<std::vector<T>>* obj = static_cast<LuaWrapper<std::vector<T>>*>(luaL_checkudata(L, 1, (VECTOR_PREFIX + LuaWrapper<T>::sName).c_str()));
+		LuaWrapper<std::vector<T>>* obj = static_cast<LuaWrapper<std::vector<T>>*>(luaL_checkudata(L, 1, LuaWrapper<std::vector<T>>::sName.c_str()));
 		std::vector<T>& vec = *obj->mObject;
 		size_t index = luaL_checkinteger(L, 2);
 		LUA_ASSERT(L, index <= vec.size());
@@ -849,24 +849,24 @@ namespace GameEngine::Lua
 	template <typename T>
 	int VectorWrapper<T>::RemoveAt(lua_State* L)
 	{
-		LuaWrapper<std::vector<T>>* obj = static_cast<LuaWrapper<std::vector<T>>*>(luaL_checkudata(L, 1, (VECTOR_PREFIX + LuaWrapper<T>::sName).c_str()));
+		LuaWrapper<std::vector<T>>* obj = static_cast<LuaWrapper<std::vector<T>>*>(luaL_checkudata(L, 1, LuaWrapper<std::vector<T>>::sName.c_str()));
 		std::vector<T>& vec = *obj->mObject;
 		size_t index = luaL_checkinteger(L, 2);
 		vec.erase(vec.begin() + index);
 		return 0;
 	}
 
-	PRIMITIVE_VECTOR_GET_SET(int);
-	PRIMITIVE_VECTOR_GET_SET(unsigned int);
-	PRIMITIVE_VECTOR_GET_SET(long long);
-	PRIMITIVE_VECTOR_GET_SET(unsigned long long);
-	PRIMITIVE_VECTOR_GET_SET(float);
-	PRIMITIVE_VECTOR_GET_SET(double);
-	PRIMITIVE_VECTOR_GET_SET(bool);
-	PRIMITIVE_VECTOR_GET_SET(char);
-	PRIMITIVE_VECTOR_GET_SET(unsigned char);
-	PRIMITIVE_VECTOR_GET_SET(std::string);
-	PRIMITIVE_VECTOR_GET_SET(glm::vec4);
+	VECTOR_PASS_BY_VALUE(int);
+	VECTOR_PASS_BY_VALUE(unsigned int);
+	VECTOR_PASS_BY_VALUE(long long);
+	VECTOR_PASS_BY_VALUE(unsigned long long);
+	VECTOR_PASS_BY_VALUE(float);
+	VECTOR_PASS_BY_VALUE(double);
+	VECTOR_PASS_BY_VALUE(bool);
+	VECTOR_PASS_BY_VALUE(char);
+	VECTOR_PASS_BY_VALUE(unsigned char);
+	VECTOR_PASS_BY_VALUE(std::string);
+	VECTOR_PASS_BY_VALUE(glm::vec4);
 #pragma endregion
 
 	template <typename T>
@@ -874,8 +874,11 @@ namespace GameEngine::Lua
 	{
 		LuaWrapper<T>::Register(mLuaState);
 		_AdditionalRegister<T>(*this);
-		LuaWrapper<std::vector<T>>::Register(mLuaState);
+
+		// Register vector type
 		_RegisterVector<T>(*this);
+		_RegisterVector<T*>(*this);
+		_RegisterVector<const T*>(*this);
 	}
 
 	template <typename T, typename Parent>
@@ -883,7 +886,10 @@ namespace GameEngine::Lua
 	{
 		LuaWrapper<T>::template Register<Parent>(mLuaState);
 		_AdditionalRegister<T>(*this);
-		LuaWrapper<std::vector<T>>::Register(mLuaState);
+
+		// Register vector type
 		_RegisterVector<T>(*this);
+		_RegisterVector<T*>(*this);
+		_RegisterVector<const T*>(*this);
 	}
 }

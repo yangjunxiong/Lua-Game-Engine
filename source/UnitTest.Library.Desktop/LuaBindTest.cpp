@@ -194,6 +194,8 @@ public:
 	std::vector<int> mInts;
 	std::vector<float> mFloats;
 	std::vector<glm::vec4> mVectors;
+	std::vector<Container> mValues;
+	std::vector<Container*> mPointers;
 
 	void Set(std::vector<int>& ints, std::vector<float>* floats, std::vector<glm::vec4> vecs)
 	{
@@ -207,9 +209,9 @@ public:
 	const std::vector<glm::vec4>* GetVectors() { return &mVectors; }
 };
 DECLARE_LUA_WRAPPER(Container, "Container");
-DECLARE_LUA_VECTOR_WRAPPER(Container, "Container");
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(Container);
 LUA_DEFINE_CUSTOM_COPY_TYPE(Container);
+DECLARE_LUA_VECTOR_WRAPPER_ALL(Container, "Container");
 
 DECLARE_LUA_WRAPPER(Action, "Action");
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(Action);
@@ -904,6 +906,8 @@ namespace UnitTestLibraryDesktop
 			bind.SetProperty("mInts", &Container::mInts);
 			bind.SetProperty("mFloats", &Container::mFloats);
 			bind.SetProperty("mVectors", &Container::mVectors);
+			bind.SetProperty("mValues", &Container::mValues);
+			bind.SetProperty("mPointers", &Container::mPointers);
 			bind.SetFunction("Set", &Container::Set);
 			bind.SetFunction("GetInts", &Container::GetInts);
 			bind.SetFunction("GetFloats", &Container::GetFloats);
@@ -966,6 +970,28 @@ namespace UnitTestLibraryDesktop
 				CheckNumber(3, test.mInts:Get(2))
 				CheckNumber(0, floats:Size())
 				CheckNumber(1, vectors:Size())
+			)#";
+			bind.LoadString(lua);
+
+			lua = R"#(
+				local test = Container.New()
+				local values = test.mValues
+				local ptrs = test.mPointers
+				CheckNumber(0, values:Size())
+				CheckNumber(0, ptrs:Size())
+
+				values:Append(Container.New())
+				CheckNumber(1, values:Size())
+				local child = values:Get(0)
+				child.mInts:Append(100)
+				CheckNumber(100, test.mValues:Get(0).mInts:Get(0))
+
+				ptrs:Append(child)
+				CheckNumber(100, test.mPointers:Get(0).mInts:Get(0))
+				ptrs:Get(0).mFloats:Append(1.125)
+				CheckNumber(1.125, child.mFloats:Get(0))
+				ptrs:Set(0, nil)
+				Check("true", tostring(ptrs:Get(0) == nil))
 			)#";
 			bind.LoadString(lua);
 		}

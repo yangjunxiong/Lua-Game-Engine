@@ -136,7 +136,7 @@ void BatchGenerator::WriteRegister(const std::string& filePath, const std::strin
 				if (item.mClassName == currentClass)
 				{
 					file << "LUA_DEFINE_CUSTOM_COPY_TYPE(" << item.mClassName << ");" << endl;
-					file << "DECLARE_LUA_VECTOR_WRAPPER(" << item.mClassName << ", \"" << item.mClassName << "\");" << endl;
+					file << "DECLARE_LUA_VECTOR_WRAPPER_ALL(" << item.mClassName << ", \"" << item.mClassName << "\");" << endl;
 				}
 			}
 			else if (item.mType == ItemType::EndClass)

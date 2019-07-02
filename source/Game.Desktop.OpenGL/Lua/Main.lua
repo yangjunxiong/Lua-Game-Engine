@@ -50,7 +50,20 @@ function Main.Start()
     local entity = Main.Create(Entity)
     entity:SetName(String.New("TestEntity"))
     entity.Tags:Append("Cube")
+
+    local target1 = Main.Create(Entity)
+    target1:SetName(String.New("Target1"))
+    target1:SetActive(false)
+    local target2 = Main.Create(Entity)
+    target2:SetName(String.New("Target2"))
+    target2:SetActive(false)
+
+    entity.Targets:Append(target1)
+    entity.Targets:Append(target2)
+
     table.insert(Main.EntityList, entity)
+    table.insert(Main.EntityList, target1)
+    table.insert(Main.EntityList, target2)
 end
 
 -- Factory method to create a C++ class that is bound to Lua
