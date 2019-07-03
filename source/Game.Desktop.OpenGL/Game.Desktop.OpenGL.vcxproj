@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="JsonSpriteParseHelper.cpp" />
     <ClCompile Include="LuaRegister.cpp" />
     <ClCompile Include="pch.cpp">
@@ -36,6 +37,7 @@
   <ItemGroup>
     <ClInclude Include="ActionHeader.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="JsonSpriteParseHelper.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Sprite.h" />

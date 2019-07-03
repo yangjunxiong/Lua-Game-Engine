@@ -3,6 +3,7 @@ require("Class/__Include__")
 Main = {}
 Main.UpdateList = {}
 Main.EntityList = {}
+Main.EventList = {}
 Main.CurrentSector = nil
 
 setmetatable(Main, {
@@ -31,7 +32,20 @@ end
 
 -- Remove the update function for an object
 function Main.RemoveUpdate(obj)
-    Main.UpdateList[obj] = nil
+    table.remove(Main.UpdateList, obj)
+end
+
+function Main.RegisterEvent(eventName, func, obj)
+    if (Main.EventList[eventName] == nil) then
+        Main.EventList[eventName] = {}
+    end
+    Main.EventList[eventName][func] = obj
+end
+
+function Main.UnregisterEvent(eventName, func)
+    if (not Main.EventList[eventName] == nil) then
+        table.remove(Main.EventList[eventName], func)
+    end
 end
 
 -- Called from C++ update frame, will dispatch update event to all registered functions
@@ -51,19 +65,7 @@ function Main.Start()
     entity:SetName(String.New("TestEntity"))
     entity.Tags:Append("Cube")
 
-    local target1 = Main.Create(Entity)
-    target1:SetName(String.New("Target1"))
-    target1:SetActive(false)
-    local target2 = Main.Create(Entity)
-    target2:SetName(String.New("Target2"))
-    target2:SetActive(false)
-
-    entity.Targets:Append(target1)
-    entity.Targets:Append(target2)
-
     table.insert(Main.EntityList, entity)
-    table.insert(Main.EntityList, target1)
-    table.insert(Main.EntityList, target2)
 end
 
 -- Factory method to create a C++ class that is bound to Lua
@@ -87,6 +89,19 @@ function Main.Create(class)
     end
 
     return obj
+end
+
+function Main.EventNotify(event, eventName)
+    local list = Main.EventList[eventName]
+    if (list) then
+        for func, obj in pairs(list) do
+            if (obj == nil)then
+                func(event)
+            else
+                func(obj, event)
+            end
+        end
+    end
 end
 
 Main.Start()

@@ -12,6 +12,7 @@
 #include "Event.h"
 #include "EventMessageAttributed.h"
 #include "LuaBind.h"
+#include "InputManager.h"
 
 #include "Sprite.h"
 #include "SpriteSheet.h"
@@ -93,7 +94,6 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR command
 
 	glViewport(0, 0, game.WindowWidth(), game.WindowHeight());
 
-
 	InitGraphics();
 	game.LoadSpriteSheet();
 
@@ -102,87 +102,68 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR command
 	startMemState;
 	_CrtMemCheckpoint(&startMemState);
 
-	//Create Collision
-	CollisionManager::CreateInstance();
-
-	// Create world
-	GameTime time;
-	GameClock clock;
-	clock.Reset();
-	shared_ptr<World> world = make_shared<World>(time);
 	{
-		JsonTableParseHelper::SharedData data(world);
-		JsonParseMaster master(data);
-		JsonTableParseHelper helper;
-		master.AddHelper(helper);
-		if (!master.ParseFromFile("Resources/Config/Entry.json"))
+		//Create Collision
+		CollisionManager::CreateInstance();
+
+		// Create world
+		GameTime time;
+		GameClock clock;
+		clock.Reset();
+		World* world = new World(time);
+		game.mWorld = world;
+		
+		// Bind Lua
+		LuaBind* bind = new LuaBind;
+		RegisterLua(*bind);
+		bind->SetFunction("Log", function(Log));
+		bind->SetProperty("CurrentWorld", game.mWorld);
+		bind->LoadFile("Lua/Main.lua");
+
+		// Main game loop
+		InputManager input;
+		vec4 clearColor = vec4(0.f, 0.f, 0.f, 1.0f);
+		bind->SetProperty("BgColor", &clearColor);
+		bind->ClearStack();
+		bind->OpenTable("Main");
+
+		while (!glfwWindowShouldClose(window))
 		{
-			return -1;
+			glClearBufferfv(GL_COLOR, 0, &clearColor[0]);
+
+			// Update input event
+			input.Update(window, game.mWorld);
+
+			// Update game logic
+			clock.UpdateGameTime(time);
+			world->Update();
+
+			// Call Lua update
+			assert(bind->CurrentTableName() == "Main");
+			bind->CallFunctionNoReturn("Update");
+
+			// Update viewport based on window size
+			int width, height;
+			glfwGetWindowSize(window, &width, &height);
+			glViewport(0, 0, width, height);
+
+			// Draw the scene to window as last step
+			world->Draw(RenderCallback);
+
+			// Display new frame
+			glfwSwapBuffers(window);
+			glfwPollEvents();
 		}
-		game.mWorld = &*world;
-		world->Start();
+
+		// Free world resource, now memory should match with the beginning snapshot
+		UnregisterLua(*bind, true);
+		delete bind;
+		delete world;
+
+		CollisionManager::DestroyInstance();
+		Event<CollisionMessage>::UnsubscribeAll();
+		Event<EventMessageAttributed>::UnsubscribeAll();
 	}
-	
-	// Bind Lua
-	LuaBind* bind = new LuaBind;
-	RegisterLua(*bind);
-	bind->SetFunction("Log", function(Log));
-	bind->SetProperty("CurrentWorld", game.mWorld);
-	bind->LoadFile("Lua/Main.lua");
-
-	// Test code
-	Log("Start C++ loop\n");
-	auto startTime = time.CurrentTime();
-	const size_t times = 1000000;
-	for (size_t i = 0; i < times; ++i)
-	{
-		auto* worldState = world->GetWorldState();
-		worldState;
-	}
-	clock.UpdateGameTime(time);
-	char msg[1024];
-	sprintf_s(msg, "End C++ loop, elapsed time: %d\n", (int)time.ElapsedGameTime().count());
-	Log(msg);
-
-	// Main game loop
-	vec4 clearColor = vec4(0.f, 0.f, 0.f, 1.0f);
-	bind->SetProperty("BgColor", &clearColor);
-	bind->ClearStack();
-	bind->OpenTable("Main");
-
-	while (!glfwWindowShouldClose(window))
-	{
-		glClearBufferfv(GL_COLOR, 0, &clearColor[0]);
-
-		// Update game logic
-		clock.UpdateGameTime(time);
-		world->Update();
-
-		// Call Lua update
-		assert(bind->CurrentTableName() == "Main");
-		bind->CallFunctionNoReturn("Update");
-
-		// Update viewport based on window size
-		int width, height;
-		glfwGetWindowSize(window, &width, &height);
-		glViewport(0, 0, width, height);
-
-		// Draw the scene to window as last step
-		world->Draw(RenderCallback);
-
-		// Display new frame
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-	}
-	
-	// Free world resource, now memory should match with the beginning snapshot
-	UnregisterLua(*bind, true);
-	delete bind;
-	world = nullptr;
-
-	CollisionManager::DestroyInstance();
-	Event<CollisionMessage>::UnsubscribeAll();
-	Event<EventMessageAttributed>::UnsubscribeAll();
 	
 	// Check memory difference only for game loop logic
 	_CrtMemState endMemState, diffMemState;

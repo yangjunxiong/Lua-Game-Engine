@@ -1,8 +1,17 @@
 #pragma once
+#include "Macro.h"
 #include "Event.h"
 
 namespace GameEngine
 {
+	enum class MouseInputType
+	{
+		Press = 0,
+		Release = 1,
+		Click = 2,
+		Hold = 3
+	};
+	
 	CLASS(EventMessage)
 	class MouseInput
 	{
@@ -14,6 +23,6 @@ namespace GameEngine
 		int Button = 0;
 
 		PROPERTY();
-		bool Press = true;
+		int Type = 0;
 	};
 }

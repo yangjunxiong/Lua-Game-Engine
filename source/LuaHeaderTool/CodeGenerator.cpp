@@ -261,7 +261,7 @@ void CodeGenerator::WriteEvent(const SyntaxAnalyzer::Item& item, std::ofstream& 
 	file << "virtual void Notify(const BaseEvent& event) override" << endl;
 	file << "{" << endl;
 	file << "const " << item.mClassName << "* msg = &static_cast<const Event<" << item.mClassName << ">&>(event).Message();" << endl;
-	file << "bind->CallFunctionNoReturn(\"EventNotify\", msg);" << endl;
+	file << "bind->CallFunctionNoReturn(\"EventNotify\", msg, \"" << item.mClassName <<"\");" << endl;
 	file << "}" << endl;
 
 	// End of class
