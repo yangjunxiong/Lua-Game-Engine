@@ -1,0 +1,1 @@
+require("Content/Lua/Class/PlanetDemo")

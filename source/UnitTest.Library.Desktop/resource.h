@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by UnitTest.Library.Desktop.rc
+// Used by UnitTest.GameEngine.Desktop.rc
 
 // Next default values for new objects
 // 

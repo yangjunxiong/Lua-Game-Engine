@@ -86,7 +86,7 @@ void BatchGenerator::BatchWriteLua(const std::string& dir)
 	{
 		if (source.mItems.size() > 0)
 		{
-			file << "require(\"Class/" << source.mFileName << "\")" << endl;
+			file << "require(\"Content/Lua/Class/" << source.mFileName << "\")" << endl;
 		}
 	}
 	file.close();
@@ -107,6 +107,7 @@ void BatchGenerator::WriteRegister(const std::string& filePath, const std::strin
 
 	// Write basic include
 	file << "#include \"pch.h\"" << endl;
+	file << "#include \"LuaRegister.h\"" << endl;
 	file << "#include \"LuaBind.h\"" << endl;
 	file << "#include \"Event.h\"" << endl;
 	file << "#include \"IEventSubscriber.h\"" << endl;
@@ -119,8 +120,14 @@ void BatchGenerator::WriteRegister(const std::string& filePath, const std::strin
 	}
 
 	// Write alias
+	file << "namespace GameEngine {};" << endl;
+	file << "namespace GameEngine::Lua {};" << endl;
+	file << "namespace GameEngine {};" << endl;
+	file << "namespace Rendering {};" << endl;
 	file << "using namespace GameEngine;" << endl;
-	file << "using namespace GameEngine::Lua;" << endl << endl;
+	file << "using namespace GameEngine::Lua;" << endl;
+	file << "using namespace GameEngine;" << endl;
+	file << "using namespace Rendering;" << endl << endl;
 
 	// Create a lua monitor
 	file << "class LuaMonitor final {" << endl;

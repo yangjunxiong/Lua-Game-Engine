@@ -1,0 +1,93 @@
+Main = {}
+Main.UpdateList = {}
+Main.EventList = {}
+Main.ClassList = {}
+
+require("Content/Lua/Class/__Include__")
+require("Content/Lua/Include")
+
+-- Add a new function to the update list
+function Main.AddUpdate(obj, func)
+    -- Argument check
+    if (obj == nil or (not type(obj) == "table" and not type(obj) == "userdata")) then
+        error("AddUpdate expects a table or user object");
+    end
+    if (func == nil or not type(func) == "function")then
+        error("AddUpdate expects a function");
+    end
+
+    -- Add to update list
+    Main.UpdateList[obj] = func
+end
+
+-- Remove the update function for an object
+function Main.RemoveUpdate(obj)
+    table.remove(Main.UpdateList, obj)
+end
+
+function Main.RegisterEvent(eventName, func, obj)
+    if (Main.EventList[eventName] == nil) then
+        Main.EventList[eventName] = {}
+    end
+    Main.EventList[eventName][func] = obj
+end
+
+function Main.UnregisterEvent(eventName, func)
+    if (not Main.EventList[eventName] == nil) then
+        table.remove(Main.EventList[eventName], func)
+    end
+end
+
+-- Called from C++ update frame, will dispatch update event to all registered functions
+function Main.Update(deltaTime)
+    for obj, func in pairs(Main.UpdateList) do
+        func(obj, deltaTime)
+    end
+end
+
+-- Called when Lua scripts is loaded
+function Main.Start()
+    for k, v in pairs(Main.ClassList) do
+        if (k.Init) then
+            k:Init()
+        end
+    end
+end
+
+-- Factory method to create a C++ class that is bound to Lua
+-- @param class Either the name of class in string or the global table for that class
+-- @return the created object
+function Main.Create(class)
+    -- Convert from string to type
+    if (type(class) == "string")then
+        class = _G[class]
+    end
+
+    -- Check it's valid C++ class type
+    if (class == nil or not type(class) == "userdata" or class.New == nil or not type(class.New) == "function") then
+        error("Try to create a bad C++ class");
+    end
+
+    -- Create the object and call potential init function
+    local obj = class.New()
+    if (type(obj.Init) == "function") then
+        obj:Init()
+    end
+
+    return obj
+end
+
+function Main.EventNotify(event, eventName)
+    local list = Main.EventList[eventName]
+    if (list) then
+        for func, obj in pairs(list) do
+            if (obj == nil)then
+                func(event)
+            else
+                func(obj, event)
+            end
+        end
+    end
+end
+
+Main.Start()

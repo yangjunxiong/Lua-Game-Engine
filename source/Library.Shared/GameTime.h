@@ -2,9 +2,11 @@
 
 #include <chrono>
 #include "GameClock.h"
+#include "Macro.h"
 
 namespace GameEngine
 {
+	CLASS();
 	class GameTime final
 	{
 	public:

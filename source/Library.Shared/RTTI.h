@@ -72,3 +72,5 @@ namespace GameEngine
 
 #define RTTI_DEFINITIONS(Type) RTTI::IdType Type::sRunTimeTypeId = reinterpret_cast<RTTI::IdType>(&Type::sRunTimeTypeId);
 }
+
+using RTTI = GameEngine::RTTI;

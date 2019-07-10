@@ -3,8 +3,8 @@
 #include <vector>
 #include <set>
 
-#define REGISTER_FUNCTION "RegisterLua"
-#define UNREGISTER_FUNCTION "UnregisterLua"
+#define REGISTER_FUNCTION "LuaRegister::RegisterLua"
+#define UNREGISTER_FUNCTION "LuaRegister::UnregisterLua"
 
 namespace GameEngine::HeaderTool
 {

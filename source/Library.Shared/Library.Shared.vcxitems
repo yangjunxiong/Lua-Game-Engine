@@ -51,6 +51,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)JsonParseMaster.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)JsonTableParseHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LuaBind.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LuaRegister.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LuaWrapper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Macro.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />

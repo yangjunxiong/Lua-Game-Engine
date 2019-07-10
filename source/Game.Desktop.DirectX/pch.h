@@ -1,47 +1,49 @@
 #pragma once
 
-// Windows
-#include <windows.h>
-#include <wrl.h>
+#define NOMINMAX
 
 // Standard
-#include <string>
-#include <sstream>
-#include <algorithm>
 #include <exception>
-#include <initializer_list>
-#include <cstddef>
+#include <cassert>
+#include <string>
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <memory>
+#include <vector>
+#include <map>
+#include <stack>
 #include <cstdint>
+#include <iomanip>
+#include <codecvt>
+#include <algorithm>
 #include <functional>
-#include <thread>
-#include <future>
-#include <mutex>
-
-// OpenGL
-#include "GL/gl3w.h"
-#include "GLFW/glfw3.h"
-#pragma warning(push)
-#pragma warning(disable : 4201)
-#pragma warning(push)
-#pragma warning(disable : 4127)
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <SOIL/SOIL.h>
-#pragma warning(pop)
-#pragma warning(pop)
+#include <limits>
+#include <filesystem>
 
 #if defined(DEBUG) || defined(_DEBUG)
 #define _CRTDBG_MAP_ALLOC
-
 #include <stdlib.h>
 #include <crtdbg.h>
 #endif
 
-// DirectX
-#include <d3d11_2.h>
-#include <dxgi1_3.h>
-#include <DirectXMath.h>
+// Guidelines Support GameEngine
+#include <gsl\gsl>
 
-// Local
-#include "GameException.h"
+// Windows
+#include <windows.h>
+#include <winrt\Windows.Foundation.h>
+
+// DirectX
+#include <d3d11_4.h>
+#include <dxgi1_6.h>
+#include <DirectXMath.h>
+#include <DirectXPackedVector.h>
+#include <DirectXColors.h>
+#include <DirectXTK\DDSTextureLoader.h>
+#include <DirectXTK\WICTextureLoader.h>
+#include <DirectXTK\SpriteBatch.h>
+#include <DirectXTK\SpriteFont.h>
+#include <DirectXTK\GamePad.h>
+#include <DirectXTK\Keyboard.h>
+#include <DirectXTK\Mouse.h>

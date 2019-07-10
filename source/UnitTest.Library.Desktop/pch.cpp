@@ -1,5 +1,5 @@
 // stdafx.cpp : source file that includes just the standard includes
-// UnitTest.Library.Desktop.pch will be the pre-compiled header
+// UnitTest.GameEngine.Desktop.pch will be the pre-compiled header
 // stdafx.obj will contain the pre-compiled type information
 
 #include "pch.h"

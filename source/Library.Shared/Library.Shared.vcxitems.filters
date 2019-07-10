@@ -287,6 +287,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Macro.h">
       <Filter>LuaBind</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)LuaRegister.h">
+      <Filter>LuaBind</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)DefaultHashFunction.inl">
