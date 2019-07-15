@@ -4,13 +4,13 @@
 #include <functional>
 #include <vector>
 #include <sstream>
-#include "DrawableGameComponent.h"
+#include "Entity.h"
 
 namespace GameEngine
 {
-	class ImGuiComponent final : public DrawableGameComponent
+	class ImGuiComponent final : public Entity
 	{
-		RTTI_DECLARATIONS(ImGuiComponent, DrawableGameComponent)
+		RTTI_DECLARATIONS(ImGuiComponent, Entity)
 
 	public:
 		enum class Styles

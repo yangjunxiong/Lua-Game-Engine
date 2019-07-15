@@ -13,7 +13,7 @@ private:
 public:
 	static void Lua_RegisterClass(LuaBind& bind)
 	{
-		bind.RegisterType<Camera, GameComponent>();
+		bind.RegisterType<Camera, Entity>();
 	};
 	static void Lua_RegisterMember(LuaBind& bind)
 	{

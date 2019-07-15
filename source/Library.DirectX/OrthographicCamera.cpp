@@ -7,8 +7,8 @@ namespace GameEngine
 {
     RTTI_DEFINITIONS(OrthographicCamera)
 
-	OrthographicCamera::OrthographicCamera(Game& game, float viewWidth, float viewHeight, float nearPlaneDistance, float farPlaneDistance) :
-		Camera(game, nearPlaneDistance, farPlaneDistance),
+	OrthographicCamera::OrthographicCamera(float viewWidth, float viewHeight, float nearPlaneDistance, float farPlaneDistance) :
+		Camera(nearPlaneDistance, farPlaneDistance),
 		mViewWidth(viewWidth), mViewHeight(viewHeight)
     {
     }

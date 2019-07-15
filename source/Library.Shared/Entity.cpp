@@ -3,7 +3,6 @@
 #include "Sector.h"
 #include "Action.h"
 #include "WorldState.h"
-//#include "ActionRender.h"
 
 using namespace GameEngine;
 
@@ -14,7 +13,17 @@ Entity::Entity() : Entity(Entity::TypeIdClass())
 
 Entity::Entity(RTTI::IdType type) : Attributed(type)
 {
-	assert(mDatumPointers[ACTION_TABLE_INDEX]->first == ACTION_TABLE_KEY);
+	Append("Name").first = "";
+	Append("Active").first = true;
+	Append(ACTION_TABLE_KEY);
+}
+
+Entity::~Entity()
+{
+	for (auto& child : mChildren)
+	{
+		child->SetTransformParent(mTransformParent);
+	}
 }
 
 const std::string& Entity::Name() const
@@ -60,15 +69,15 @@ void Entity::Update(WorldState& state)
 	}
 }
 
-void Entity::Draw(const World::RenderFunction& func)
+void Entity::Draw()
 {
 	Datum& actions = Actions();
 	for (size_t i = 0; i < actions.Size(); ++i)
 	{
 		ActionRender* render = actions.AsTable(i).As<ActionRender>();
-		if (render != nullptr)
+		if (render != nullptr && render->Visible)
 		{
-			func(mTransform, render->GetRenderParam());
+			render->Draw();
 		}
 	}
 }
@@ -82,9 +91,6 @@ const Vector<Attributed::Signature> Entity::Signatures()
 {
 	return Vector<Attributed::Signature>({
 		Signature("Name", Datum::DatumType::String, 1, offsetof(Entity, mName)),
-		Signature("Position", Datum::DatumType::Vector, 1, offsetof(Entity, mTransform.mPosition)),
-		Signature("Rotation", Datum::DatumType::Vector, 1, offsetof(Entity, mTransform.mRotation)),
-		Signature("Scale", Datum::DatumType::Vector, 1, offsetof(Entity, mTransform.mScale)),
 		Signature("Active", Datum::DatumType::Integer, 1, offsetof(Entity, mActive)),
 		Signature(ACTION_TABLE_KEY, Datum::DatumType::Table, 0)
 	});
@@ -100,49 +106,14 @@ const Datum& Entity::Actions() const
 	return (*this)[ACTION_TABLE_INDEX];
 }
 
-Transform& Entity::GetTransform()
+Transform* Entity::GetTransform()
 {
-	return mTransform;
+	return &mTransform;
 }
 
-const Transform& Entity::GetTransform() const
+const Transform* Entity::GetTransform() const
 {
-	return mTransform;
-}
-
-void Entity::SetTransform(const Transform& trans)
-{
-	mTransform = trans;
-}
-
-glm::vec4 Entity::GetPosition() const
-{
-	return mTransform.GetPosition();
-}
-
-glm::vec4 Entity::GetRotation() const
-{
-	return mTransform.GetRotation();
-}
-
-glm::vec4 Entity::GetScale() const
-{
-	return mTransform.GetScale();
-}
-
-void Entity::SetPosition(const glm::vec4& pos)
-{
-	mTransform.SetPosition(pos);
-}
-
-void Entity::SetRotation(const glm::vec4& rot)
-{
-	mTransform.SetRotation(rot);
-}
-
-void Entity::SetScale(const glm::vec4& scale)
-{
-	mTransform.SetScale(scale);
+	return &mTransform;
 }
 
 bool Entity::IsActive() const
@@ -163,4 +134,39 @@ Action* Entity::CreateAction(std::string className, std::string instanceName)
 	action->SetName(instanceName);
 	Adopt(*action, ACTION_TABLE_KEY);
 	return action;
+}
+
+void Entity::Destroy()
+{
+	Scope* root = GetRoot();
+	assert(root != nullptr && root->Is(World::TypeIdClass()));
+	static_cast<World*>(root)->Destroy(*this);
+}
+
+Entity* Entity::GetTransformParent() const
+{
+	return mTransformParent;
+}
+
+void Entity::SetTransformParent(Entity* parent)
+{
+	if (parent != mTransformParent)
+	{
+		if (mTransformParent != nullptr)
+		{
+			auto it = std::find(mChildren.begin(), mChildren.end(), this);
+			mChildren.erase(it);
+		}
+
+		mTransformParent = parent;
+		if (mTransformParent != nullptr)
+		{
+			mTransformParent->mChildren.push_back(this);
+			mTransform.SetParent(&mTransformParent->mTransform);
+		}
+		else
+		{
+			mTransform.SetParent(nullptr);
+		}
+	}
 }

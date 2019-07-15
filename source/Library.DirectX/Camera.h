@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameComponent.h"
+#include "Entity.h"
 #include <DirectXMath.h>
 #include <vector>
 #include <functional>
@@ -8,17 +8,15 @@
 namespace GameEngine
 {
 	class GameTime;
-}
+	class Game;
 
-namespace GameEngine
-{
 	CLASS();
-	class Camera : public GameComponent
+	class Camera : public Entity
 	{
-		RTTI_DECLARATIONS(Camera, GameComponent)
+		RTTI_DECLARATIONS(Camera, Entity);
 
 	public:
-		explicit Camera(Game& game, float nearPlaneDistance = DefaultNearPlaneDistance, float farPlaneDistance = DefaultFarPlaneDistance);
+		explicit Camera(float nearPlaneDistance = DefaultNearPlaneDistance, float farPlaneDistance = DefaultFarPlaneDistance);
 		Camera(const Camera&) = default;
 		Camera& operator=(const Camera&) = default;
 		Camera(Camera&&) = default;
@@ -56,8 +54,8 @@ namespace GameEngine
 		virtual void SetPosition(const DirectX::XMFLOAT3& position);
 
 		virtual void Reset();
-		virtual void Initialize() override;
-		virtual void Update(const GameEngine::GameTime& gameTime) override;
+		virtual void Start(WorldState& state) override;
+		virtual void Update(WorldState& state) override;
 		virtual void UpdateViewMatrix();
 		virtual void UpdateProjectionMatrix() = 0;
 		virtual void ApplyRotation(DirectX::CXMMATRIX transform);
@@ -67,6 +65,7 @@ namespace GameEngine
 		inline static const float DefaultFarPlaneDistance{ 10000.0f };
 
 	protected:
+		Game* mGame = nullptr;
 		float mNearPlaneDistance;
 		float mFarPlaneDistance;
 

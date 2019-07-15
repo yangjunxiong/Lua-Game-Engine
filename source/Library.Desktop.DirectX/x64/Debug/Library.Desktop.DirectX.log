@@ -1,0 +1,757 @@
+﻿  Action.cpp
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(129,35): error C7525:  inline variables require at least '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(129,71): error C2864:  'GameEngine::ActionList::ACTION_LIST_TABLE_KEY': a static data member with an in-class initializer must have non-volatile const integral type or be specified as 'inline'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(129,71): message :  type is 'const std::string'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(134,30): error C7525:  inline variables require at least '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(134,30): error C7525: class template optional is only available with C++17 or later.
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(134,30): error C7525: string_view is only available with C++17 or later.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\um\WindowsNumerics.impl.h(36,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\um\WindowsNumerics.inl(137,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(132,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(142,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(181,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(397,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(434,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(481,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(534,27): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(578,27): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(593,27): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(624,9): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(659,27): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(685,29): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(689): message :  see reference to class template instantiation 'winrt::impl::for_each<winrt::impl::typelist<Types...>>' being compiled
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(687,3): error C7518:  fold expressions require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(687,3): message :  This diagnostic occurred in the compiler generated function 'auto winrt::impl::for_each<winrt::impl::typelist<Types...>>::apply(Func &&)'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(698,29): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(702): message :  see reference to class template instantiation 'winrt::impl::find_if<winrt::impl::typelist<Types...>>' being compiled
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(700,5): error C7518:  fold expressions require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(700,5): message :  This diagnostic occurred in the compiler generated function 'bool winrt::impl::find_if<winrt::impl::typelist<Types...>>::apply(Func &&)'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(765,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(798,11): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(799,11): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(839,9): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(882,9): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(980,28): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1120,71): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1120,128): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1147,9): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1151,14): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1517,20): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1517,1): error C4430:  missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1517,1): error C2061:  syntax error: identifier 'to_wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1518,1): error C2143:  syntax error: missing ';' before '{'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1518,1): error C2447:  '{': missing function header (old-style formal list?)
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1523,20): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1523,1): error C4430:  missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1523,1): error C2374:  'winrt::impl::wstring_view': redefinition; multiple initialization
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1517): message :  see declaration of 'winrt::impl::wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1523,1): error C2061:  syntax error: identifier 'to_wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1524,1): error C2143:  syntax error: missing ';' before '{'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1524,1): error C2447:  '{': missing function header (old-style formal list?)
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1876,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2302,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2329,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2512,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2566,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2567,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2568,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2569,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2570,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2571,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2572,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2573,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2574,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2575,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2576,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2577,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2578,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2579,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2580,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2581,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2582,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2583,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2662,31): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2662,58): error C2061:  syntax error: identifier 'wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2662,9): error C2382:  'winrt::hstring::hstring': redefinition; different exception specifications
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2634): message :  see declaration of 'winrt::hstring::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2662,58): error C2059:  syntax error: ':'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2637,1): error C2039:  'm_handle': is not a member of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2624): message :  see declaration of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2637,13): error C2614:  'winrt::hstring': illegal member initialization: 'm_handle' is not a base or member
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2642,13): error C2065:  'm_handle': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2642,1): error C2039:  'm_handle': is not a member of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2624): message :  see declaration of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2655,26): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2655,1): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2659,13): error C2614:  'winrt::hstring': illegal member initialization: 'm_handle' is not a base or member
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2796,21): error C2039:  'clear': is not a member of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2624): message :  see declaration of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2823,34): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2823,47): error C2065:  'wstring_view': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2823,47): error C2059:  syntax error: 'const'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2824,5): error C2143:  syntax error: missing ';' before '{'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2824,5): error C2447:  '{': missing function header (old-style formal list?)
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2835,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3029,26): error C2760:  syntax error: unexpected token 'const', expected ';'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3029,9): error C7510:  'string_view': use of dependent type name must be prefixed with 'typename'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3042,39): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3042,52): error C2065:  'wstring_view': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3042,52): error C2146:  syntax error: missing ')' before identifier 'value'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3043,5): error C2143:  syntax error: missing ';' before '{'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3043,5): error C2447:  '{': missing function header (old-style formal list?)
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3058,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3070,22): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3070,9): error C2061:  syntax error: identifier 'wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3070,9): error C2535:  'winrt::param::hstring::hstring(void) noexcept': member function already defined or declared
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3061): message :  see declaration of 'winrt::param::hstring::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3072,70): error C2065:  'value': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3072,106): error C2065:  'value': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3072,1): error C2660:  'WINRT_WindowsCreateStringReference': function does not take 3 arguments
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(256,24): message :  see declaration of 'WINRT_WindowsCreateStringReference'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3114,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3123,21): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3123,33): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3123,48): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3123,60): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3128,21): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3128,33): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3133,29): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3133,41): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3138,21): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3138,33): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3143,29): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3143,41): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3152,21): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3152,33): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3152,47): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3152,59): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3157,28): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3157,40): error C3861:  'wstring_view': identifier not found
+  ActionAdd.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3157,46): error C1003:  error count exceeds 100; stopping compilation
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(129,35): error C7525:  inline variables require at least '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(129,71): error C2864:  'GameEngine::ActionList::ACTION_LIST_TABLE_KEY': a static data member with an in-class initializer must have non-volatile const integral type or be specified as 'inline'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(129,71): message :  type is 'const std::string'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(134,30): error C7525:  inline variables require at least '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionAdd.h(65,35): error C7525:  inline variables require at least '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionAdd.h(65,59): error C2864:  'GameEngine::ActionAdd::OPERAND_KEY': a static data member with an in-class initializer must have non-volatile const integral type or be specified as 'inline'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionAdd.h(65,59): message :  type is 'const std::string'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionAdd.h(70,30): error C7525:  inline variables require at least '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionAdd.h(75,35): error C7525:  inline variables require at least '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionAdd.h(75,56): error C2864:  'GameEngine::ActionAdd::RESULT_KEY': a static data member with an in-class initializer must have non-volatile const integral type or be specified as 'inline'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionAdd.h(75,56): message :  type is 'const std::string'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionAdd.cpp(40,10): error C2429:  language feature 'structured bindings' requires compiler flag '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionAdd.cpp(41,4): error C2065:  'targetDatum': undeclared identifier
+  ActionCreateAction.cpp
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionAdd.cpp(42,12): error C2065:  'targetDatum': undeclared identifier
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(129,35): error C7525:  inline variables require at least '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(129,71): error C2864:  'GameEngine::ActionList::ACTION_LIST_TABLE_KEY': a static data member with an in-class initializer must have non-volatile const integral type or be specified as 'inline'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(129,71): message :  type is 'const std::string'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(134,30): error C7525:  inline variables require at least '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionCreateAction.h(41,35): error C7525:  inline variables require at least '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionCreateAction.h(41,54): error C2864:  'GameEngine::ActionCreateAction::CLASS_KEY': a static data member with an in-class initializer must have non-volatile const integral type or be specified as 'inline'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionCreateAction.h(41,54): message :  type is 'const std::string'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionCreateAction.h(46,35): error C7525:  inline variables require at least '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionCreateAction.h(46,69): error C2864:  'GameEngine::ActionCreateAction::INSTANCE_NAME_KEY': a static data member with an in-class initializer must have non-volatile const integral type or be specified as 'inline'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionCreateAction.h(46,69): message :  type is 'const std::string'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionCreateAction.h(46,69): message : class template optional is only available with C++17 or later.
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionCreateAction.h(46,69): message : string_view is only available with C++17 or later.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\um\WindowsNumerics.impl.h(36,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\um\WindowsNumerics.inl(137,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(132,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(142,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(181,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(397,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(434,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(481,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(534,27): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(578,27): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(593,27): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(624,9): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(659,27): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(685,29): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(689): message :  see reference to class template instantiation 'winrt::impl::for_each<winrt::impl::typelist<Types...>>' being compiled
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(687,3): error C7518:  fold expressions require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(687,3): message :  This diagnostic occurred in the compiler generated function 'auto winrt::impl::for_each<winrt::impl::typelist<Types...>>::apply(Func &&)'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(698,29): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(702): message :  see reference to class template instantiation 'winrt::impl::find_if<winrt::impl::typelist<Types...>>' being compiled
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(700,5): error C7518:  fold expressions require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(700,5): message :  This diagnostic occurred in the compiler generated function 'bool winrt::impl::find_if<winrt::impl::typelist<Types...>>::apply(Func &&)'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(765,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(798,11): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(799,11): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(839,9): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(882,9): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(980,28): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1120,71): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1120,128): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1147,9): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1151,14): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1517,20): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1517,1): error C4430:  missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1517,1): error C2061:  syntax error: identifier 'to_wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1518,1): error C2143:  syntax error: missing ';' before '{'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1518,1): error C2447:  '{': missing function header (old-style formal list?)
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1523,20): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1523,1): error C4430:  missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1523,1): error C2374:  'winrt::impl::wstring_view': redefinition; multiple initialization
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1517): message :  see declaration of 'winrt::impl::wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1523,1): error C2061:  syntax error: identifier 'to_wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1524,1): error C2143:  syntax error: missing ';' before '{'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1524,1): error C2447:  '{': missing function header (old-style formal list?)
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1876,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2302,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2329,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2512,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2566,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2567,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2568,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2569,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2570,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2571,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2572,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2573,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2574,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2575,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2576,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2577,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2578,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2579,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2580,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2581,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2582,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2583,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2662,31): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2662,58): error C2061:  syntax error: identifier 'wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2662,9): error C2382:  'winrt::hstring::hstring': redefinition; different exception specifications
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2634): message :  see declaration of 'winrt::hstring::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2662,58): error C2059:  syntax error: ':'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2637,1): error C2039:  'm_handle': is not a member of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2624): message :  see declaration of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2637,13): error C2614:  'winrt::hstring': illegal member initialization: 'm_handle' is not a base or member
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2642,13): error C2065:  'm_handle': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2642,1): error C2039:  'm_handle': is not a member of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2624): message :  see declaration of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2655,26): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2655,1): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2659,13): error C2614:  'winrt::hstring': illegal member initialization: 'm_handle' is not a base or member
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2796,21): error C2039:  'clear': is not a member of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2624): message :  see declaration of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2823,34): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2823,47): error C2065:  'wstring_view': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2823,47): error C2059:  syntax error: 'const'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2824,5): error C2143:  syntax error: missing ';' before '{'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2824,5): error C2447:  '{': missing function header (old-style formal list?)
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2835,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3029,26): error C2760:  syntax error: unexpected token 'const', expected ';'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3029,9): error C7510:  'string_view': use of dependent type name must be prefixed with 'typename'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3042,39): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3042,52): error C2065:  'wstring_view': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3042,52): error C2146:  syntax error: missing ')' before identifier 'value'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3043,5): error C2143:  syntax error: missing ';' before '{'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3043,5): error C2447:  '{': missing function header (old-style formal list?)
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3058,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3070,22): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3070,9): error C2061:  syntax error: identifier 'wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3070,9): error C2535:  'winrt::param::hstring::hstring(void) noexcept': member function already defined or declared
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3061): message :  see declaration of 'winrt::param::hstring::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3072,70): error C2065:  'value': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3072,106): error C2065:  'value': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3072,1): error C2660:  'WINRT_WindowsCreateStringReference': function does not take 3 arguments
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(256,24): message :  see declaration of 'WINRT_WindowsCreateStringReference'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3114,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3123,21): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3123,33): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3123,48): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3123,60): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3128,21): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3128,33): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3133,29): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3133,41): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3138,21): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3138,33): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3143,29): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3143,41): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3152,21): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3152,33): error C3861:  'wstring_view': identifier not found
+  ActionDestroy.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3152,38): error C1003:  error count exceeds 100; stopping compilation
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(129,35): error C7525:  inline variables require at least '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(129,71): error C2864:  'GameEngine::ActionList::ACTION_LIST_TABLE_KEY': a static data member with an in-class initializer must have non-volatile const integral type or be specified as 'inline'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(129,71): message :  type is 'const std::string'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(134,30): error C7525:  inline variables require at least '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(134,30): error C7525: class template optional is only available with C++17 or later.
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(134,30): error C7525: string_view is only available with C++17 or later.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\um\WindowsNumerics.impl.h(36,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\um\WindowsNumerics.inl(137,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(132,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(142,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(181,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(397,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(434,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(481,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(534,27): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(578,27): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(593,27): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(624,9): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(659,27): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(685,29): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(689): message :  see reference to class template instantiation 'winrt::impl::for_each<winrt::impl::typelist<Types...>>' being compiled
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(687,3): error C7518:  fold expressions require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(687,3): message :  This diagnostic occurred in the compiler generated function 'auto winrt::impl::for_each<winrt::impl::typelist<Types...>>::apply(Func &&)'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(698,29): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(702): message :  see reference to class template instantiation 'winrt::impl::find_if<winrt::impl::typelist<Types...>>' being compiled
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(700,5): error C7518:  fold expressions require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(700,5): message :  This diagnostic occurred in the compiler generated function 'bool winrt::impl::find_if<winrt::impl::typelist<Types...>>::apply(Func &&)'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(765,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(798,11): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(799,11): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(839,9): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(882,9): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(980,28): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1120,71): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1120,128): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1147,9): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1151,14): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1517,20): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1517,1): error C4430:  missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1517,1): error C2061:  syntax error: identifier 'to_wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1518,1): error C2143:  syntax error: missing ';' before '{'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1518,1): error C2447:  '{': missing function header (old-style formal list?)
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1523,20): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1523,1): error C4430:  missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1523,1): error C2374:  'winrt::impl::wstring_view': redefinition; multiple initialization
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1517): message :  see declaration of 'winrt::impl::wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1523,1): error C2061:  syntax error: identifier 'to_wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1524,1): error C2143:  syntax error: missing ';' before '{'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1524,1): error C2447:  '{': missing function header (old-style formal list?)
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1876,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2302,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2329,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2512,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2566,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2567,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2568,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2569,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2570,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2571,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2572,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2573,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2574,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2575,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2576,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2577,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2578,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2579,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2580,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2581,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2582,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2583,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2662,31): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2662,58): error C2061:  syntax error: identifier 'wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2662,9): error C2382:  'winrt::hstring::hstring': redefinition; different exception specifications
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2634): message :  see declaration of 'winrt::hstring::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2662,58): error C2059:  syntax error: ':'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2637,1): error C2039:  'm_handle': is not a member of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2624): message :  see declaration of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2637,13): error C2614:  'winrt::hstring': illegal member initialization: 'm_handle' is not a base or member
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2642,13): error C2065:  'm_handle': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2642,1): error C2039:  'm_handle': is not a member of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2624): message :  see declaration of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2655,26): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2655,1): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2659,13): error C2614:  'winrt::hstring': illegal member initialization: 'm_handle' is not a base or member
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2796,21): error C2039:  'clear': is not a member of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2624): message :  see declaration of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2823,34): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2823,47): error C2065:  'wstring_view': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2823,47): error C2059:  syntax error: 'const'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2824,5): error C2143:  syntax error: missing ';' before '{'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2824,5): error C2447:  '{': missing function header (old-style formal list?)
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2835,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3029,26): error C2760:  syntax error: unexpected token 'const', expected ';'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3029,9): error C7510:  'string_view': use of dependent type name must be prefixed with 'typename'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3042,39): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3042,52): error C2065:  'wstring_view': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3042,52): error C2146:  syntax error: missing ')' before identifier 'value'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3043,5): error C2143:  syntax error: missing ';' before '{'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3043,5): error C2447:  '{': missing function header (old-style formal list?)
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3058,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3070,22): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3070,9): error C2061:  syntax error: identifier 'wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3070,9): error C2535:  'winrt::param::hstring::hstring(void) noexcept': member function already defined or declared
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3061): message :  see declaration of 'winrt::param::hstring::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3072,70): error C2065:  'value': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3072,106): error C2065:  'value': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3072,1): error C2660:  'WINRT_WindowsCreateStringReference': function does not take 3 arguments
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(256,24): message :  see declaration of 'WINRT_WindowsCreateStringReference'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3114,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3123,21): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3123,33): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3123,48): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3123,60): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3128,21): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3128,33): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3133,29): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3133,41): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3138,21): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3138,33): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3143,29): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3143,41): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3152,21): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3152,33): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3152,47): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3152,59): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3157,28): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3157,40): error C3861:  'wstring_view': identifier not found
+  ActionDestroyAction.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3157,46): error C1003:  error count exceeds 100; stopping compilation
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(129,35): error C7525:  inline variables require at least '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(129,71): error C2864:  'GameEngine::ActionList::ACTION_LIST_TABLE_KEY': a static data member with an in-class initializer must have non-volatile const integral type or be specified as 'inline'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(129,71): message :  type is 'const std::string'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(134,30): error C7525:  inline variables require at least '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionDestroyAction.h(42,35): error C7525:  inline variables require at least '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionDestroyAction.h(42,56): error C2864:  'GameEngine::ActionDestroyAction::TARGET_KEY': a static data member with an in-class initializer must have non-volatile const integral type or be specified as 'inline'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionDestroyAction.h(42,56): message :  type is 'const std::string'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionDestroyAction.h(42,56): message : class template optional is only available with C++17 or later.
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionDestroyAction.h(42,56): message : string_view is only available with C++17 or later.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\um\WindowsNumerics.impl.h(36,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\um\WindowsNumerics.inl(137,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(132,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(142,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(181,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(397,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(434,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(481,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(534,27): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(578,27): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(593,27): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(624,9): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(659,27): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(685,29): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(689): message :  see reference to class template instantiation 'winrt::impl::for_each<winrt::impl::typelist<Types...>>' being compiled
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(687,3): error C7518:  fold expressions require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(687,3): message :  This diagnostic occurred in the compiler generated function 'auto winrt::impl::for_each<winrt::impl::typelist<Types...>>::apply(Func &&)'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(698,29): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(702): message :  see reference to class template instantiation 'winrt::impl::find_if<winrt::impl::typelist<Types...>>' being compiled
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(700,5): error C7518:  fold expressions require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(700,5): message :  This diagnostic occurred in the compiler generated function 'bool winrt::impl::find_if<winrt::impl::typelist<Types...>>::apply(Func &&)'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(765,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(798,11): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(799,11): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(839,9): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(882,9): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(980,28): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1120,71): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1120,128): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1147,9): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1151,14): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1517,20): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1517,1): error C4430:  missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1517,1): error C2061:  syntax error: identifier 'to_wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1518,1): error C2143:  syntax error: missing ';' before '{'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1518,1): error C2447:  '{': missing function header (old-style formal list?)
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1523,20): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1523,1): error C4430:  missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1523,1): error C2374:  'winrt::impl::wstring_view': redefinition; multiple initialization
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1517): message :  see declaration of 'winrt::impl::wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1523,1): error C2061:  syntax error: identifier 'to_wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1524,1): error C2143:  syntax error: missing ';' before '{'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1524,1): error C2447:  '{': missing function header (old-style formal list?)
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1876,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2302,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2329,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2512,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2566,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2567,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2568,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2569,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2570,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2571,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2572,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2573,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2574,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2575,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2576,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2577,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2578,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2579,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2580,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2581,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2582,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2583,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2662,31): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2662,58): error C2061:  syntax error: identifier 'wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2662,9): error C2382:  'winrt::hstring::hstring': redefinition; different exception specifications
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2634): message :  see declaration of 'winrt::hstring::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2662,58): error C2059:  syntax error: ':'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2637,1): error C2039:  'm_handle': is not a member of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2624): message :  see declaration of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2637,13): error C2614:  'winrt::hstring': illegal member initialization: 'm_handle' is not a base or member
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2642,13): error C2065:  'm_handle': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2642,1): error C2039:  'm_handle': is not a member of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2624): message :  see declaration of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2655,26): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2655,1): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2659,13): error C2614:  'winrt::hstring': illegal member initialization: 'm_handle' is not a base or member
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2796,21): error C2039:  'clear': is not a member of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2624): message :  see declaration of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2823,34): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2823,47): error C2065:  'wstring_view': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2823,47): error C2059:  syntax error: 'const'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2824,5): error C2143:  syntax error: missing ';' before '{'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2824,5): error C2447:  '{': missing function header (old-style formal list?)
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2835,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3029,26): error C2760:  syntax error: unexpected token 'const', expected ';'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3029,9): error C7510:  'string_view': use of dependent type name must be prefixed with 'typename'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3042,39): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3042,52): error C2065:  'wstring_view': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3042,52): error C2146:  syntax error: missing ')' before identifier 'value'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3043,5): error C2143:  syntax error: missing ';' before '{'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3043,5): error C2447:  '{': missing function header (old-style formal list?)
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3058,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3070,22): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3070,9): error C2061:  syntax error: identifier 'wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3070,9): error C2535:  'winrt::param::hstring::hstring(void) noexcept': member function already defined or declared
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3061): message :  see declaration of 'winrt::param::hstring::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3072,70): error C2065:  'value': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3072,106): error C2065:  'value': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3072,1): error C2660:  'WINRT_WindowsCreateStringReference': function does not take 3 arguments
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(256,24): message :  see declaration of 'WINRT_WindowsCreateStringReference'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3114,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3123,21): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3123,33): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3123,48): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3123,60): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3128,21): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3128,33): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3133,29): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3133,41): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3138,21): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3138,33): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3143,29): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3143,41): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3152,21): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3152,33): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3152,47): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3152,59): error C3861:  'wstring_view': identifier not found
+  ActionEvent.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3152,65): error C1003:  error count exceeds 100; stopping compilation
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(129,35): error C7525:  inline variables require at least '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(129,71): error C2864:  'GameEngine::ActionList::ACTION_LIST_TABLE_KEY': a static data member with an in-class initializer must have non-volatile const integral type or be specified as 'inline'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(129,71): message :  type is 'const std::string'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(134,30): error C7525:  inline variables require at least '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(134,30): error C7525: class template optional is only available with C++17 or later.
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(134,30): error C7525: string_view is only available with C++17 or later.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\um\WindowsNumerics.impl.h(36,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\um\WindowsNumerics.inl(137,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(132,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(142,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(181,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(397,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(434,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(481,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(534,27): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(578,27): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(593,27): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(624,9): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(659,27): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(685,29): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(689): message :  see reference to class template instantiation 'winrt::impl::for_each<winrt::impl::typelist<Types...>>' being compiled
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(687,3): error C7518:  fold expressions require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(687,3): message :  This diagnostic occurred in the compiler generated function 'auto winrt::impl::for_each<winrt::impl::typelist<Types...>>::apply(Func &&)'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(698,29): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(702): message :  see reference to class template instantiation 'winrt::impl::find_if<winrt::impl::typelist<Types...>>' being compiled
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(700,5): error C7518:  fold expressions require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(700,5): message :  This diagnostic occurred in the compiler generated function 'bool winrt::impl::find_if<winrt::impl::typelist<Types...>>::apply(Func &&)'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(765,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(798,11): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(799,11): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(839,9): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(882,9): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(980,28): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1120,71): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1120,128): warning C5051:  attribute 'maybe_unused' requires at least '/std:c++17'; ignored
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1147,9): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1151,14): warning C4984:  'if constexpr' is a C++17 language extension
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1517,20): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1517,1): error C4430:  missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1517,1): error C2061:  syntax error: identifier 'to_wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1518,1): error C2143:  syntax error: missing ';' before '{'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1518,1): error C2447:  '{': missing function header (old-style formal list?)
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1523,20): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1523,1): error C4430:  missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1523,1): error C2374:  'winrt::impl::wstring_view': redefinition; multiple initialization
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1517): message :  see declaration of 'winrt::impl::wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1523,1): error C2061:  syntax error: identifier 'to_wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1524,1): error C2143:  syntax error: missing ';' before '{'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1524,1): error C2447:  '{': missing function header (old-style formal list?)
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(1876,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2302,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2329,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2512,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2566,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2567,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2568,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2569,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2570,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2571,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2572,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2573,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2574,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2575,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2576,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2577,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2578,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2579,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2580,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2581,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2582,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2583,30): error C7525:  inline variables require at least '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2662,31): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2662,58): error C2061:  syntax error: identifier 'wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2662,9): error C2382:  'winrt::hstring::hstring': redefinition; different exception specifications
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2634): message :  see declaration of 'winrt::hstring::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2662,58): error C2059:  syntax error: ':'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2637,1): error C2039:  'm_handle': is not a member of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2624): message :  see declaration of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2637,13): error C2614:  'winrt::hstring': illegal member initialization: 'm_handle' is not a base or member
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2642,13): error C2065:  'm_handle': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2642,1): error C2039:  'm_handle': is not a member of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2624): message :  see declaration of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2655,26): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2655,1): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2659,13): error C2614:  'winrt::hstring': illegal member initialization: 'm_handle' is not a base or member
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2796,21): error C2039:  'clear': is not a member of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2624): message :  see declaration of 'winrt::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2823,34): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2823,47): error C2065:  'wstring_view': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2823,47): error C2059:  syntax error: 'const'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2824,5): error C2143:  syntax error: missing ';' before '{'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2824,5): error C2447:  '{': missing function header (old-style formal list?)
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(2835,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3029,26): error C2760:  syntax error: unexpected token 'const', expected ';'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3029,9): error C7510:  'string_view': use of dependent type name must be prefixed with 'typename'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3042,39): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3042,52): error C2065:  'wstring_view': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3042,52): error C2146:  syntax error: missing ')' before identifier 'value'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3043,5): error C2143:  syntax error: missing ';' before '{'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3043,5): error C2447:  '{': missing function header (old-style formal list?)
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3058,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3070,22): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3070,9): error C2061:  syntax error: identifier 'wstring_view'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3070,9): error C2535:  'winrt::param::hstring::hstring(void) noexcept': member function already defined or declared
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3061): message :  see declaration of 'winrt::param::hstring::hstring'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3072,70): error C2065:  'value': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3072,106): error C2065:  'value': undeclared identifier
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3072,1): error C2660:  'WINRT_WindowsCreateStringReference': function does not take 3 arguments
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(256,24): message :  see declaration of 'WINRT_WindowsCreateStringReference'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3114,1): error C2429:  language feature 'nested-namespace-definition' requires compiler flag '/std:c++17'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3123,21): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3123,33): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3123,48): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3123,60): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3128,21): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3128,33): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3133,29): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3133,41): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3138,21): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3138,33): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3143,29): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3143,41): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3152,21): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3152,33): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3152,47): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3152,59): error C3861:  'wstring_view': identifier not found
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3157,28): error C2039:  'wstring_view': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\experimental\resumable(41): message :  see declaration of 'std'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3157,40): error C3861:  'wstring_view': identifier not found
+  ActionExpression.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\cppwinrt\winrt\base.h(3157,46): error C1003:  error count exceeds 100; stopping compilation
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(129,35): error C7525:  inline variables require at least '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(129,71): error C2864:  'GameEngine::ActionList::ACTION_LIST_TABLE_KEY': a static data member with an in-class initializer must have non-volatile const integral type or be specified as 'inline'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(129,71): message :  type is 'const std::string'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\Action.h(134,30): error C7525:  inline variables require at least '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionExpression.cpp(54,11): error C2429:  language feature 'structured bindings' requires compiler flag '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionExpression.cpp(55,6): error C2065:  'datum': undeclared identifier
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionExpression.cpp(56,6): error C2065:  'datum': undeclared identifier
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionExpression.cpp(178,8): error C2429:  language feature 'structured bindings' requires compiler flag '/std:c++17'
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionExpression.cpp(179,3): error C2065:  'datum': undeclared identifier
+  ActionIncrement.cpp
+C:\dev\Students\CH15\junxiong.yang\C++\PPP\Lua-Game-Engine\source\Library.Shared\ActionExpression.cpp(180,21): error C2065:  'datum': undeclared identifier

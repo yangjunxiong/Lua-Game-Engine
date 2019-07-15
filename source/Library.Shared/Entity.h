@@ -62,7 +62,7 @@ namespace GameEngine
 		/// <summary>
 		/// Default desctructor
 		/// </summary>
-		virtual ~Entity() = default;
+		virtual ~Entity();
 
 		FUNCTION();
 		/// <summary>
@@ -78,6 +78,7 @@ namespace GameEngine
 		/// <param name="name">New name of this Entity</param>
 		void SetName(const std::string& name);
 
+		FUNCTION();
 		/// <summary>
 		/// Set the Sector this Entity belongs to. Will remove this Entity from previous Sector
 		/// </summary>
@@ -97,33 +98,12 @@ namespace GameEngine
 		const Datum& Actions() const;
 
 		FUNCTION();
-		Transform& GetTransform();
+		Transform* GetTransform();
 
-		const Transform& GetTransform() const;
-
-		FUNCTION();
-		void SetTransform(const Transform& trans);
-
-		FUNCTION();
-		glm::vec4 GetPosition() const;
-
-		FUNCTION();
-		glm::vec4 GetRotation() const;
-
-		FUNCTION();
-		glm::vec4 GetScale() const;
+		const Transform* GetTransform() const;
 
 		FUNCTION()
 		bool IsActive() const;
-
-		FUNCTION();
-		void SetPosition(const glm::vec4& pos);
-
-		FUNCTION();
-		void SetRotation(const glm::vec4& rot);
-
-		FUNCTION();
-		void SetScale(const glm::vec4& scale);
 
 		FUNCTION()
 		void SetActive(bool active);
@@ -152,7 +132,16 @@ namespace GameEngine
 		/// <summary>
 		/// Draw the entity using passed-in function, this is to support different rendering method like OpenGL and DirectX
 		/// </summary>
-		void Draw(const class World::RenderFunction& func);
+		void Draw();
+
+		FUNCTION();
+		void Destroy();
+
+		FUNCTION();
+		Entity* GetTransformParent() const;
+
+		FUNCTION();
+		void SetTransformParent(Entity* parent);
 
 		/// <summary>
 		/// Create a copy of this Entity object
@@ -166,23 +155,18 @@ namespace GameEngine
 		/// <returns>Signature list for Entity type</returns>
 		static const Vector<Attributed::Signature> Signatures();
 
-		PROPERTY();
 		/// <summary>
 		/// The special key in Scope that maps to the actions datum
 		/// </summary>
 		static inline const std::string ACTION_TABLE_KEY = "Actions";
 
-		PROPERTY();
 		/// <summary>
 		/// The special index in Scope that maps to the actions datum
 		/// </summary>
-		static inline const size_t ACTION_TABLE_INDEX = 6;
+		static inline const size_t ACTION_TABLE_INDEX = 3;
 
 		PROPERTY();
 		std::vector<std::string> Tags;
-
-		PROPERTY();
-		std::vector<Entity*> Targets;
 
 	protected:
 		/// <summary>
@@ -199,6 +183,9 @@ namespace GameEngine
 		/// Whether this entity is active or not, inactive entity will not be updated and will not rendered either
 		/// </summary>
 		int mActive = 1;
+
+		Entity* mTransformParent = nullptr;
+		std::vector<Entity*> mChildren;
 	};
 
 	DECLARE_FACTORY(Entity, Scope);

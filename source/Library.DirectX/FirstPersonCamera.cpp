@@ -12,37 +12,37 @@ namespace GameEngine
 {
     RTTI_DEFINITIONS(FirstPersonCamera)
 
-    FirstPersonCamera::FirstPersonCamera(Game& game, float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance) :
-		PerspectiveCamera(game, fieldOfView, aspectRatio, nearPlaneDistance, farPlaneDistance)
+    FirstPersonCamera::FirstPersonCamera(float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance) :
+		PerspectiveCamera(fieldOfView, aspectRatio, nearPlaneDistance, farPlaneDistance)
     {
     }
 
-	GamePadComponent* FirstPersonCamera::GetGamePad() const
+	GamePadEntity* FirstPersonCamera::GetGamePad() const
 	{
 		return mGamePad;
 	}
 
-	void FirstPersonCamera::SetGamePad(GamePadComponent* gamePad)
+	void FirstPersonCamera::SetGamePad(GamePadEntity* gamePad)
 	{
 		mGamePad = gamePad;
 	}
 
-	KeyboardComponent* FirstPersonCamera::GetKeyboard() const
+	KeyboardEntity* FirstPersonCamera::GetKeyboard() const
 	{
 		return mKeyboard;
 	}
 
-	void FirstPersonCamera::SetKeyboard(KeyboardComponent* keyboard)
+	void FirstPersonCamera::SetKeyboard(KeyboardEntity* keyboard)
 	{
 		mKeyboard = keyboard;
 	}
 
-	MouseComponent* FirstPersonCamera::GetMouse() const
+	MouseEntity* FirstPersonCamera::GetMouse() const
 	{
 		return mMouse;
 	}
 
-	void FirstPersonCamera::SetMouse(MouseComponent* mouse)
+	void FirstPersonCamera::SetMouse(MouseEntity* mouse)
 	{
 		mMouse = mouse;
 	}
@@ -90,17 +90,18 @@ namespace GameEngine
 		InvokePositionUpdatedCallbacks();
 	}
 
-	void FirstPersonCamera::Initialize()
+	void FirstPersonCamera::Start(WorldState& state)
 	{
-		mGamePad = reinterpret_cast<GamePadComponent*>(mGame->Services().GetService(GamePadComponent::TypeIdClass()));
-		mKeyboard = (KeyboardComponent*)mGame->Services().GetService(KeyboardComponent::TypeIdClass());
-		mMouse = (MouseComponent*)mGame->Services().GetService(MouseComponent::TypeIdClass());
+		mGamePad = reinterpret_cast<GamePadEntity*>(mGame->Services().GetService(GamePadEntity::TypeIdClass()));
+		mKeyboard = (KeyboardEntity*)mGame->Services().GetService(KeyboardEntity::TypeIdClass());
+		mMouse = (MouseEntity*)mGame->Services().GetService(MouseEntity::TypeIdClass());
 
-		Camera::Initialize();
+		Camera::Start(state);
 	}
 
-    void FirstPersonCamera::Update(const GameEngine::GameTime& gameTime)
-    {		
+    void FirstPersonCamera::Update(WorldState& state)
+    {
+		auto& gameTime = state.GetGameTime();
 		GamePad::State gamePadState;
 		if (IsGamePadConnected(gamePadState))
 		{
@@ -157,7 +158,7 @@ namespace GameEngine
 			}
 		}
 
-        Camera::Update(gameTime);
+        Camera::Update(state);
     }
 
 	void FirstPersonCamera::UpdatePosition(const XMFLOAT2& movementAmount, const XMFLOAT2& rotationAmount, const GameEngine::GameTime& gameTime)

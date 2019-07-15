@@ -2,7 +2,6 @@
 #include "Attributed.h"
 #include "Factory.h"
 #include "World.h"
-//#include "Material.h"
 
 namespace GameEngine
 {
@@ -96,7 +95,6 @@ namespace GameEngine
 		/// <returns>The Entity created</returns>
 		Entity* CreateEntity(const std::string& className, const std::string& instanceName);
 
-		FUNCTION();
 		/// <summary>
 		/// Set the World this Sector belongs to. Will remove this Sector from previous World
 		/// </summary>
@@ -117,7 +115,7 @@ namespace GameEngine
 		/// <summary>
 		/// Draw the sector, which will call draw on each child entity
 		/// </summary>
-		void Draw(const class World::RenderFunction& func);
+		void Draw();
 
 		/// <summary>
 		/// Create a copy of this Sector
@@ -131,7 +129,6 @@ namespace GameEngine
 		/// <returns>Signature list for Sector type</returns>
 		static const Vector<Attributed::Signature> Signatures();
 
-		PROPERTY();
 		/// <summary>
 		/// The special key in Scope that maps to the Entity datum
 		/// </summary>

@@ -1,10 +1,9 @@
 ﻿#include "pch.h"
 #include "GameException.h"
 #include "UtilityWin32.h"
-#include "RenderingGame.h"
+#include "Game.h"
 
 using namespace GameEngine;
-using namespace Rendering;
 using namespace std;
 using namespace std::string_literals;
 
@@ -37,7 +36,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int showCommand)
 		return reinterpret_cast<void*>(windowHandle);
 	};
 
-	RenderingGame game(getWindow, getRenderTargetSize);
+	Game game(getWindow, getRenderTargetSize);
 	game.UpdateRenderTargetSize();
 	game.Initialize();
 

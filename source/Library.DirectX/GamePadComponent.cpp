@@ -6,83 +6,83 @@ using namespace DirectX;
 
 namespace GameEngine
 {
-	RTTI_DEFINITIONS(GamePadComponent)
+	RTTI_DEFINITIONS(GamePadEntity)
 
-	unique_ptr<GamePad> GamePadComponent::sGamePad(new DirectX::GamePad);
+	unique_ptr<GamePad> GamePadEntity::sGamePad(new DirectX::GamePad);
 
-	GamePad* GamePadComponent::GamePad()
+	GamePad* GamePadEntity::GamePad()
 	{
 		return sGamePad.get();
 	}
 
-	GamePadComponent::GamePadComponent(Game& game, int player) :
-		GameComponent(game), mPlayer(player)
+	GamePadEntity::GamePadEntity(int player) :
+		Entity(GamePadEntity::TypeIdClass()), mPlayer(player)
 	{
 	}
 
-	int GamePadComponent::Player() const
+	int GamePadEntity::Player() const
 	{
 		return mPlayer;
 	}
 
-	const GamePad::State& GamePadComponent::CurrentState() const
+	const GamePad::State& GamePadEntity::CurrentState() const
 	{
 		return mCurrentState;
 	}
 
-	const GamePad::State& GamePadComponent::LastState() const
+	const GamePad::State& GamePadEntity::LastState() const
 	{
 		return mLastState;
 	}
 
-	void GamePadComponent::Initialize()
+	void GamePadEntity::Start(WorldState&)
 	{
 		mCurrentState = sGamePad->GetState(mPlayer);
 		mLastState = mCurrentState;
 	}
 
-	void GamePadComponent::Update(const GameTime&)
+	void GamePadEntity::Update(WorldState&)
 	{
 		mLastState = mCurrentState;
 		mCurrentState = sGamePad->GetState(mPlayer);
 	}
 
-	bool GamePadComponent::IsButtonUp(GamePadButtons button) const
+	bool GamePadEntity::IsButtonUp(GamePadButtons button) const
 	{
 		return GetButtonState(mCurrentState, button) == false;
 	}
 
-	bool GamePadComponent::IsButtonDown(GamePadButtons button) const
+	bool GamePadEntity::IsButtonDown(GamePadButtons button) const
 	{
 		return GetButtonState(mCurrentState, button);
 	}
 
-	bool GamePadComponent::WasButtonUp(GamePadButtons button) const
+	bool GamePadEntity::WasButtonUp(GamePadButtons button) const
 	{
 		return GetButtonState(mLastState, button) == false;
 	}
 
-	bool GamePadComponent::WasButtonDown(GamePadButtons button) const
+	bool GamePadEntity::WasButtonDown(GamePadButtons button) const
 	{
 		return GetButtonState(mLastState, button);
 	}
 
-	bool GamePadComponent::WasButtonPressedThisFrame(GamePadButtons button) const
+	bool GamePadEntity::WasButtonPressedThisFrame(GamePadButtons button) const
 	{
 		return (IsButtonDown(button) && WasButtonUp(button));
 	}
 
-	bool GamePadComponent::WasButtonReleasedThisFrame(GamePadButtons button) const
+	bool GamePadEntity::WasButtonReleasedThisFrame(GamePadButtons button) const
 	{
 		return (IsButtonUp(button) && WasButtonDown(button));
 	}
 
-	bool GamePadComponent::IsButtonHeldDown(GamePadButtons button) const
+	bool GamePadEntity::IsButtonHeldDown(GamePadButtons button) const
 	{
 		return (IsButtonDown(button) && WasButtonDown(button));
 	}
 
-	bool GamePadComponent::GetButtonState(const GamePad::State& state, GamePadButtons button) const
+	bool GamePadEntity::GetButtonState(const GamePad::State& state, GamePadButtons button) const
 	{
 		switch (button)
 		{

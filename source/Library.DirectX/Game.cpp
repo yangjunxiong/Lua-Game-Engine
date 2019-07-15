@@ -1,10 +1,19 @@
 #include "pch.h"
 #include "Game.h"
 #include "GameException.h"
-#include "DrawableGameComponent.h"
+#include "SamplerStates.h"
+#include "RasterizerStates.h"
+#include "World.h"
+#include "WorldState.h"
 #include "DirectXHelper.h"
 #include "ContentTypeReaderManager.h"
 #include "LuaRegister.h"
+
+#include "KeyboardComponent.h"
+#include "GamePadComponent.h"
+#include "MouseComponent.h"
+#include "FirstPersonCamera.h"
+#include "Texture2D.h"
 
 using namespace std;
 using namespace gsl;
@@ -16,7 +25,14 @@ using namespace GameEngine::Lua;
 
 namespace GameEngine
 {
-	RTTI_DEFINITIONS(Game)
+	void Log(const char* msg)
+	{
+		OutputDebugStringA(msg);
+	}
+
+	RTTI_DEFINITIONS(Game);
+
+	Game* Game::sInstance = nullptr;
 
 	Game::Game(function<void*()> getWindowCallback, function<void(SIZE&)> getRenderTargetSizeCallback) :
 		mGetWindow(getWindowCallback), mGetRenderTargetSize(getRenderTargetSizeCallback),
@@ -24,26 +40,51 @@ namespace GameEngine
 	{
 		assert(getWindowCallback != nullptr);
 		assert(mGetRenderTargetSize != nullptr);
-
+		sInstance = this;
 		CreateDeviceIndependentResources();
 		CreateDeviceResources();
 	}
 
+	Game::~Game()
+	{
+		sInstance = nullptr;
+	}
+
 	void Game::Initialize()
 	{
+		// Init rendering
+		SamplerStates::Initialize(Direct3DDevice());
+		RasterizerStates::Initialize(Direct3DDevice());
 		ContentTypeReaderManager::Initialize(*this);
+
+		// Create world
+		mGameClock.Reset();
+		mWorld = make_shared<World>(mGameTime);
+		mKeyboard = new KeyboardEntity();
+		auto gamepad = new GamePadEntity();
+		mMouse = new MouseEntity(MouseModes::Absolute);
+		mCamera = new FirstPersonCamera();
+		mWorld->Adopt(*mKeyboard, mWorld->ENTITY_TABLE_KEY);
+		mWorld->Adopt(*gamepad, mWorld->ENTITY_TABLE_KEY);
+		mWorld->Adopt(*mMouse, mWorld->ENTITY_TABLE_KEY);
+		mWorld->Adopt(*mCamera, mWorld->ENTITY_TABLE_KEY);
+		mServices.AddService(KeyboardEntity::TypeIdClass(), mKeyboard);
+		mServices.AddService(GamePadEntity::TypeIdClass(), gamepad);
+		mServices.AddService(MouseEntity::TypeIdClass(), mMouse);
+		mServices.AddService(Camera::TypeIdClass(), mCamera);
+		mServices.AddService(PerspectiveCamera::TypeIdClass(), mCamera);
+		mServices.AddService(FirstPersonCamera::TypeIdClass(), mCamera);
+		mWorld->Start();
+		
+		// Init Lua
 		mLua = make_shared<LuaBind>();
 		LuaRegister::RegisterLua(*mLua.get());
-
-		mGameClock.Reset();
-		for (auto& component : mComponents)
-		{
-			component->Initialize();
-		}
-
 		mLua->LoadFile("Content\\Lua\\Main.lua");
+		mLua->SetProperty("World", mWorld.get());
+		mLua->SetFunction("Log", std::function(Log));
 		mLua->OpenTable("Main");
-		mLua->SetProperty("Game", this);
+
+		mLua->CallFunctionNoReturn("Start");
 	}
 
 	void Game::Run()
@@ -55,18 +96,17 @@ namespace GameEngine
 
 	void Game::Shutdown()
 	{
-		for (auto& component : mComponents)
-		{
-			component->Shutdown();
-		}
+		// Clear game contents
 		LuaRegister::UnregisterLua(*mLua.get(), true);
+		mLua = nullptr;
+
+		// Close rendering states
+		RasterizerStates::Shutdown();
+		SamplerStates::Shutdown();
 
 		// Free up all D3D resources.
 		mDirect3DDeviceContext->ClearState();
 		mDirect3DDeviceContext->Flush();
-		
-		mComponents.clear();
-		mComponents.shrink_to_fit();
 
 		mDepthStencilView = nullptr;
 		mRenderTargetView = nullptr;
@@ -84,27 +124,37 @@ namespace GameEngine
 
 	void Game::Update(const GameTime& gameTime)
 	{
-		for (auto& component : mComponents)
+		if (mKeyboard->WasKeyPressedThisFrame(Keys::Escape))
 		{
-			if (component->Enabled())
-			{
-				component->Update(gameTime);
-			}
+			PostQuitMessage(0);
+			return;
 		}
 
+		// Update Lua logic
 		assert(mLua->CurrentTableName() == "Main");
 		mLua->CallFunctionNoReturn("Update", gameTime.ElapsedGameTimeSeconds().count());
+
+		// Update C++ logic
+		mWorld->Update();
 	}
 
-	void Game::Draw(const GameTime& gameTime)
+	void Game::Draw(const GameTime&)
 	{
-		for (auto& component : mComponents)
+		mDirect3DDeviceContext->ClearRenderTargetView(mRenderTargetView.get(), BackgroundColor.f);
+		mDirect3DDeviceContext->ClearDepthStencilView(mDepthStencilView.get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+		mWorld->Draw();
+
+		HRESULT hr = mSwapChain->Present(1, 0);
+
+		// If the device was removed either by a disconnection or a driver upgrade, we must recreate all device resources.
+		if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
 		{
-			DrawableGameComponent* drawableGameComponent = component->As<DrawableGameComponent>();
-			if (drawableGameComponent != nullptr && drawableGameComponent->Visible())
-			{
-				drawableGameComponent->Draw(gameTime);
-			}
+			HandleDeviceLost();
+		}
+		else
+		{
+			ThrowIfFailed(hr, "IDXGISwapChain::Present() failed.");
 		}
 	}
 

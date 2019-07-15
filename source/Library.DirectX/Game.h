@@ -27,7 +27,9 @@
 
 namespace GameEngine
 {
-	class GameComponent;
+	class World;
+
+	void Log(const char* msg);
 
 	class IDeviceNotify
 	{
@@ -41,7 +43,6 @@ namespace GameEngine
 		IDeviceNotify() { };
 	};
 
-	CLASS();
     class Game : public RenderTarget
     {
 		RTTI_DECLARATIONS(Game, RenderTarget);
@@ -52,7 +53,9 @@ namespace GameEngine
 		Game& operator=(const Game&) = delete;
 		Game(Game&&) = delete;
 		Game& operator=(Game&&) = delete;
-		virtual ~Game() = default;
+		virtual ~Game();
+
+		inline static Game* GetInstance() { return sInstance; };
 
 		gsl::not_null<ID3D11Device5*> Direct3DDevice() const;
 		gsl::not_null<ID3D11DeviceContext4*> Direct3DDeviceContext() const;
@@ -69,7 +72,6 @@ namespace GameEngine
 		std::shared_ptr<GameEngine::Lua::LuaBind> Lua() const;
 		GameEngine::EventQueue& EventQueue();
 
-		const std::vector<std::shared_ptr<GameComponent>>& Components() const;
 		const ServiceContainer& Services() const;			
 
         virtual void Initialize();
@@ -86,7 +88,9 @@ namespace GameEngine
 
 		ContentManager& Content();
 
-    protected:		
+    protected:
+		static Game* sInstance;
+
 		virtual void HandleDeviceLost();
 
 		virtual void Begin() override;
@@ -100,6 +104,7 @@ namespace GameEngine
 		inline static const std::uint32_t DefaultFrameRate{ 60 };
 		inline static const std::uint32_t DefaultMultiSamplingCount{ 4 };
 		inline static const std::uint32_t DefaultBufferCount{ 2 };
+		inline static const DirectX::XMVECTORF32 BackgroundColor { DirectX::Colors::CornflowerBlue };
 
 		winrt::com_ptr<ID3D11Device5> mDirect3DDevice;
 		winrt::com_ptr<ID3D11DeviceContext4> mDirect3DDeviceContext;
@@ -123,11 +128,15 @@ namespace GameEngine
 
 		GameEngine::GameClock mGameClock;
         GameEngine::GameTime mGameTime;
-		std::vector<std::shared_ptr<GameComponent>> mComponents;
 		ServiceContainer mServices;
 		ContentManager mContentManager;
+		class KeyboardEntity* mKeyboard = nullptr;
+		class MouseEntity* mMouse = nullptr;
+		class FirstPersonCamera* mCamera = nullptr;
+
 		GameEngine::EventQueue mEventQueue;
 		std::shared_ptr<GameEngine::Lua::LuaBind> mLua;
+		std::shared_ptr<World> mWorld;
     };
 }
 

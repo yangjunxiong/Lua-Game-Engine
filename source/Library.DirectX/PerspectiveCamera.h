@@ -14,7 +14,7 @@ namespace GameEngine
 		RTTI_DECLARATIONS(PerspectiveCamera, Camera)
 
     public:
-		explicit PerspectiveCamera(Game& game, float fieldOfView = DefaultFieldOfView, float aspectRatio = DefaultAspectRatio, float nearPlaneDistance = DefaultNearPlaneDistance, float farPlaneDistance = DefaultFarPlaneDistance);
+		explicit PerspectiveCamera(float fieldOfView = DefaultFieldOfView, float aspectRatio = DefaultAspectRatio, float nearPlaneDistance = DefaultNearPlaneDistance, float farPlaneDistance = DefaultFarPlaneDistance);
 		PerspectiveCamera(const PerspectiveCamera&) = default;
 		PerspectiveCamera& operator=(const PerspectiveCamera&) = default;
 		PerspectiveCamera(PerspectiveCamera&&) = default;

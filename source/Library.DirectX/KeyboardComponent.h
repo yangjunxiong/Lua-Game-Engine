@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameComponent.h"
+#include "Entity.h"
 #include "Utility.h"
 #include <DirectXTK\Keyboard.h>
 #include <memory>
@@ -187,25 +187,25 @@ namespace GameEngine
 		OemClear = 0xfe,
 	};
 
-	class KeyboardComponent final : public GameComponent
+	class KeyboardEntity final : public Entity
 	{
-		RTTI_DECLARATIONS(KeyboardComponent, GameComponent)
+		RTTI_DECLARATIONS(KeyboardEntity, Entity)
 
 	public:
 		static DirectX::Keyboard* Keyboard();
 		
-		KeyboardComponent(Game& game);
-		KeyboardComponent(const KeyboardComponent&) = delete;
-		KeyboardComponent(KeyboardComponent&&) = default;
-		KeyboardComponent& operator=(const KeyboardComponent&) = delete;		
-		KeyboardComponent& operator=(KeyboardComponent&&) = default;
-		~KeyboardComponent() = default;
+		KeyboardEntity();
+		KeyboardEntity(const KeyboardEntity&) = delete;
+		KeyboardEntity(KeyboardEntity&&) = default;
+		KeyboardEntity& operator=(const KeyboardEntity&) = delete;		
+		KeyboardEntity& operator=(KeyboardEntity&&) = default;
+		~KeyboardEntity() = default;
 
 		const DirectX::Keyboard::State& CurrentState() const;
 		const DirectX::Keyboard::State& LastState() const;
 
-		virtual void Initialize() override;
-		virtual void Update(const GameEngine::GameTime& gameTime) override;
+		virtual void Start(WorldState& state) override;
+		virtual void Update(WorldState& state) override;
 
 		bool IsKeyUp(Keys key) const;
 		bool IsKeyDown(Keys key) const;
@@ -223,7 +223,7 @@ namespace GameEngine
 	};
 
 	template <typename T>
-	void UpdateValueWithKeyboard(const KeyboardComponent& keyboard, const Keys increaseKey, const Keys decreaseKey, T& value, const T& delta, std::function<void(const T&)> updateFunc = nullptr, const T& minValue = std::numeric_limits<T>::lowest(), const T& maxValue = std::numeric_limits<T>::max())
+	void UpdateValueWithKeyboard(const KeyboardEntity& keyboard, const Keys increaseKey, const Keys decreaseKey, T& value, const T& delta, std::function<void(const T&)> updateFunc = nullptr, const T& minValue = std::numeric_limits<T>::lowest(), const T& maxValue = std::numeric_limits<T>::max())
 	{
 		auto increasePredicate = [&]() -> bool
 		{
@@ -239,7 +239,7 @@ namespace GameEngine
 	}
 
 	template <typename T>
-	void IncrementEnumValue(const KeyboardComponent& keyboard, const Keys increaseKey, T& value, std::function<void(T)> updateFunc, T maxValue, T minValue = T(0), bool wrap = true)
+	void IncrementEnumValue(const KeyboardEntity& keyboard, const Keys increaseKey, T& value, std::function<void(T)> updateFunc, T maxValue, T minValue = T(0), bool wrap = true)
 	{
 		if (keyboard.WasKeyPressedThisFrame(increaseKey))
 		{

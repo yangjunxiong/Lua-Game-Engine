@@ -16,26 +16,14 @@
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Action.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ActionAdd.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionAnimation.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionBoxCollision.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionCircleCollision.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionCollision.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionCollisionEvent.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionCollisionResult.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ActionCreateAction.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ActionDestroy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ActionDestroyAction.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ActionEvent.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionExpression.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ActionIncrement.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ActionListIf.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionLoadJson.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionPolygonCollision.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ActionRender.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionTriangleCollision.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionUpdateHealthUI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Attributed.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)CollisionManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Event.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Datum.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DefaultHashFunction.h" />
@@ -54,7 +42,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)LuaRegister.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LuaWrapper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Macro.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Matrix.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Quaternion.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Reaction.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ReactionAttributed.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RTTI.h" />
@@ -65,32 +54,21 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Tokenizer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transform.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)vector.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Vector4.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)World.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)WorldState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Action.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ActionAdd.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionAnimation.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionBoxCollision.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionCircleCollision.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionCollision.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionCollisionEvent.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionCollisionResult.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ActionCreateAction.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ActionDestroy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ActionDestroyAction.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ActionEvent.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionExpression.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ActionIncrement.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ActionListIf.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionLoadJson.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionPolygonCollision.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ActionRender.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionTriangleCollision.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionUpdateHealthUI.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Attributed.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)CollisionManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Event.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Datum.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DefaultHashFunction.cpp" />
@@ -104,15 +82,15 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)JsonParseMaster.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)JsonTableParseHelper.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)LuaBind.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp">
-      <PrecompiledHeader>Create</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Matrix.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Quaternion.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Reaction.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ReactionAttributed.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Scope.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Sector.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Tokenizer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Transform.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Vector4.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)World.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)WorldState.cpp" />
   </ItemGroup>
@@ -125,9 +103,12 @@
     <None Include="$(MSBuildThisFileDirectory)LuaWrapper.inl">
       <FileType>Document</FileType>
     </None>
+    <None Include="$(MSBuildThisFileDirectory)Matrix.inl" />
     <None Include="$(MSBuildThisFileDirectory)NativeType.inl" />
+    <None Include="$(MSBuildThisFileDirectory)Quaternion.inl" />
     <None Include="$(MSBuildThisFileDirectory)SList.inl" />
     <None Include="$(MSBuildThisFileDirectory)Stack.inl" />
     <None Include="$(MSBuildThisFileDirectory)vector.inl" />
+    <None Include="$(MSBuildThisFileDirectory)Vector4.inl" />
   </ItemGroup>
 </Project>

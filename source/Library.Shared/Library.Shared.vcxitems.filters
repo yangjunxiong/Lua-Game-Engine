@@ -82,54 +82,26 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Tokenizer.cpp">
       <Filter>EngineBase\JsonParse</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionExpression.cpp">
-      <Filter>Engine\Action</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionCircleCollision.cpp">
-      <Filter>Box2d</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionPolygonCollision.cpp">
-      <Filter>Box2d</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)CollisionManager.cpp">
-      <Filter>Box2d</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionCollision.cpp">
-      <Filter>Box2d</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionBoxCollision.cpp">
-      <Filter>Box2d</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionCollisionEvent.cpp">
-      <Filter>Box2d</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionTriangleCollision.cpp">
-      <Filter>Box2d</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionCollisionResult.cpp">
-      <Filter>Box2d</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionRender.cpp">
-      <Filter>Engine\Action</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ActionDestroy.cpp">
       <Filter>Engine\Action</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionLoadJson.cpp">
-      <Filter>Engine\Action</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Transform.cpp">
-      <Filter>EngineBase</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionAnimation.cpp">
-      <Filter>Engine\Action</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionUpdateHealthUI.cpp">
-      <Filter>Engine\Action</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)LuaBind.cpp">
       <Filter>LuaBind</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Vector4.cpp">
+      <Filter>EngineBase\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Matrix.cpp">
+      <Filter>EngineBase\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Transform.cpp">
+      <Filter>EngineBase\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Quaternion.cpp">
+      <Filter>EngineBase\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ActionRender.cpp">
+      <Filter>Engine\Action\Render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -232,55 +204,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Tokenizer.h">
       <Filter>EngineBase\JsonParse</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionExpression.h">
-      <Filter>Engine\Action</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionCircleCollision.h">
-      <Filter>Box2d</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionPolygonCollision.h">
-      <Filter>Box2d</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)CollisionManager.h">
-      <Filter>Box2d</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionCollision.h">
-      <Filter>Box2d</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionBoxCollision.h">
-      <Filter>Box2d</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionCollisionEvent.h">
-      <Filter>Box2d</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionTriangleCollision.h">
-      <Filter>Box2d</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionCollisionResult.h">
-      <Filter>Box2d</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionRender.h">
-      <Filter>Engine\Action</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ActionDestroy.h">
-      <Filter>Engine\Action</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionLoadJson.h">
-      <Filter>Engine\Action</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Transform.h">
-      <Filter>EngineBase</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionAnimation.h">
-      <Filter>Engine\Action</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionUpdateHealthUI.h">
       <Filter>Engine\Action</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)LuaBind.h">
       <Filter>LuaBind</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LuaWrapper.h">
       <Filter>LuaBind</Filter>
     </ClInclude>
@@ -289,6 +218,21 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)LuaRegister.h">
       <Filter>LuaBind</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Vector4.h">
+      <Filter>EngineBase\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Matrix.h">
+      <Filter>EngineBase\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transform.h">
+      <Filter>EngineBase\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Quaternion.h">
+      <Filter>EngineBase\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ActionRender.h">
+      <Filter>Engine\Action\Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -322,6 +266,15 @@
     <None Include="$(MSBuildThisFileDirectory)NativeType.inl">
       <Filter>LuaBind</Filter>
     </None>
+    <None Include="$(MSBuildThisFileDirectory)Vector4.inl">
+      <Filter>EngineBase\Math</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Matrix.inl">
+      <Filter>EngineBase\Math</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Quaternion.inl">
+      <Filter>EngineBase\Math</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Container">
@@ -342,11 +295,14 @@
     <Filter Include="Engine\Reaction">
       <UniqueIdentifier>{703e3a24-c487-4de9-a37a-61d785ea1481}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Box2d">
-      <UniqueIdentifier>{d54a6526-9524-4ae5-a7f3-ff9ae77f1fa8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="LuaBind">
       <UniqueIdentifier>{63d4ecea-19a3-4f3c-bf57-2738436e9207}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineBase\Math">
+      <UniqueIdentifier>{7c561a3d-5a23-494e-9765-e818b8ea05a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Action\Render">
+      <UniqueIdentifier>{00bf8215-8dab-413f-a372-8b7a9ec2c7ac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

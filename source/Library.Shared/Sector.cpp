@@ -11,7 +11,9 @@ RTTI_DEFINITIONS(Sector);
 
 Sector::Sector() : Attributed(Sector::TypeIdClass())
 {
-	assert(mDatumPointers[ENTITY_TABLE_INDEX]->first == ENTITY_TABLE_KEY);
+	Append("Name").first = "";
+	Append("Active").first = true;
+	Append(ENTITY_TABLE_KEY);
 }
 
 const std::string& Sector::Name() const
@@ -88,7 +90,7 @@ void Sector::Update(WorldState& state)
 	}
 }
 
-void Sector::Draw(const World::RenderFunction& func)
+void Sector::Draw()
 {
 	Datum& entities = Entities();
 	for (size_t i = 0; i < entities.Size(); ++i)
@@ -98,7 +100,7 @@ void Sector::Draw(const World::RenderFunction& func)
 		Entity* entity = static_cast<Entity*>(scope);
 		if (entity->IsActive())
 		{
-			entity->Draw(func);
+			entity->Draw();
 		}
 	}
 }

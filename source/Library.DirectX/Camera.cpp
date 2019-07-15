@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Camera.h"
 #include "VectorHelper.h"
+#include "Game.h"
 
 using namespace std;
 using namespace DirectX;
@@ -10,10 +11,12 @@ namespace GameEngine
 {
 	RTTI_DEFINITIONS(Camera)
 
-	Camera::Camera(Game& game, float nearPlaneDistance, float farPlaneDistance) :
-		GameComponent(game),
+	Camera::Camera(float nearPlaneDistance, float farPlaneDistance) :
+		Entity(Camera::TypeIdClass()),
 		mNearPlaneDistance(nearPlaneDistance), mFarPlaneDistance(farPlaneDistance)
 	{
+		mGame = Game::GetInstance();
+		assert(mGame != nullptr);
 	}
 
 	const XMFLOAT3& Camera::Position() const
@@ -145,13 +148,13 @@ namespace GameEngine
 		UpdateViewMatrix();
 	}
 
-	void Camera::Initialize()
+	void Camera::Start(WorldState&)
 	{
 		UpdateProjectionMatrix();
 		Reset();
 	}
 
-	void Camera::Update(const GameEngine::GameTime&)
+	void Camera::Update(WorldState&)
 	{
 		if (mViewMatrixDataDirty)
 		{

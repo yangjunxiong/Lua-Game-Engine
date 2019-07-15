@@ -3,6 +3,7 @@
 #include "Sector.h"
 #include "WorldState.h"
 #include "Action.h"
+#include "Entity.h"
 
 using namespace GameEngine;
 using namespace std;
@@ -14,8 +15,13 @@ World::World(const GameTime& time) :
 	mState(time),
 	mEventQueue(time)
 {
-	assert(mDatumPointers[SECTOR_TABLE_INDEX]->first == SECTOR_TABLE_KEY);
-	assert(mDatumPointers[ACTION_TABLE_INDEX]->first == ACTION_TABLE_KEY);
+	Append("Name").first = "";
+	Append(SECTOR_TABLE_KEY);
+	Append(ACTION_TABLE_KEY);
+	Append(ENTITY_TABLE_KEY);
+	//assert(mDatumPointers[SECTOR_TABLE_INDEX]->first == SECTOR_TABLE_KEY);
+	//assert(mDatumPointers[ACTION_TABLE_INDEX]->first == ACTION_TABLE_KEY);
+	//assert(mDatumPointers[ENTITY_TABLE_INDEX]->first == ENTITY_TABLE_KEY);
 }
 
 const std::string& World::Name() const
@@ -80,6 +86,15 @@ void World::Start()
 		Sector* sector = static_cast<Sector*>(scope);
 		sector->Start(mState);
 	}
+
+	Datum& entities = Entities();
+	for (size_t i = 0; i < entities.Size(); ++i)
+	{
+		Scope* scope = &entities.AsTable(i);
+		assert(scope->Is("Entity"));
+		Entity* entity = static_cast<Entity*>(scope);
+		entity->Start(mState);
+	}
 }
 
 void World::Update()
@@ -102,6 +117,15 @@ void World::Update(WorldState& state)
 		{
 			sector->Update(state);
 		}
+	}
+
+	// Update direct entities
+	Datum& entities = Entities();
+	for (size_t i = 0; i < entities.Size(); ++i)
+	{
+		assert(entities.AsTable(i).Is(Entity::TypeIdClass()));
+		Entity& entity = static_cast<Entity&>(entities.AsTable(i));
+		entity.Update(state);
 	}
 
 	// Update actions
@@ -132,7 +156,7 @@ void World::Update(WorldState& state)
 	mDestroyQueue.Clear();
 }
 
-void World::Draw(const RenderFunction& func)
+void World::Draw()
 {
 	Datum& sectors = Sectors();
 	for (size_t i = 0; i < sectors.Size(); ++i)
@@ -142,7 +166,7 @@ void World::Draw(const RenderFunction& func)
 		Sector* sector = static_cast<Sector*>(scope);
 		if (sector->IsActive())
 		{
-			sector->Draw(func);
+			sector->Draw();
 		}
 	}
 }
@@ -172,10 +196,19 @@ const Datum& World::Actions() const
 	return (*this)[ACTION_TABLE_INDEX];
 }
 
-
 gsl::owner<Scope*> World::Clone() const
 {
 	return new World(*this);
+}
+
+Datum& World::Entities()
+{
+	return (*this)[ENTITY_TABLE_INDEX];
+}
+
+const Datum& World::Entities() const
+{
+	return (*this)[ENTITY_TABLE_INDEX];
 }
 
 const Vector<Attributed::Signature> World::Signatures()
@@ -183,6 +216,7 @@ const Vector<Attributed::Signature> World::Signatures()
 	return Vector<Attributed::Signature>({
 		Signature("Name", Datum::DatumType::String, 1, offsetof(World, mName)),
 		Signature(SECTOR_TABLE_KEY, Datum::DatumType::Table, 0),
-		Signature(ACTION_TABLE_KEY, Datum::DatumType::Table, 0)
+		Signature(ACTION_TABLE_KEY, Datum::DatumType::Table, 0),
+		Signature(ENTITY_TABLE_KEY, Datum::DatumType::Table, 0)
 	});
 }

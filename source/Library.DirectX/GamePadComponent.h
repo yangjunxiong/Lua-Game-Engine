@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameComponent.h"
+#include "Entity.h"
 #include <DirectXTK\GamePad.h>
 #include <memory>
 
@@ -24,21 +24,21 @@ namespace GameEngine
 		DPadRight
 	};
 
-	class GamePadComponent final : public GameComponent
+	class GamePadEntity final : public Entity
 	{
-		RTTI_DECLARATIONS(GamePadComponent, GameComponent)
+		RTTI_DECLARATIONS(GamePadEntity, Entity)
 
 	public:
 		static DirectX::GamePad* GamePad();
 		
-		GamePadComponent(Game& game, int player = 0);
+		GamePadEntity(int player = 0);
 
 		int Player() const;
 		const DirectX::GamePad::State& CurrentState() const;
 		const DirectX::GamePad::State& LastState() const;
 
-		virtual void Initialize() override;
-		virtual void Update(const GameEngine::GameTime& gameTime) override;
+		virtual void Start(WorldState&) override;
+		virtual void Update(WorldState&) override;
 
 		bool IsButtonUp(GamePadButtons button) const;
 		bool IsButtonDown(GamePadButtons button) const;

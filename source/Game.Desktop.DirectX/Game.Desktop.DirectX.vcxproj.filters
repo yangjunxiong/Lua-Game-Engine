@@ -3,18 +3,12 @@
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Program.cpp" />
-    <ClCompile Include="RenderingGame.cpp" />
     <ClCompile Include="UtilityWin32.cpp" />
-    <ClCompile Include="Planet.cpp" />
-    <ClCompile Include="PlanetMaterial.cpp" />
     <ClCompile Include="LuaRegister.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="RenderingGame.h" />
     <ClInclude Include="UtilityWin32.h" />
-    <ClInclude Include="Planet.h" />
-    <ClInclude Include="PlanetMaterial.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -34,16 +28,16 @@
     <FxCompile Include="Content\Shaders\BasicVS.hlsl">
       <Filter>Content\Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="Content\Shaders\PlanetPS.hlsl">
-      <Filter>Content\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Content\Shaders\PlanetVS.hlsl">
-      <Filter>Content\Shaders</Filter>
-    </FxCompile>
     <FxCompile Include="Content\Shaders\SkyboxPS.hlsl">
       <Filter>Content\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="Content\Shaders\SkyboxVS.hlsl">
+      <Filter>Content\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Content\Shaders\StaticMeshPS.hlsl">
+      <Filter>Content\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Content\Shaders\StaticMeshVS.hlsl">
       <Filter>Content\Shaders</Filter>
     </FxCompile>
   </ItemGroup>

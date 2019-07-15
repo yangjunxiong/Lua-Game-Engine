@@ -10,6 +10,7 @@
 namespace GameEngine
 {
 	class Sector;
+
 	CLASS();
 	/// <summary>
 	/// A World is the container for all objects in the game. It contains many sectors and will update each one of them in each tick
@@ -80,7 +81,6 @@ namespace GameEngine
 		/// <returns>The Datum containing the sectors</returns>
 		const Datum& Sectors() const;
 
-		FUNCTION();
 		/// <summary>
 		/// Create a new sector with given name and make it a child of this World
 		/// </summary>
@@ -105,12 +105,11 @@ namespace GameEngine
 		/// </summary>
 		void Update();
 
-		using RenderFunction = std::function<void(const Transform&, const ActionRender::RenderParam&)>;
 		/// <summary>
 		/// Draw the world, will pass the function down and use it to draw each sector
 		/// </summary>
 		/// <param name="func">The function to perform drawing</param>
-		void Draw(const RenderFunction& func);
+		void Draw();
 
 		/// <summary>
 		/// Update all sectors with given WorldState
@@ -149,7 +148,6 @@ namespace GameEngine
 		/// <returns>Signature list for World type</returns>
 		static const Vector<Attributed::Signature> Signatures();
 
-		PROPERTY();
 		/// <summary>
 		/// The special key in Scope that maps to the sectors datum
 		/// </summary>
@@ -160,12 +158,15 @@ namespace GameEngine
 		/// </summary>
 		inline static const size_t SECTOR_TABLE_INDEX = 2;
 
-		PROPERTY();
 		inline static const std::string ACTION_TABLE_KEY = "Actions";
 		inline static const size_t ACTION_TABLE_INDEX = 3;
+		inline static const std::string ENTITY_TABLE_KEY = "Entities";
+		inline static const size_t ENTITY_TABLE_INDEX = 4;
 
 		Datum& Actions();
 		const Datum& Actions() const;
+		Datum& Entities();
+		const Datum& Entities() const;
 
 		FUNCTION();
 		WorldState* GetWorldState() { return &mState; };

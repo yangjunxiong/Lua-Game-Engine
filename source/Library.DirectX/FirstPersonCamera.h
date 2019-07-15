@@ -7,8 +7,8 @@
 
 namespace GameEngine
 {	
-	class KeyboardComponent;
-	class MouseComponent;
+	class KeyboardEntity;
+	class MouseEntity;
 
 	CLASS();
     class FirstPersonCamera : public PerspectiveCamera
@@ -16,21 +16,21 @@ namespace GameEngine
 		RTTI_DECLARATIONS(FirstPersonCamera, PerspectiveCamera)
 
     public:
-        explicit FirstPersonCamera(Game& game, float fieldOfView = DefaultFieldOfView, float aspectRatio = DefaultAspectRatio, float nearPlaneDistance = DefaultNearPlaneDistance, float farPlaneDistance = DefaultFarPlaneDistance);
+        explicit FirstPersonCamera(float fieldOfView = DefaultFieldOfView, float aspectRatio = DefaultAspectRatio, float nearPlaneDistance = DefaultNearPlaneDistance, float farPlaneDistance = DefaultFarPlaneDistance);
 		FirstPersonCamera(const FirstPersonCamera&) = default;
 		FirstPersonCamera& operator=(const FirstPersonCamera&) = default;
 		FirstPersonCamera(FirstPersonCamera&&) = default;
 		FirstPersonCamera& operator=(FirstPersonCamera&&) = default;
 		virtual ~FirstPersonCamera() = default;
 
-		GamePadComponent* GetGamePad() const;
-		void SetGamePad(GamePadComponent* gamePad);
+		GamePadEntity* GetGamePad() const;
+		void SetGamePad(GamePadEntity* gamePad);
 
-		KeyboardComponent* GetKeyboard() const;
-		void SetKeyboard(KeyboardComponent* keyboard);
+		KeyboardEntity* GetKeyboard() const;
+		void SetKeyboard(KeyboardEntity* keyboard);
 
-		MouseComponent* GetMouse() const;
-		void SetMouse(MouseComponent* mouse);
+		MouseEntity* GetMouse() const;
+		void SetMouse(MouseEntity* mouse);
 
 		float& MouseSensitivity();
         float& RotationRate();
@@ -44,8 +44,8 @@ namespace GameEngine
 		virtual void SetPosition(DirectX::FXMVECTOR position) override;
 		virtual void SetPosition(const DirectX::XMFLOAT3& position) override;
 
-		virtual void Initialize() override;
-        virtual void Update(const GameEngine::GameTime& gameTime) override;
+		virtual void Start(WorldState&) override;
+        virtual void Update(WorldState&) override;
 
 		inline static const float DefaultMouseSensitivity{ 0.1f };
 		inline static const float DefaultRotationRate{ DirectX::XMConvertToRadians(100.0f) };
@@ -67,9 +67,9 @@ namespace GameEngine
 		}
 
     protected:
-		GamePadComponent* mGamePad{ nullptr };
-		KeyboardComponent* mKeyboard{ nullptr };
-		MouseComponent* mMouse{ nullptr };
+		GamePadEntity* mGamePad{ nullptr };
+		KeyboardEntity* mKeyboard{ nullptr };
+		MouseEntity* mMouse{ nullptr };
 		float mMouseSensitivity{ DefaultMouseSensitivity };
 		float mRotationRate{ DefaultRotationRate };
         float mMovementRate{ DefaultMovementRate };

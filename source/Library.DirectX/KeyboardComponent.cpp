@@ -6,73 +6,72 @@ using namespace DirectX;
 
 namespace GameEngine
 {
-	RTTI_DEFINITIONS(KeyboardComponent)
+	RTTI_DEFINITIONS(KeyboardEntity)
 
-	unique_ptr<Keyboard> KeyboardComponent::sKeyboard(new DirectX::Keyboard);
+	unique_ptr<Keyboard> KeyboardEntity::sKeyboard(new DirectX::Keyboard);
 
-	Keyboard* KeyboardComponent::Keyboard()
+	Keyboard* KeyboardEntity::Keyboard()
 	{
 		return sKeyboard.get();
 	}
 
-	KeyboardComponent::KeyboardComponent(Game& game) :
-		GameComponent(game)
-	{
-	}
+	KeyboardEntity::KeyboardEntity() :
+		Entity(KeyboardEntity::TypeIdClass())
+	{}
 
-	const Keyboard::State& KeyboardComponent::CurrentState() const
+	const Keyboard::State& KeyboardEntity::CurrentState() const
 	{
 		return mCurrentState;
 	}
 
-	const Keyboard::State& KeyboardComponent::LastState() const
+	const Keyboard::State& KeyboardEntity::LastState() const
 	{
 		return mLastState;
 	}
 
-	void KeyboardComponent::Initialize()
+	void KeyboardEntity::Start(WorldState&)
 	{
 		mCurrentState = sKeyboard->GetState();
 		mLastState = mCurrentState;
 	}
 
-	void KeyboardComponent::Update(const GameTime&)
+	void KeyboardEntity::Update(WorldState&)
 	{
 		mLastState = mCurrentState;
 		mCurrentState = sKeyboard->GetState();
 	}
 
-	bool KeyboardComponent::IsKeyUp(Keys key) const
+	bool KeyboardEntity::IsKeyUp(Keys key) const
 	{
 		return mCurrentState.IsKeyUp(static_cast<Keyboard::Keys>(key));
 	}
 
-	bool KeyboardComponent::IsKeyDown(Keys key) const
+	bool KeyboardEntity::IsKeyDown(Keys key) const
 	{
 		return mCurrentState.IsKeyDown(static_cast<Keyboard::Keys>(key));
 	}
 
-	bool KeyboardComponent::WasKeyUp(Keys key) const
+	bool KeyboardEntity::WasKeyUp(Keys key) const
 	{
 		return mLastState.IsKeyUp(static_cast<Keyboard::Keys>(key));
 	}
 
-	bool KeyboardComponent::WasKeyDown(Keys key) const
+	bool KeyboardEntity::WasKeyDown(Keys key) const
 	{
 		return mLastState.IsKeyDown(static_cast<Keyboard::Keys>(key));
 	}
 
-	bool KeyboardComponent::WasKeyPressedThisFrame(Keys key) const
+	bool KeyboardEntity::WasKeyPressedThisFrame(Keys key) const
 	{
 		return (IsKeyDown(key) && WasKeyUp(key));
 	}
 
-	bool KeyboardComponent::WasKeyReleasedThisFrame(Keys key) const
+	bool KeyboardEntity::WasKeyReleasedThisFrame(Keys key) const
 	{
 		return (IsKeyUp(key) && WasKeyDown(key));
 	}
 
-	bool KeyboardComponent::IsKeyHeldDown(Keys key) const
+	bool KeyboardEntity::IsKeyHeldDown(Keys key) const
 	{
 		return (IsKeyDown(key) && WasKeyDown(key));
 	}

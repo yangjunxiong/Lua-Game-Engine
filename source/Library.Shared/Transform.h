@@ -1,59 +1,97 @@
 #pragma once
-#include "Macro.h"
-#include <glm/fwd.hpp>
+#include <winrt\Windows.Foundation.h>
+#include <gsl\gsl>
+#include "Matrix.h"
+#include "Vector4.h"
+#include "Quaternion.h"
 
 namespace GameEngine
 {
 	CLASS();
-	class Transform final
+	class Transform
 	{
 		friend class Entity;
 
 	public:
 		CONSTRUCTOR();
 		Transform() = default;
-		Transform(const glm::mat4& matrix);
-		Transform(const glm::vec4& position, const glm::vec4& rotation, const glm::vec4& scale);
-		Transform(const Transform& other) = default;
-		Transform(Transform&& other) = default;
-		Transform& operator=(const Transform& other) = default;
-		Transform& operator=(Transform&& other) = default;
-		glm::vec4 operator*(const glm::vec4& point) const;
-		Transform operator*(const Transform& trans) const;
+		Transform(const Transform&) = default;
+		Transform& operator=(const Transform&) = default;
+		Transform(Transform&&) = default;
+		Transform& operator=(Transform&&) = default;
+		virtual ~Transform() = default;
 
 		FUNCTION();
-		void SetPosition(const glm::vec4& position);
-		void SetPosition(float x, float y, float z);
+		const Vector3& GetWorldPosition();
 
 		FUNCTION();
-		void SetRotation(const glm::vec4& rotation);
-		void SetRotation(float x, float y, float z);
+		const Quaternion& GetWorldRotation();
 
 		FUNCTION();
-		void SetScale(const glm::vec4& scale);
-		void SetScale(float x, float y, float z);
+		const Vector3& GetWorldScale();
 
 		FUNCTION();
-		const glm::vec4& GetPosition() const;
+		void SetWorldPosition(const Vector3& position);
 
 		FUNCTION();
-		const glm::vec4& GetRotation() const;
+		void SetWorldRotation(const Quaternion& rotation);
 
 		FUNCTION();
-		const glm::vec4& GetScale() const;
+		void SetWorldScale(const Vector3& scale);
 
-		const glm::mat4& GetMatrix() const;
+		FUNCTION();
+		const Vector3& GetLocalPosition();
 
-		static bool Equal(float f1, float f2);
-		static bool Equal(const glm::vec4& v1, const glm::vec4& v2);
+		FUNCTION();
+		const Quaternion& GetLocalRotation();
 
-	private:
+		FUNCTION();
+		const Vector3& GetLocalScale();
+
+		FUNCTION();
+		void SetLocalPosition(const Vector3& position);
+
+		FUNCTION();
+		void SetLocalRotation(const Quaternion& rotation);
+
+		FUNCTION();
+		void SetLocalScale(const Vector3& scale);
+
+		using UpdateCallback = std::function<void()>;
+		void AddTransformUpdateCallback(UpdateCallback callback);
+		void RemoveTransformUpdateCallback(UpdateCallback callback);
+
+		const Matrix& GetWorldMatrix();
+		const Matrix& GetLocalMatrix();
+		const Matrix& GetWorldMatrixInverse();
+
+	protected:
+		void SetParent(Transform* parent);
+		Transform* GetParent() const;
+
+		inline bool LocalTransformDirty() const;
+		inline bool WorldTransformDirty() const;
+		inline bool TransformDirty() const;
 		inline void UpdateMatrix();
-		inline void UpdateTransform();
 
-		glm::mat4 mMatrix = glm::mat4(1.f);
-		glm::vec4 mPosition = glm::vec4(0.f);  // [x, y, z, 1]
-		glm::vec4 mRotation = glm::vec4(0.f);  // [x in angle, y in angle, z in angle, 1]
-		glm::vec4 mScale = glm::vec4(1.f);     // [x, y, z, 1]
+		Transform* mParent;
+		Matrix mWorldMatrix;
+		Matrix mWorldMatrixInverse;
+		Matrix mLocalMatrix;
+		Vector3 mWorldPosition;
+		Quaternion mWorldRotation;
+		Vector3 mWorldScale { 1.f };
+		Vector3 mLocalPosition;
+		Quaternion mLocalRotation;
+		Vector3 mLocalScale { 1.f };
+
+		bool mLocalPositionDirty = false;
+		bool mLocalRotationDirty = false;
+		bool mLocalScaleDirty = false;
+		bool mWorldPositionDirty = false;
+		bool mWorldRotationDirty = false;
+		bool mWorldScaleDirty = false;
+
+		std::vector<UpdateCallback> mCallbacks;
 	};
 }

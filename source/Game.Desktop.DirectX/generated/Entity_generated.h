@@ -21,21 +21,15 @@ public:
 		bind.SetConstructor<Entity>();
 		bind.SetFunction<Entity,  const std::string&>("Name", &Entity::Name);
 		bind.SetFunction<Entity, void,  const std::string&>("SetName", &Entity::SetName);
-		bind.SetFunction<Entity, Transform&>("GetTransform", &Entity::GetTransform);
-		bind.SetFunction<Entity, void,  const Transform&>("SetTransform", &Entity::SetTransform);
-		bind.SetFunction<Entity, glm::vec4>("GetPosition", &Entity::GetPosition);
-		bind.SetFunction<Entity, glm::vec4>("GetRotation", &Entity::GetRotation);
-		bind.SetFunction<Entity, glm::vec4>("GetScale", &Entity::GetScale);
+		bind.SetFunction<Entity, void, Sector&>("SetSector", &Entity::SetSector);
+		bind.SetFunction<Entity, Transform*>("GetTransform", &Entity::GetTransform);
 		bind.SetFunction<Entity, bool>("IsActive", &Entity::IsActive);
-		bind.SetFunction<Entity, void,  const glm::vec4&>("SetPosition", &Entity::SetPosition);
-		bind.SetFunction<Entity, void,  const glm::vec4&>("SetRotation", &Entity::SetRotation);
-		bind.SetFunction<Entity, void,  const glm::vec4&>("SetScale", &Entity::SetScale);
 		bind.SetFunction<Entity, void, bool>("SetActive", &Entity::SetActive);
 		bind.SetFunction<Entity, Action*, std::string>("CreateAction", &Entity::CreateAction);
-		bind.SetProperty<Entity>("ACTION_TABLE_KEY", &Entity::ACTION_TABLE_KEY);
-		bind.SetProperty<Entity>("ACTION_TABLE_INDEX", &Entity::ACTION_TABLE_INDEX);
+		bind.SetFunction<Entity, void>("Destroy", &Entity::Destroy);
+		bind.SetFunction<Entity, Entity*>("GetTransformParent", &Entity::GetTransformParent);
+		bind.SetFunction<Entity, void, Entity*>("SetTransformParent", &Entity::SetTransformParent);
 		bind.SetProperty("Tags", &Entity::Tags);
-		bind.SetProperty("Targets", &Entity::Targets);
 	};
 };
 }

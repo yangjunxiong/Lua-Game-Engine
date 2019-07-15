@@ -14,7 +14,7 @@ namespace GameEngine
         RTTI_DECLARATIONS(OrthographicCamera, Camera)
 
     public:
-		explicit OrthographicCamera(Game& game, float viewWidth = DefaultViewWidth, float viewHeight = DefaultViewHeight, float nearPlaneDistance = DefaultNearPlaneDistance, float farPlaneDistance = DefaultFarPlaneDistance);
+		explicit OrthographicCamera(float viewWidth = DefaultViewWidth, float viewHeight = DefaultViewHeight, float nearPlaneDistance = DefaultNearPlaneDistance, float farPlaneDistance = DefaultFarPlaneDistance);
 		OrthographicCamera(const OrthographicCamera&) = default;
 		OrthographicCamera(OrthographicCamera&&) = default;
 		OrthographicCamera& operator=(const OrthographicCamera&) = default;

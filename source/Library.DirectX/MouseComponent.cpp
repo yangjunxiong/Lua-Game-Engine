@@ -7,112 +7,115 @@ using namespace DirectX;
 
 namespace GameEngine
 {
-	RTTI_DEFINITIONS(MouseComponent)
+	RTTI_DEFINITIONS(MouseEntity)
 
-	unique_ptr<Mouse> MouseComponent::sMouse(new DirectX::Mouse);
+	unique_ptr<Mouse> MouseEntity::sMouse(new DirectX::Mouse);
 
-	Mouse* MouseComponent::Mouse()
+	Mouse* MouseEntity::Mouse()
 	{
 		return sMouse.get();
 	}
 
-	MouseComponent::MouseComponent(Game& game, MouseModes mode) :
-		GameComponent(game)
+	MouseEntity::MouseEntity(MouseModes mode) :
+		Entity(MouseEntity::TypeIdClass())
 	{
+		mGame = Game::GetInstance();
 		auto getWindow = mGame->GetWindowCallback();
 		sMouse->SetWindow(reinterpret_cast<HWND>(getWindow()));
 		sMouse->SetMode(static_cast<Mouse::Mode>(mode));
+		sMouse->SetVisible(true);
+		ShowCursor(true);
 	}
 
-	const Mouse::State& MouseComponent::CurrentState() const
+	const Mouse::State& MouseEntity::CurrentState() const
 	{
 		return mCurrentState;
 	}
 
-	const Mouse::State& MouseComponent::LastState() const
+	const Mouse::State& MouseEntity::LastState() const
 	{
 		return mLastState;
 	}
 
-	void MouseComponent::Initialize()
+	void MouseEntity::Start(WorldState&)
 	{
 		mCurrentState = sMouse->GetState();
 		mLastState = mCurrentState;
 	}
 
-	void MouseComponent::Update(const GameTime&)
+	void MouseEntity::Update(WorldState&)
 	{
 		mLastState = mCurrentState;
 		mCurrentState = sMouse->GetState();
 	}
 
-	void MouseComponent::SetWindow(HWND window)
+	void MouseEntity::SetWindow(HWND window)
 	{
 		sMouse->SetWindow(window);
 	}
 
-	int MouseComponent::X() const
+	int MouseEntity::X() const
 	{
 		return mCurrentState.x;
 	}
 
-	int MouseComponent::Y() const
+	int MouseEntity::Y() const
 	{
 		return mCurrentState.y;
 	}
 
-	int MouseComponent::Wheel() const
+	int MouseEntity::Wheel() const
 	{
 		return mCurrentState.scrollWheelValue;
 	}
 
-	bool MouseComponent::IsButtonUp(MouseButtons button) const
+	bool MouseEntity::IsButtonUp(MouseButtons button) const
 	{
 		return GetButtonState(mCurrentState, button) == false;
 	}
 
-	bool MouseComponent::IsButtonDown(MouseButtons button) const
+	bool MouseEntity::IsButtonDown(MouseButtons button) const
 	{
 		return GetButtonState(mCurrentState, button);
 	}
 
-	bool MouseComponent::WasButtonUp(MouseButtons button) const
+	bool MouseEntity::WasButtonUp(MouseButtons button) const
 	{
 		return GetButtonState(mLastState, button) == false;
 	}
 
-	bool MouseComponent::WasButtonDown(MouseButtons button) const
+	bool MouseEntity::WasButtonDown(MouseButtons button) const
 	{
 		return GetButtonState(mLastState, button);
 	}
 
-	bool MouseComponent::WasButtonPressedThisFrame(MouseButtons button) const
+	bool MouseEntity::WasButtonPressedThisFrame(MouseButtons button) const
 	{
 		return (IsButtonDown(button) && WasButtonUp(button));
 	}
 
-	bool MouseComponent::WasButtonReleasedThisFrame(MouseButtons button) const
+	bool MouseEntity::WasButtonReleasedThisFrame(MouseButtons button) const
 	{
 		return (IsButtonUp(button) && WasButtonDown(button));
 	}
 
-	bool MouseComponent::IsButtonHeldDown(MouseButtons button) const
+	bool MouseEntity::IsButtonHeldDown(MouseButtons button) const
 	{
 		return (IsButtonDown(button) && WasButtonDown(button));
 	}
 
-	MouseModes MouseComponent::Mode() const
+	MouseModes MouseEntity::Mode() const
 	{
 		auto state = sMouse->GetState();
 		return static_cast<MouseModes>(state.positionMode);
 	}
 
-	void MouseComponent::SetMode(MouseModes mode)
+	void MouseEntity::SetMode(MouseModes mode)
 	{
 		sMouse->SetMode(static_cast<Mouse::Mode>(mode));
 	}
 
-	bool MouseComponent::GetButtonState(const Mouse::State& state, MouseButtons button) const
+	bool MouseEntity::GetButtonState(const Mouse::State& state, MouseButtons button) const
 	{
 		switch (button)
 		{

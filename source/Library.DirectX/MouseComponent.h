@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameComponent.h"
+#include "Entity.h"
 #include <DirectXTK\Mouse.h>
 #include <memory>
 #include <windows.h>
@@ -12,6 +12,8 @@ namespace DirectX
 
 namespace GameEngine
 {
+	class Game;
+
 	enum class MouseButtons
 	{
 		Left = 0,
@@ -27,25 +29,25 @@ namespace GameEngine
 		Relative
 	};
 
-	class MouseComponent final : public GameComponent
+	class MouseEntity final : public Entity
 	{
-		RTTI_DECLARATIONS(MouseComponent, GameComponent)
+		RTTI_DECLARATIONS(MouseEntity, Entity)
 
 	public:
 		static DirectX::Mouse* Mouse();
 		
-		explicit MouseComponent(Game& game, MouseModes mode = MouseModes::Relative);
-		MouseComponent(const MouseComponent&) = delete;
-		MouseComponent(MouseComponent&&) = default;
-		MouseComponent& operator=(const MouseComponent&) = delete;
-		MouseComponent& operator=(MouseComponent&&) = default;
-		~MouseComponent() = default;
+		explicit MouseEntity(MouseModes mode = MouseModes::Relative);
+		MouseEntity(const MouseEntity&) = delete;
+		MouseEntity(MouseEntity&&) = default;
+		MouseEntity& operator=(const MouseEntity&) = delete;
+		MouseEntity& operator=(MouseEntity&&) = default;
+		~MouseEntity() = default;
 
 		const DirectX::Mouse::State& CurrentState() const;
 		const DirectX::Mouse::State& LastState() const;
 
-		virtual void Initialize() override;
-		virtual void Update(const GameEngine::GameTime& gameTime) override;
+		virtual void Start(WorldState&) override;
+		virtual void Update(WorldState&) override;
 		void SetWindow(HWND window);
 
 		int X() const;
@@ -66,6 +68,7 @@ namespace GameEngine
 	private:
 		bool GetButtonState(const DirectX::Mouse::State& state, MouseButtons button) const;
 
+		Game* mGame = nullptr;
 		static std::unique_ptr<DirectX::Mouse> sMouse;
 
 		DirectX::Mouse::State mCurrentState;

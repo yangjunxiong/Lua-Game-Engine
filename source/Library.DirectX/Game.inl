@@ -70,11 +70,6 @@ namespace GameEngine
 		return mEventQueue;
 	}
 
-	inline const std::vector<std::shared_ptr<GameComponent>>& Game::Components() const
-	{
-		return mComponents;
-	}
-
 	inline const ServiceContainer& Game::Services() const
 	{
 		return mServices;

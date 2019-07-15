@@ -1,6 +1,7 @@
 #pragma once
 
 #define NOMINMAX
+#define WITH_DIRECTX
 
 // Standard
 #include <exception>

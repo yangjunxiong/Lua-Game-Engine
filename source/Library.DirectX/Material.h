@@ -11,6 +11,7 @@ namespace GameEngine
 {
 	class Game;
 
+	CLASS();
 	class Material : public RTTI
 	{
 		RTTI_DECLARATIONS(Material, RTTI)

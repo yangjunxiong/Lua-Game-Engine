@@ -7,8 +7,8 @@ namespace GameEngine
 {
     RTTI_DEFINITIONS(PerspectiveCamera)
 
-    PerspectiveCamera::PerspectiveCamera(Game& game, float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance) :
-		Camera(game, nearPlaneDistance, farPlaneDistance),
+    PerspectiveCamera::PerspectiveCamera(float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance) :
+		Camera(nearPlaneDistance, farPlaneDistance),
         mFieldOfView(fieldOfView), mAspectRatio(aspectRatio)
     {
     }

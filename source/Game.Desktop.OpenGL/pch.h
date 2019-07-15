@@ -1,5 +1,7 @@
 #pragma once
 
+#define WITH_OPENGL
+
 // Windows
 #include <windows.h>
 #include <exception>

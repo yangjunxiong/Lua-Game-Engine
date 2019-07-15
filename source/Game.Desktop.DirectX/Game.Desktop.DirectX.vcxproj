@@ -27,23 +27,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Planet.cpp" />
-    <ClCompile Include="PlanetMaterial.cpp" />
     <ClCompile Include="Program.cpp" />
-    <ClCompile Include="RenderingGame.cpp" />
     <ClCompile Include="UtilityWin32.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Planet.h" />
-    <ClInclude Include="PlanetMaterial.h" />
-    <ClInclude Include="RenderingGame.h" />
     <ClInclude Include="UtilityWin32.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Library.Desktop\Library.Desktop.vcxproj">
-      <Project>{6130c58f-2f3c-4f3d-9c1f-475f085b34c7}</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -77,7 +66,7 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)Content\Shaders\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)Content\Shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="Content\Shaders\PlanetPS.hlsl">
+    <FxCompile Include="Content\Shaders\StaticMeshPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -91,7 +80,7 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)Content\Shaders\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)Content\Shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="Content\Shaders\PlanetVS.hlsl">
+    <FxCompile Include="Content\Shaders\StaticMeshVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
@@ -134,6 +123,11 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)Content\Shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Library.Desktop.DirectX\Library.Desktop.DirectX.vcxproj">
+      <Project>{a5559867-019f-44f6-84d4-68d314e1b15c}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{B022AFDA-45B3-472C-8A32-7974503BC76B}</ProjectGuid>
@@ -173,7 +167,6 @@
   </ImportGroup>
   <ImportGroup Label="Shared">
     <Import Project="..\Game.Shared\Game.Shared.vcxitems" Label="Shared" />
-    <Import Project="..\Library.DirectX\Library.DirectX.vcxitems" Label="Shared" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />

@@ -23,14 +23,10 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ContentTypeReaderManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DirectionalLight.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DirectXHelper.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)DrawableGameComponent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FirstPersonCamera.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)FpsComponent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Game.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)GameComponent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameException.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GamePadComponent.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Grid.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ImGuiComponent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)imgui_impl_dx11.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -51,9 +47,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)PerspectiveCamera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PixelShader.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PixelShaderReader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)StaticMeshMaterial.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Point.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PointLight.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ProxyModel.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RasterizerStates.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Rectangle.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RenderStateHelper.cpp" />
@@ -61,9 +57,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)SamplerStates.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceContainer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Shader.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Skybox.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SkyboxMaterial.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SpotLight.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)StaticMeshRenderComponent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StreamHelper.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StringHelper.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Texture.cpp" />
@@ -72,7 +68,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)TextureCube.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TextureCubeReader.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TextureHelper.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)TransformComponent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Utility.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)VectorHelper.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)VertexDeclarations.cpp" />
@@ -89,14 +84,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ContentTypeReaderManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DirectionalLight.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DirectXHelper.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)DrawableGameComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FirstPersonCamera.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)FpsComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Game.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)GameComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameException.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GamePadComponent.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Grid.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ImGuiComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)imgui_impl_dx11.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)KeyboardComponent.h" />
@@ -112,9 +103,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)PerspectiveCamera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PixelShader.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PixelShaderReader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)StaticMeshMaterial.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Point.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PointLight.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ProxyModel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RasterizerStates.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Rectangle.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RenderStateHelper.h" />
@@ -122,9 +113,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SamplerStates.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceContainer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Shader.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Skybox.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SkyboxMaterial.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SpotLight.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)StaticMeshRenderComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StreamHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StringHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Texture.h" />
@@ -133,7 +124,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)TextureCube.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TextureCubeReader.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TextureHelper.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)TransformComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Utility.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)VectorHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)VertexDeclarations.h" />

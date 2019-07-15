@@ -1,188 +1,260 @@
 #include "pch.h"
 #include "Transform.h"
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
 using namespace GameEngine;
-using namespace std;
-using namespace glm;
+using namespace DirectX;
 
-#define COMPARE_THRESHOLD 1e-5
-
-Transform::Transform(const glm::vec4& position, const glm::vec4& rotation, const glm::vec4& scale) :
-	mPosition(position),
-	mRotation(rotation),
-	mScale(scale)
+void Transform::SetParent(Transform* parent)
 {
-	UpdateMatrix();
+	if (parent != mParent)
+	{
+		mParent = parent;
+		mWorldPositionDirty = true;
+		mWorldRotationDirty = true;
+		mWorldScaleDirty = true;
+	}
 }
 
-Transform::Transform(const glm::mat4& matrix) :
-	mMatrix(matrix)
+Transform* Transform::GetParent() const
 {
-	UpdateTransform();
+	return mParent;
 }
 
-glm::vec4 Transform::operator*(const glm::vec4& point) const
+const Vector3& Transform::GetWorldPosition()
 {
-	return mMatrix * point;
+	if (LocalTransformDirty() || (mParent != nullptr && mParent->TransformDirty()))
+	{
+		UpdateMatrix();
+	}
+	return mWorldPosition;
 }
 
-Transform Transform::operator*(const Transform& trans) const
+const Quaternion& Transform::GetWorldRotation()
 {
-	return Transform(mMatrix * trans.mMatrix);
+	if (LocalTransformDirty() || (mParent != nullptr && mParent->TransformDirty()))
+	{
+		UpdateMatrix();
+	}
+	return mWorldRotation;
 }
 
-void Transform::SetPosition(const glm::vec4& position)
+const Vector3& Transform::GetWorldScale()
 {
-	mPosition = position;
-	UpdateMatrix();
+	if (LocalTransformDirty() || (mParent != nullptr && mParent->TransformDirty()))
+	{
+		UpdateMatrix();
+	}
+	return mWorldScale;
 }
 
-void Transform::SetPosition(float x, float y, float z)
+void Transform::SetWorldPosition(const Vector3& position)
 {
-	SetPosition(vec4(x, y, z, 1));
+	mWorldPosition = position;
+	mLocalPositionDirty = false;
+	mWorldPositionDirty = true;
 }
 
-void Transform::SetRotation(const glm::vec4& rotation)
+void Transform::SetWorldRotation(const Quaternion& rotation)
 {
-	mRotation = rotation;
-	UpdateMatrix();
+	mWorldRotation = rotation;
+	mLocalRotationDirty = false;
+	mWorldRotationDirty = true;
 }
 
-void Transform::SetRotation(float x, float y, float z)
+void Transform::SetWorldScale(const Vector3& scale)
 {
-	SetRotation(vec4(x, y, z, 1));
+	mWorldScale = scale;
+	mLocalScaleDirty = false;
+	mWorldScaleDirty = true;
 }
 
-void Transform::SetScale(const glm::vec4& scale)
+const Vector3& Transform::GetLocalPosition()
 {
-	mScale = scale;
-	UpdateMatrix();
+	if (WorldTransformDirty())
+	{
+		UpdateMatrix();
+	}
+	return mLocalPosition;
 }
 
-void Transform::SetScale(float x, float y, float z)
+const Quaternion& Transform::GetLocalRotation()
 {
-	SetScale(vec4(x, y, z, 1));
+	if (WorldTransformDirty())
+	{
+		UpdateMatrix();
+	}
+	return mLocalRotation;
 }
 
-const glm::vec4& Transform::GetPosition() const
+const Vector3& Transform::GetLocalScale()
 {
-	return mPosition;
+	if (WorldTransformDirty())
+	{
+		UpdateMatrix();
+	}
+	return mLocalScale;
 }
 
-const glm::vec4& Transform::GetRotation() const
+void Transform::SetLocalPosition(const Vector3& position)
 {
-	return mRotation;
+	mLocalPosition = position;
+	mLocalPositionDirty = true;
+	mWorldPositionDirty = false;
 }
 
-const glm::vec4& Transform::GetScale() const
+void Transform::SetLocalRotation(const Quaternion& rotation)
 {
-	return mScale;
+	mLocalRotation = rotation;
+	mLocalRotationDirty = true;
+	mWorldRotationDirty = false;
 }
 
-const glm::mat4& Transform::GetMatrix() const
+void Transform::SetLocalScale(const Vector3& scale)
 {
-	return mMatrix;
+	mLocalScale = scale;
+	mLocalScaleDirty = true;
+	mWorldScaleDirty = false;
 }
 
-bool Transform::Equal(float f1, float f2)
+const Matrix& Transform::GetWorldMatrix()
 {
-	return fabsf(f1 - f2) < COMPARE_THRESHOLD;
+	if (TransformDirty())
+	{
+		UpdateMatrix();
+	}
+	return mWorldMatrix;
 }
 
-bool Transform::Equal(const glm::vec4& v1, const glm::vec4& v2)
+const Matrix& Transform::GetLocalMatrix()
 {
-	return fabsf(v1.x - v2.x) < COMPARE_THRESHOLD
-		&& fabsf(v1.y - v2.y) < COMPARE_THRESHOLD
-		&& fabsf(v1.z - v2.z) < COMPARE_THRESHOLD
-		&& fabsf(v1.w - v2.w) < COMPARE_THRESHOLD;
+	if (TransformDirty())
+	{
+		UpdateMatrix();
+	}
+	return mLocalMatrix;
 }
 
-// Notice that OpenGL matrix is column major, so we have to transpose from normally seen row major matrix
-// Wasted an entire day on this trick
+const Matrix& Transform::GetWorldMatrixInverse()
+{
+	if (TransformDirty())
+	{
+		UpdateMatrix();
+	}
+	return mWorldMatrixInverse;
+}
+
+bool Transform::LocalTransformDirty() const
+{
+	return mLocalPositionDirty || mLocalRotationDirty || mLocalScaleDirty;
+}
+
+bool Transform::WorldTransformDirty() const
+{
+	return mWorldPositionDirty || mWorldRotationDirty || mWorldScaleDirty;
+}
+
+bool Transform::TransformDirty() const
+{
+	return LocalTransformDirty() || WorldTransformDirty() || (mParent != nullptr && mParent->TransformDirty());
+}
+
 void Transform::UpdateMatrix()
 {
-	// Translation
-	mat4 translate = mat4(1, 0, 0, 0,
-						  0, 1, 0, 0,
-						  0, 0, 1, 0,
-						  mPosition.x, mPosition.y, mPosition.z, 1);
+	const Matrix& parentMatrix = mParent == nullptr ? Matrix::Identity : mParent->GetWorldMatrix();
+	const Matrix& parentMatrixInverse = mParent == nullptr ? Matrix::Identity : mParent->mWorldMatrixInverse;
 
-	// X rotation
-	float radianX = radians(mRotation.x);
-	float sinX = sin(radianX);
-	float cosX = cos(radianX);
-	mat4 rotateX = mat4(1, 0, 0, 0,
-						0, cosX, sinX, 0,
-						0, -sinX, cosX, 0,
-						0, 0, 0, 1);
+#ifdef WITH_OPENGL
+	parentMatrix;
+	parentMatrixInverse;
+	// No implementation yet...
+#else
+	// Load DirectX matrix
+	const XMMATRIX loadedParent = XMLoadFloat4x4(&parentMatrix.RawMatrix());
+	const XMMATRIX loadedParentInverse = XMLoadFloat4x4(&parentMatrixInverse.RawMatrix());
 
-	// Y rotation
-	float radianY = radians(mRotation.y);
-	float sinY = sin(radianY);
-	float cosY = cos(radianY);
-	mat4 rotateY = mat4(cosY, 0, -sinY, 0,
-						0, 1, 0, 0,
-						sinY, 0, cosY, 0,
-						0, 0, 0, 1);
-
-	// Z rotation
-	float radianZ = radians(mRotation.z);
-	float sinZ = sin(radianZ);
-	float cosZ = cos(radianZ);
-	mat4 rotateZ = mat4(cosZ, sinZ, 0, 0,
-						-sinZ, cosZ, 0, 0,
-						0, 0, 1, 0,
-						0, 0, 0, 1);
-
-	// Scale
-	mat4 scale = mat4(mScale.x, 0, 0, 0,
-					  0, mScale.y, 0, 0,
-					  0, 0, mScale.z, 0,
-					  0, 0, 0, 1);
-
-	// Translate first -> then rotate xyz -> then scale
-	mMatrix = translate * rotateX * rotateY * rotateZ * scale;
-}
-
-void Transform::UpdateTransform()
-{
-	// Tranlation
-	mPosition = vec4(mMatrix[3][0], mMatrix[3][1], mMatrix[3][2], 1);
-
-	// Scale
-	float sx = length(vec3(mMatrix[0][0], mMatrix[0][1], mMatrix[0][2]));
-	float sy = length(vec3(mMatrix[1][0], mMatrix[1][1], mMatrix[1][2]));
-	float sz = length(vec3(mMatrix[2][0], mMatrix[2][1], mMatrix[2][2]));
-	mScale = vec4(sx, sy, sz, 1);
-
-	// Rotation
-	mat4 rotM = mat4(mMatrix[0][0] / sx, mMatrix[0][1] / sx, mMatrix[0][2] / sx, 0,
-					 mMatrix[1][0] / sy, mMatrix[1][1] / sy, mMatrix[1][2] / sy, 0,
-					 mMatrix[2][0] / sz, mMatrix[2][1] / sz, mMatrix[2][2] / sz, 0,
-					 0, 0, 0, 1);
-	float x, y, z;
-	if (rotM[2][0] != 1 && rotM[2][0] != -1)
+	// Convert all to world vector
+	XMVECTOR sourcePosition = XMLoadFloat4(&mWorldPosition.RawVector());
+	XMVECTOR sourceRotation = XMLoadFloat4(&mWorldRotation.RawQuaternion());
+	XMVECTOR sourceScale = XMLoadFloat4(&mWorldScale.RawVector());
+	if (mLocalPositionDirty)
 	{
-		y = asin(rotM[2][0]);
-		float cy = cos(y);
-		x = atan2(-rotM[2][1] / cy, rotM[2][2] / cy);
-		z = atan2(-rotM[1][0] / cy, rotM[0][0] / cy);
-	}
-	else  // Can't solve this case for now
-	{
-		z = 0;
-		if (rotM[2][0] == 1)
+		if (mParent == nullptr)
 		{
-			y = half_pi<float>();
-			x = atan2(rotM[0][1], rotM[0][2]);
+			sourcePosition = XMLoadFloat4(&mLocalPosition.RawVector());
 		}
 		else
 		{
-			y = -half_pi<float>();
-			x = atan2(-rotM[0][1], -rotM[0][2]);
+			sourcePosition = XMVector4Transform(XMLoadFloat4(&mLocalPosition.RawVector()), loadedParent);
 		}
 	}
-	mRotation = vec4(degrees(x), degrees(y), degrees(z), 1);
+	if (mLocalRotationDirty)
+	{
+		if (mParent == nullptr)
+		{
+			sourceRotation = XMLoadFloat4(&mLocalRotation.RawQuaternion());
+		}
+		else
+		{
+			sourceRotation = XMQuaternionMultiply(XMLoadFloat4(&mParent->mWorldRotation.RawQuaternion()), XMLoadFloat4(&mLocalRotation.RawQuaternion()));
+		}
+	}
+	if (mLocalScaleDirty)
+	{
+		if (mParent == nullptr)
+		{
+			sourceScale = XMLoadFloat4(&mLocalScale.RawVector());
+		}
+		else
+		{
+			sourceScale = XMVector4Transform(XMLoadFloat4(&mLocalScale.RawVector()), loadedParent);
+		}
+	}
+
+	// Combine transform
+	XMMATRIX newWorldMatrix = XMMatrixScalingFromVector(sourceScale) * XMMatrixRotationQuaternion(sourceRotation) * XMMatrixTranslationFromVector(sourcePosition);
+	XMMATRIX newLocalMatrix = XMMatrixMultiply(newWorldMatrix, loadedParentInverse);
+	XMStoreFloat4x4(&mLocalMatrix.RawMatrix(), newLocalMatrix);
+	XMStoreFloat4x4(&mWorldMatrix.RawMatrix(), newWorldMatrix);
+	XMStoreFloat4x4(&mWorldMatrixInverse.RawMatrix(), XMMatrixInverse(nullptr, newWorldMatrix));
+
+	// Update individule components
+	XMVECTOR translation;
+	XMVECTOR rotation;
+	XMVECTOR scale;
+	if (WorldTransformDirty())
+	{
+		XMMatrixDecompose(&scale, &rotation, &translation, newLocalMatrix);
+		XMStoreFloat4(&mLocalPosition.RawVector(), translation);
+		XMStoreFloat4(&mLocalRotation.RawQuaternion(), rotation);
+		XMStoreFloat4(&mLocalScale.RawVector(), scale);
+	}
+	XMMatrixDecompose(&scale, &rotation, &translation, newWorldMatrix);
+	XMStoreFloat4(&mWorldPosition.RawVector(), translation);
+	XMStoreFloat4(&mWorldRotation.RawQuaternion(), rotation);
+	XMStoreFloat4(&mWorldScale.RawVector(), scale);
+#endif
+	
+	// Reset dirty flag
+	mLocalPositionDirty = false;
+	mLocalRotationDirty = false;
+	mLocalScaleDirty = false;
+	mWorldPositionDirty = false;
+	mWorldRotationDirty = false;
+	mWorldScaleDirty = false;
+
+	for (auto& callback : mCallbacks)
+	{
+		callback();
+	}
+}
+
+void Transform::AddTransformUpdateCallback(UpdateCallback callback)
+{
+	mCallbacks.push_back(callback);
+}
+
+void Transform::RemoveTransformUpdateCallback(UpdateCallback callback)
+{
+	auto it = std::find_if(mCallbacks.begin(), mCallbacks.end(), [&callback](const UpdateCallback& c) { return c.target_type() == callback.target_type(); });
+	mCallbacks.erase(it);
 }

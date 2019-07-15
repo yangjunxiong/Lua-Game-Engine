@@ -24,8 +24,6 @@ public:
 		bind.SetFunction<Sector, void, bool>("SetActive", &Sector::SetActive);
 		bind.SetFunction<Sector, bool>("IsActive", &Sector::IsActive);
 		bind.SetFunction<Sector, Entity*,  const std::string&>("CreateEntity", &Sector::CreateEntity);
-		bind.SetFunction<Sector, void, World&>("SetWorld", &Sector::SetWorld);
-		bind.SetProperty<Sector>("ENTITY_TABLE_KEY", &Sector::ENTITY_TABLE_KEY);
 	};
 };
 }
