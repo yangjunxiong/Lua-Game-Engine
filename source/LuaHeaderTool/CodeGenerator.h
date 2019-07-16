@@ -12,11 +12,10 @@ namespace GameEngine::HeaderTool
 
 	private:
 		using StateFunction = void (CodeGenerator::*)(const SyntaxAnalyzer::Item&, std::ofstream&);
-		using LuaStateFunction = void (CodeGenerator::*)(const SyntaxAnalyzer::Item&, std::vector<std::string>&);
 		const static std::vector<StateFunction> sStateFunctions;
-		const static std::vector<LuaStateFunction> sLuaStateFunctions;
+		const static std::vector<StateFunction> sLuaStateFunctions;
 		inline void WriteIndentation(std::ofstream& file);
-		inline bool FindLine(const std::vector<std::string>& content, const std::string& search);
+		inline std::string CPPToLuaType(const std::string& type) const;
 
 		void ClassState(const SyntaxAnalyzer::Item& item, std::ofstream& file);
 		void EndClassState(const SyntaxAnalyzer::Item& item, std::ofstream& file);
@@ -26,12 +25,15 @@ namespace GameEngine::HeaderTool
 		void EnumState(const SyntaxAnalyzer::Item& item, std::ofstream& file);
 		void WriteEvent(const SyntaxAnalyzer::Item& item, std::ofstream& file);
 
-		void LuaClassState(const SyntaxAnalyzer::Item& item, std::vector<std::string>& content);
-		void LuaEndClassState(const SyntaxAnalyzer::Item& item, std::vector<std::string>& content);
-		void LuaVariableState(const SyntaxAnalyzer::Item& item, std::vector<std::string>& content);
-		void LuaFunctionState(const SyntaxAnalyzer::Item& item, std::vector<std::string>& content);
-		void LuaConstructorState(const SyntaxAnalyzer::Item& item, std::vector<std::string>& content);
-		void LuaEnumState(const SyntaxAnalyzer::Item& item, std::vector<std::string>& content);
+		void LuaClassState(const SyntaxAnalyzer::Item& item, std::ofstream& file);
+		void LuaEndClassState(const SyntaxAnalyzer::Item& item, std::ofstream& file);
+		void LuaVariableState(const SyntaxAnalyzer::Item& item, std::ofstream& file);
+		void LuaFunctionState(const SyntaxAnalyzer::Item& item, std::ofstream& file);
+		void LuaConstructorState(const SyntaxAnalyzer::Item& item, std::ofstream& file);
+		void LuaEnumState(const SyntaxAnalyzer::Item& item, std::ofstream& file);
+
+		static const inline std::string sLuaHeaderLine = "-- AUTO GENERATED INTELLISENSE INFO. DO NOT MODIFY";
+		static const inline std::string sLuaEndHeaderLine = "-- END AUTO GENERATED INFO";
 
 		size_t mIndentation = 0;
 		const std::vector<SyntaxAnalyzer::Item>* mItems = nullptr;

@@ -19,7 +19,7 @@ const std::vector<CodeGenerator::StateFunction> CodeGenerator::sStateFunctions =
 	&CodeGenerator::EnumState
 };
 
-const std::vector<CodeGenerator::LuaStateFunction> CodeGenerator::sLuaStateFunctions =
+const std::vector<CodeGenerator::StateFunction> CodeGenerator::sLuaStateFunctions =
 {
 	nullptr,
 	&CodeGenerator::LuaClassState,
@@ -81,32 +81,101 @@ void CodeGenerator::GenerateLua(const std::vector<SyntaxAnalyzer::Item>& items, 
 		}
 	}
 	ifile.close();
-	while (content.back().empty() || content.back() == "\n")
+
+	// Remove blank lines at the end
+	while (content.size() > 0 && (content.back().empty() || content.back() == "\n"))
 	{
 		content.erase(content.end() - 1);
 	}
 
+	// Remove existing infos if they exist
+	auto infoStart = std::find(content.begin(), content.end(), sLuaHeaderLine);
+	if (infoStart != content.end())
+	{
+		auto infoEnd = std::find(content.begin(), content.end(), sLuaEndHeaderLine);
+		if (infoEnd != content.end())
+		{
+			content.erase(infoStart, infoEnd + 1);
+		}
+	}
+
 	// Process all items and output code
+	ofstream ofile;
+	ofile.open(output, ios::out);
+	ofile << sLuaHeaderLine << endl;
+
 	mItems = &items;
+	bool inClass = false;
+	std::vector<const Item*> functionItems;
 	for (size_t i = 0; i < items.size(); ++i)
 	{
+		// Get state function
 		const Item& item = items[i];
 		auto func = sLuaStateFunctions[static_cast<size_t>(item.mType)];
-		if (func != nullptr)
+		if (func == nullptr)
 		{
-			(this->*func)(item, content);
+			continue;
+		}
+
+		// Select different item types
+		// Class declaration comes first, then property, then function, then class end
+		if (inClass)
+		{
+			// Finish up the class and print all functions
+			if (item.mType == ItemType::EndClass)
+			{
+				// Output end class
+				(this->*func)(item, ofile);
+
+				// Output functions and constructor
+				for (const auto funcItem : functionItems)
+				{
+					if (funcItem->mType == ItemType::Function)
+					{
+						func = sLuaStateFunctions[static_cast<size_t>(ItemType::Function)];
+					}
+					else
+					{
+						func = sLuaStateFunctions[static_cast<size_t>(ItemType::Constructor)];
+					}
+					(this->*func)(*funcItem, ofile);
+				}
+				inClass = false;
+			}
+			else
+			{
+				if (item.mType == ItemType::Constructor || item.mType == ItemType::Function)
+				{
+					functionItems.push_back(&item);
+				}
+				else
+				{
+					(this->*func)(item, ofile);
+				}
+			}
+		}
+		else
+		{
+			if (item.mType == ItemType::Class)
+			{
+				functionItems.clear();
+				inClass = true;
+				(this->*func)(item, ofile);
+			}
+			else if (item.mType == ItemType::Enum)
+			{
+				(this->*func)(item, ofile);
+			}
 		}
 	}
 	mItems = nullptr;
+	ofile << sLuaEndHeaderLine << endl;
 
-	// Write lua file
-	ofstream ofile;
-	ofile.open(output, ios::out);
+	// Append existing content
 	for (const auto& line : content)
 	{
 		ofile << line << endl;
 	}
-
 	ofile.close();
 }
 
@@ -116,14 +185,6 @@ void CodeGenerator::WriteIndentation(std::ofstream& file)
 	{
 		file << "\t";
 	}
-}
-
-bool CodeGenerator::FindLine(const std::vector<std::string>& content, const std::string& search)
-{
-	return std::find_if(content.begin(), content.end(), [&search](const std::string& line)
-		{
-			return line == search;
-		}) != content.cend();
 }
 
 void CodeGenerator::ClassState(const SyntaxAnalyzer::Item& item, std::ofstream& file)
@@ -288,94 +349,148 @@ void CodeGenerator::WriteEvent(const SyntaxAnalyzer::Item& item, std::ofstream& 
 	file << "};" << endl << endl;
 }
 
-void CodeGenerator::LuaClassState(const SyntaxAnalyzer::Item& item, std::vector<std::string>& content)
+void CodeGenerator::LuaClassState(const SyntaxAnalyzer::Item& item, std::ofstream& file)
 {
-	char buffer[1024];
-	sprintf_s(buffer, "-- C++ class %s, parent class %s", item.mClassName.c_str(), item.mParentClassName.empty() ? "(None)" : item.mParentClassName.c_str());
-	if (!FindLine(content, buffer))
+	file << "---@class " << item.mClassName;
+	if (!item.mParentClassName.empty())
 	{
-		content.emplace_back(buffer);
+		file << " : " << item.mParentClassName;
 	}
+	file << endl;
 }
 
-void CodeGenerator::LuaEndClassState(const SyntaxAnalyzer::Item& item, std::vector<std::string>& content)
+void CodeGenerator::LuaEndClassState(const SyntaxAnalyzer::Item& item, std::ofstream& file)
 {
-	item;
-	content;
+	file << item.mClassName << " = " << item.mClassName << endl;
 }
 
-void CodeGenerator::LuaVariableState(const SyntaxAnalyzer::Item& item, std::vector<std::string>& content)
+void CodeGenerator::LuaVariableState(const SyntaxAnalyzer::Item& item, std::ofstream& file)
 {
-	char buffer[1024];
-	sprintf_s(buffer, "-- Class %s variable: %s%s%s %s",
-		item.mClassName.c_str(),
-		item.mWritable ? "" : "const ",
-		(item.mStatic ? "static " : ""),
-		item.mMemberType.c_str(),
-		item.mToken.String.c_str());
-	if (!FindLine(content, buffer))
-	{
-		content.emplace_back(buffer);
-	}
+	file << "---@field " << item.mToken.String << " " << CPPToLuaType(item.mMemberType) << endl;
 }
 
-void CodeGenerator::LuaFunctionState(const SyntaxAnalyzer::Item& item, std::vector<std::string>& content)
+void CodeGenerator::LuaFunctionState(const SyntaxAnalyzer::Item& item, std::ofstream& file)
 {
-	ostringstream buffer;
-	buffer << "-- Class " << item.mClassName << " function: ";
-	if (!item.mWritable)
+	file << "local " << item.mToken.String << "_Impl = " << item.mClassName << "." << item.mToken.String << endl;
+	if (!item.mStatic)
 	{
-		buffer << "const ";
+		file << "---@param obj " << item.mClassName << endl;
 	}
-	if (item.mStatic)
-	{
-		buffer << "static ";
-	}
-	buffer << item.mMemberType << " " << item.mToken.String << "(";
 	for (size_t i = 0; i < item.mArgumentList.size(); ++i)
 	{
-		buffer << item.mArgumentList[i] << (i < item.mArgumentList.size() - 1 ? ", " : "");
+		file << "---@param param" << (i + 1) << " " << CPPToLuaType(item.mArgumentList[i]) << endl;
 	}
-	buffer << ")";
+	file << "---@return " << CPPToLuaType(item.mMemberType) << endl;
 
-	string str = buffer.str();
-	if (!FindLine(content, str))
+	file << "function " << item.mClassName << "." << item.mToken.String << "(";
+	if (!item.mStatic)
 	{
-		content.emplace_back(str);
+		file << "obj";
+		if (item.mArgumentList.size() > 0)
+		{
+			file << ", ";
+		}
 	}
-}
-
-void CodeGenerator::LuaConstructorState(const SyntaxAnalyzer::Item& item, std::vector<std::string>& content)
-{
-	ostringstream buffer;
-	buffer << "-- Class " << item.mClassName << " constructor: ";
-	buffer << item.mToken.String << "(";
 	for (size_t i = 0; i < item.mArgumentList.size(); ++i)
 	{
-		buffer << item.mArgumentList[i] << (i < item.mArgumentList.size() - 1 ? ", " : "");
+		file << "param" << (i + 1);
+		if (i < item.mArgumentList.size() - 1)
+		{
+			file << ", ";
+		}
 	}
-	buffer << ")";
-
-	string str = buffer.str();
-	if (!FindLine(content, str))
-	{
-		content.emplace_back(str);
-	}
+	file << ") end" << endl;
+	file << item.mClassName << "." << item.mToken.String << " = " << item.mToken.String << "_Impl" << endl;
 }
 
-void CodeGenerator::LuaEnumState(const SyntaxAnalyzer::Item& item, std::vector<std::string>& content)
+void CodeGenerator::LuaConstructorState(const SyntaxAnalyzer::Item& item, std::ofstream& file)
 {
-	stringstream ss;
-	ss << "-- C++ enum " << item.mClassName << " { ";
+	file << "local " << item.mClassName << "_New = " << item.mClassName << ".New" << endl;
+	for (size_t i = 0; i < item.mArgumentList.size(); ++i)
+	{
+		file << "---@param param" << (i + 1) << " " << CPPToLuaType(item.mArgumentList[i]) << endl;
+	}
+	file << "---@return " << CPPToLuaType(item.mClassName) << endl;
+
+	file << "function " << item.mClassName << ".New(";
+	for (size_t i = 0; i < item.mArgumentList.size(); ++i)
+	{
+		file << "param" << (i + 1);
+		if (i < item.mArgumentList.size() - 1)
+		{
+			file << ", ";
+		}
+	}
+	file << ") end" << endl;
+	file << item.mClassName << ".New = " << item.mClassName << "_New" << endl;
+}
+
+void CodeGenerator::LuaEnumState(const SyntaxAnalyzer::Item& item, std::ofstream& file)
+{
+	file << "---@class " << item.mClassName << endl;
 	for (const auto& name : item.mEnumList)
 	{
-		ss << name << ",";
+		file << "---@field " << name << " number" << endl;
 	}
-	ss << " }" << endl;
+	file << item.mClassName << " = " << item.mClassName << endl;
+}
 
-	string line = ss.str();
-	if (!FindLine(content, line))
+std::string CodeGenerator::CPPToLuaType(const std::string& type) const
+{
+	// Remove useless symbols
+	string copy = type;
+	size_t pos = copy.find("**");
+	if (pos != string::npos)
 	{
-		content.emplace_back(line);
+		copy.erase(pos, 2);
+	}
+	pos = copy.find("*");
+	if (pos != string::npos)
+	{
+		copy.erase(pos, 1);
+	}
+	pos = copy.find("&&");
+	if (pos != string::npos)
+	{
+		copy.erase(pos, 2);
+	}
+	pos = copy.find("&");
+	if (pos != string::npos)
+	{
+		copy.erase(pos, 1);
+	}
+	pos = copy.find("const");
+	if (pos != string::npos)
+	{
+		copy.erase(pos, 5);
+	}
+	pos = copy.find(' ');
+	while (pos != string::npos)
+	{
+		copy.erase(pos, 1);
+		pos = copy.find(' ');
+	}
+	
+	// Output Lua type
+	if (copy == "int" || copy == "unsignedint" || copy == "long" || copy == "unsignedlong" || copy == "longlong" || copy == "unsignedlonglong"
+		|| copy == "float" || copy == "double" || copy == "unsignedchar")
+	{
+		return "number";
+	}
+	else if (copy == "bool")
+	{
+		return "boolean";
+	}
+	else if (copy == "char" || copy == "std::string")
+	{
+		return "string";
+	}
+	else if (copy == "void")
+	{
+		return "nil";
+	}
+	else
+	{
+		return copy;
 	}
 }

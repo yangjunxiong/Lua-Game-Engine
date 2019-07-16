@@ -42,6 +42,7 @@ int main(int argc, const char* argv[])
 	catch (const runtime_error& e)
 	{
 		cout << "ERROR: " << e.what() << endl;
+		throw e;
 	}
 
 	cout << "Lua header tool runs successfully!" << endl;

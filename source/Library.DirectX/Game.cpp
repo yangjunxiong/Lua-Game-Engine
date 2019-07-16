@@ -62,7 +62,7 @@ namespace GameEngine
 		mWorld = make_shared<World>(mGameTime);
 		mKeyboard = new KeyboardEntity();
 		auto gamepad = new GamePadEntity();
-		mMouse = new MouseEntity(MouseModes::Absolute);
+		mMouse = new MouseEntity(MouseModes::Relative);
 		mCamera = new FirstPersonCamera();
 		mWorld->Adopt(*mKeyboard, mWorld->ENTITY_TABLE_KEY);
 		mWorld->Adopt(*gamepad, mWorld->ENTITY_TABLE_KEY);
