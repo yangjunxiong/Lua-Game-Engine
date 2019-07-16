@@ -25,7 +25,7 @@ public:
 		bind.SetFunction<Entity, Transform*>("GetTransform", &Entity::GetTransform);
 		bind.SetFunction<Entity, bool>("IsActive", &Entity::IsActive);
 		bind.SetFunction<Entity, void, bool>("SetActive", &Entity::SetActive);
-		bind.SetFunction<Entity, Action*, std::string>("CreateAction", &Entity::CreateAction);
+		bind.SetFunction<Entity, Action*, std::string, std::string>("CreateAction", &Entity::CreateAction);
 		bind.SetFunction<Entity, void>("Destroy", &Entity::Destroy);
 		bind.SetFunction<Entity, Entity*>("GetTransformParent", &Entity::GetTransformParent);
 		bind.SetFunction<Entity, void, Entity*>("SetTransformParent", &Entity::SetTransformParent);

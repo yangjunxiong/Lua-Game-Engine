@@ -11,16 +11,19 @@ const std::vector<SyntaxAnalyzer::StateFunction> SyntaxAnalyzer::sStateFunctions
 	&SyntaxAnalyzer::InClassMarkState,
 	&SyntaxAnalyzer::BeforeClassState,
 	&SyntaxAnalyzer::BeforeParentClassState,
-	&SyntaxAnalyzer::InClassState,
+	&SyntaxAnalyzer::InClassState,                 // End of class
 	&SyntaxAnalyzer::InPropertyMarkState,
 	&SyntaxAnalyzer::BeforePropertyState,
-	&SyntaxAnalyzer::AfterPropertyState,
+	&SyntaxAnalyzer::AfterPropertyState,           // End of property
 	&SyntaxAnalyzer::InFunctionMarkState,
 	&SyntaxAnalyzer::BeforeFunctionState,
-	&SyntaxAnalyzer::InFunctionSignatureState,
+	&SyntaxAnalyzer::InFunctionSignatureState,     // End of function
 	&SyntaxAnalyzer::InConstructorMarkState,
 	&SyntaxAnalyzer::BeforeConstructorState,
-	&SyntaxAnalyzer::InFunctionSignatureState
+	&SyntaxAnalyzer::InFunctionSignatureState,     // End of contructor
+	&SyntaxAnalyzer::InEnumMarkState,
+	&SyntaxAnalyzer::BeforeEnumState,
+	&SyntaxAnalyzer::InEnumState                   // End of enum
 };
 
 SyntaxAnalyzer::Item::Item(ItemType type,
@@ -99,7 +102,7 @@ void SyntaxAnalyzer::ResetClass()
 	mAfterColon = false;
 }
 
-void SyntaxAnalyzer::ResetMember()
+void SyntaxAnalyzer::ResetParseVariable()
 {
 	mConst = false;
 	mStatic = false;
@@ -107,6 +110,10 @@ void SyntaxAnalyzer::ResetMember()
 	mAfterMark = false;
 	mExpectType = true;
 	mExpectTypename = true;
+
+	mExpectEnumKeyword = true;
+	mExpectClassKeyword = true;
+	mExpectEnumName = true;
 }
 
 bool SyntaxAnalyzer::ProcessType(std::string& typeString, const HeaderTokenizer::Token& token)
@@ -165,6 +172,11 @@ void SyntaxAnalyzer::BeforeClassMarkState(size_t index)
 	if (token.Type == TokenType::Mark_Class)
 	{
 		mState = State::InClassMark;
+		mFlag = 0;
+	}
+	else if (token.Type == TokenType::Mark_Enum)
+	{
+		mState = State::InEnumMark;
 		mFlag = 0;
 	}
 }
@@ -272,6 +284,12 @@ void SyntaxAnalyzer::InClassState(size_t index)
 		mState = State::InConstructorMark;
 		mFlag = 0;
 		break;
+	case TokenType::Mark_Enum:
+	case TokenType::Mark_Class:
+		char buffer[1024];
+		sprintf_s(buffer, "Detect nested class or enum in class %s\n", mClassName.c_str());
+		throw std::runtime_error(buffer);
+		break;
 	case TokenType::Keyword_Public:
 		mAccessLevel = AccessLevel::Public;
 		break;
@@ -297,7 +315,7 @@ void SyntaxAnalyzer::InPropertyMarkState(size_t index)
 		if (mParenthesisLevel == 0)
 		{
 			mState = State::BeforeProperty;
-			ResetMember();
+			ResetParseVariable();
 		}
 	}
 	else
@@ -356,7 +374,7 @@ void SyntaxAnalyzer::InFunctionMarkState(size_t index)
 		if (mParenthesisLevel == 0)
 		{
 			mState = State::BeforeFunction;
-			ResetMember();
+			ResetParseVariable();
 		}
 	}
 	else
@@ -411,7 +429,7 @@ void SyntaxAnalyzer::InFunctionSignatureState(size_t index)
 		}
 		break;
 	case TokenType::Comma:
-		if (mParenthesisLevel == 1)
+		if (mParenthesisLevel == mFunctionSignatureParentLevel)
 		{
 			lastItem.mArgumentList.emplace_back();
 			mAfterMark = false;
@@ -428,8 +446,9 @@ void SyntaxAnalyzer::InFunctionSignatureState(size_t index)
 	case TokenType::Left_AngleBracket:
 	case TokenType::Right_AngleBracket:
 		// If this is right after the first parenthesis, it's first argument
-		if (lastItem.mArgumentList.size() == 0 && mParenthesisLevel == 1)
+		if (lastItem.mArgumentList.size() == 0)
 		{
+			mFunctionSignatureParentLevel = mParenthesisLevel;
 			lastItem.mArgumentList.emplace_back();
 			mAfterMark = false;
 			mExpectType = true;
@@ -460,7 +479,7 @@ void SyntaxAnalyzer::InConstructorMarkState(size_t index)
 		if (mParenthesisLevel == 0)
 		{
 			mState = State::BeforeConstructor;
-			ResetMember();
+			ResetParseVariable();
 		}
 	}
 	else
@@ -487,4 +506,87 @@ void SyntaxAnalyzer::BeforeConstructorState(size_t index)
 	auto& item = mOutput->emplace_back(ItemType::Constructor, token, mClassName, mParentClass, mType, mAccessLevel, false, false);
 	item.mFlag = mFlag;
 	mState = State::InConstructorSignature;
+}
+
+void SyntaxAnalyzer::InEnumMarkState(size_t index)
+{
+	const Token& token = mInput->at(index);
+	if (token.Type == TokenType::Left_Parenthesis)
+	{
+		++mParenthesisLevel;
+	}
+	else if (token.Type == TokenType::Right_Parenthesis)
+	{
+		--mParenthesisLevel;
+		if (mParenthesisLevel == 0)
+		{
+			mState = State::BeforeEnum;
+			ResetParseVariable();
+		}
+	}
+	else
+	{
+		// TODO Additional marks
+	}
+}
+
+void SyntaxAnalyzer::BeforeEnumState(size_t index)
+{
+	const Token& token = mInput->at(index);
+	if (token.Type == TokenType::Keyword_Enum)
+	{
+		mExpectEnumKeyword = false;
+	}
+	else if (token.Type == TokenType::Keyword_Class)
+	{
+		if (mExpectEnumKeyword)
+		{
+			throw std::runtime_error("Put \"class\" after \"enum\"");
+		}
+		mExpectClassKeyword = false;
+	}
+	else if (token.Type == TokenType::Left_Bracket)
+	{
+		if (mExpectEnumKeyword || mExpectClassKeyword || mExpectEnumName)
+		{
+			throw std::runtime_error("Enum binding must follow \"ENUM() enum class XXX {};\"");
+		}
+		mState = State::InEnum;
+		ResetParseVariable();
+	}
+	else if (token.Type == TokenType::Name)
+	{
+		if (mExpectEnumKeyword || mExpectClassKeyword)
+		{
+			throw std::runtime_error("Enum binding must follow \"ENUM() enum class XXX {};\"");
+		}
+		mExpectEnumName = false;
+		mClassName = token.String;
+		auto& item = mOutput->emplace_back(ItemType::Enum, token, mClassName, "", "", mAccessLevel, false, true);
+		item.mFlag = mFlag;
+	}
+}
+
+void SyntaxAnalyzer::InEnumState(size_t index)
+{
+	assert(mOutput->back().mType == ItemType::Enum);
+	const Token& token = mInput->at(index);
+	auto& enumList = mOutput->back().mEnumList;
+	switch (token.Type)
+	{
+	case TokenType::Name:
+		if (mExpectEnumName)
+		{
+			enumList.emplace_back(token.String);
+			mExpectEnumName = false;
+		}
+		break;
+	case TokenType::Comma:
+		mExpectEnumName = true;
+		break;
+	case TokenType::Right_Bracket:
+		mState = State::BeforeClassMark;
+		ResetParseVariable();
+		break;
+	}
 }

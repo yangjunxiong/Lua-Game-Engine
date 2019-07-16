@@ -62,6 +62,11 @@ namespace GameEngine
 	{
 		return mVector;
 	}
+
+	void Vector3::Normalize()
+	{
+		DirectX::XMStoreFloat4(&mVector, DirectX::XMVector3Normalize(XMLoadFloat4(&mVector)));
+	}
 #endif
 
 	float Vector3::Length() const

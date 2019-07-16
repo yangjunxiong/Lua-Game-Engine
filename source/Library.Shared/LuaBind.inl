@@ -264,6 +264,17 @@ namespace GameEngine::Lua
 		SET_CONSTRUCTOR_BODY(EXP(_FromLuaStack<Param1>(L, 1), _FromLuaStack<Param2>(L, 2), _FromLuaStack<Param3>(L, 3), _FromLuaStack<Param4>(L, 4), _FromLuaStack<Param5>(L, 5), _FromLuaStack<Param6>(L, 6)));
 	}
 
+	template <typename Enum>
+	void LuaBind::SetEnumValue(const std::string& enumName, int value)
+	{
+		int newTable = luaL_newmetatable(mLuaState, LuaWrapper<Enum>::sName.c_str());
+		assert(!newTable);
+		lua_pushstring(mLuaState, enumName.c_str());
+		lua_pushinteger(mLuaState, value);
+		lua_rawset(mLuaState, -3);
+		lua_pop(mLuaState, 1);
+	}
+
 	template <typename Ret>
 	static inline int LuaBind::_CallCFunction(lua_State* L, const std::function<Ret(lua_State*)>& wrap)
 	{

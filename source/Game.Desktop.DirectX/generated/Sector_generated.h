@@ -23,7 +23,7 @@ public:
 		bind.SetFunction<Sector, void,  const std::string&>("SetName", &Sector::SetName);
 		bind.SetFunction<Sector, void, bool>("SetActive", &Sector::SetActive);
 		bind.SetFunction<Sector, bool>("IsActive", &Sector::IsActive);
-		bind.SetFunction<Sector, Entity*,  const std::string&>("CreateEntity", &Sector::CreateEntity);
+		bind.SetFunction<Sector, Entity*,  const std::string&,  const std::string&>("CreateEntity", &Sector::CreateEntity);
 	};
 };
 }

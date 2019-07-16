@@ -23,6 +23,7 @@ namespace GameEngine::HeaderTool
 		void VariableState(const SyntaxAnalyzer::Item& item, std::ofstream& file);
 		void FunctionState(const SyntaxAnalyzer::Item& item, std::ofstream& file);
 		void ConstructorState(const SyntaxAnalyzer::Item& item, std::ofstream& file);
+		void EnumState(const SyntaxAnalyzer::Item& item, std::ofstream& file);
 		void WriteEvent(const SyntaxAnalyzer::Item& item, std::ofstream& file);
 
 		void LuaClassState(const SyntaxAnalyzer::Item& item, std::vector<std::string>& content);
@@ -30,6 +31,7 @@ namespace GameEngine::HeaderTool
 		void LuaVariableState(const SyntaxAnalyzer::Item& item, std::vector<std::string>& content);
 		void LuaFunctionState(const SyntaxAnalyzer::Item& item, std::vector<std::string>& content);
 		void LuaConstructorState(const SyntaxAnalyzer::Item& item, std::vector<std::string>& content);
+		void LuaEnumState(const SyntaxAnalyzer::Item& item, std::vector<std::string>& content);
 
 		size_t mIndentation = 0;
 		const std::vector<SyntaxAnalyzer::Item>* mItems = nullptr;

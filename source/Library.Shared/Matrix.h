@@ -1,5 +1,6 @@
 #pragma once
 #include "Macro.h"
+#include "Vector4.h"
 #ifdef WITH_OPENGL
 #include <glm/glm.hpp>
 #else
@@ -23,6 +24,10 @@ namespace GameEngine
 		Matrix& operator=(Matrix&& other) = default;
 		~Matrix() = default;
 
+		Vector3 Forward() const;
+		Vector3 Up() const;
+		Vector3 Right() const;
+
 		static const Matrix Identity;
 		static const Matrix Zero;
 
@@ -30,6 +35,7 @@ namespace GameEngine
 		inline glm::mat4& RawMatrix();
 		inline const glm::mat4& RawMatrix() const;
 #else
+		Matrix(const DirectX::XMMATRIX& matrix);
 		inline DirectX::XMFLOAT4X4& RawMatrix();
 		inline const DirectX::XMFLOAT4X4& RawMatrix() const;
 #endif

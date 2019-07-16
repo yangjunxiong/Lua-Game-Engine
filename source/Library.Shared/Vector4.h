@@ -21,7 +21,7 @@ namespace GameEngine
 		Vector4(Vector4&& other) = default;
 		Vector4& operator=(const Vector4& other) = default;
 		Vector4& operator=(Vector4&& other) = default;
-		~Vector4() = default;
+		virtual ~Vector4() = default;
 
 		FUNCTION();
 		inline float GetX() const;
@@ -47,12 +47,32 @@ namespace GameEngine
 		FUNCTION();
 		inline void SetW(float w);
 
+		PROPERTY();
+		static const Vector4 One;
+
+		PROPERTY();
+		static const Vector4 Zero;
+
+		PROPERTY();
+		static const Vector4 Forward;
+
+		PROPERTY();
+		static const Vector4 Up;
+
+		PROPERTY();
+		static const Vector4 Right;
+
 #ifdef WITH_OPENGL
 		inline glm::vec4& RawVector();
 		inline const glm::vec4& RawVector() const;
 #else
 		inline DirectX::XMFLOAT4& RawVector();
 		inline const DirectX::XMFLOAT4& RawVector() const;
+		static const DirectX::XMVECTOR OneVector;
+		static const DirectX::XMVECTOR ZeroVector;
+		static const DirectX::XMVECTOR ForwardVector;
+		static const DirectX::XMVECTOR UpVector;
+		static const DirectX::XMVECTOR RightVector;
 #endif
 
 	protected:
@@ -68,7 +88,13 @@ namespace GameEngine
 	{
 	public:
 		Vector3();
+		Vector3(const Vector3& other) = default;
+		Vector3(Vector3&& other) = default;
+		Vector3& operator=(const Vector3& other) = default;
+		Vector3& operator=(Vector3&& other) = default;
+		Vector3(const Vector4& vec);
 		explicit Vector3(float v);
+		virtual ~Vector3() = default;
 
 		CONSTRUCTOR();
 		Vector3(float x, float y, float z);
@@ -78,6 +104,9 @@ namespace GameEngine
 
 		FUNCTION();
 		inline float LengthSquare() const;
+
+		FUNCTION();
+		inline void Normalize();
 	};
 }
 

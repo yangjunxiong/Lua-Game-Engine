@@ -31,6 +31,9 @@ public:
 		bind.SetFunction<Transform, void,  const Vector3&>("SetLocalPosition", &Transform::SetLocalPosition);
 		bind.SetFunction<Transform, void,  const Quaternion&>("SetLocalRotation", &Transform::SetLocalRotation);
 		bind.SetFunction<Transform, void,  const Vector3&>("SetLocalScale", &Transform::SetLocalScale);
+		bind.SetFunction<Transform,  const Vector3&>("Forward", &Transform::Forward);
+		bind.SetFunction<Transform,  const Vector3&>("Up", &Transform::Up);
+		bind.SetFunction<Transform,  const Vector3&>("Right", &Transform::Right);
 	};
 };
 }

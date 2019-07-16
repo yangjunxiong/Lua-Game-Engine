@@ -116,6 +116,33 @@ void Transform::SetLocalScale(const Vector3& scale)
 	mWorldScaleDirty = false;
 }
 
+const Vector3& Transform::Forward()
+{
+	if (TransformDirty())
+	{
+		UpdateMatrix();
+	}
+	return mForward;
+}
+
+const Vector3& Transform::Up()
+{
+	if (TransformDirty())
+	{
+		UpdateMatrix();
+	}
+	return mUp;
+}
+
+const Vector3& Transform::Right()
+{
+	if (TransformDirty())
+	{
+		UpdateMatrix();
+	}
+	return mRight;
+}
+
 const Matrix& Transform::GetWorldMatrix()
 {
 	if (TransformDirty())
@@ -232,6 +259,12 @@ void Transform::UpdateMatrix()
 	XMStoreFloat4(&mWorldPosition.RawVector(), translation);
 	XMStoreFloat4(&mWorldRotation.RawQuaternion(), rotation);
 	XMStoreFloat4(&mWorldScale.RawVector(), scale);
+
+	// Update directions
+	const Matrix rotationMatrix = mWorldRotation.ToMatrix();
+	mForward = rotationMatrix.Forward();
+	mUp = rotationMatrix.Up();
+	mRight = rotationMatrix.Right();
 #endif
 	
 	// Reset dirty flag
@@ -242,6 +275,7 @@ void Transform::UpdateMatrix()
 	mWorldRotationDirty = false;
 	mWorldScaleDirty = false;
 
+	// Broadcast update transform message
 	for (auto& callback : mCallbacks)
 	{
 		callback();

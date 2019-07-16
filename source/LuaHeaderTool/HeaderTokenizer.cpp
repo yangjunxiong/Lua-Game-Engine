@@ -28,7 +28,8 @@ const std::vector<HeaderTokenizer::StateFunction> HeaderTokenizer::sStateFunctio
 	&HeaderTokenizer::SlashState,
 	&HeaderTokenizer::DoubleSlashState,
 	&HeaderTokenizer::SlashStar,
-	&HeaderTokenizer::EndStar
+	&HeaderTokenizer::EndStar,
+	&HeaderTokenizer::CommaState
 };
 
 const std::map<char, HeaderTokenizer::ParseState> HeaderTokenizer::sCharacterStateMap =
@@ -49,7 +50,8 @@ const std::map<char, HeaderTokenizer::ParseState> HeaderTokenizer::sCharacterSta
 	{ '&', ParseState::Ampersand },
 	{ ':', ParseState::Colon },
 	{ '/', ParseState::Slash },
-	{ '_', ParseState::Word }
+	{ '_', ParseState::Word },
+	{ ',', ParseState::Comma }
 };
 
 const std::unordered_map<std::string, HeaderTokenizer::TokenType> HeaderTokenizer::sKeywordMap =
@@ -80,7 +82,8 @@ const std::unordered_map<std::string, HeaderTokenizer::TokenType> HeaderTokenize
 	{ "CLASS", TokenType::Mark_Class },
 	{ "PROPERTY", TokenType::Mark_Property },
 	{ "FUNCTION", TokenType::Mark_Function },
-	{ "CONSTRUCTOR", TokenType::Mark_Constructor }
+	{ "CONSTRUCTOR", TokenType::Mark_Constructor },
+	{ "ENUM", TokenType::Mark_Enum }
 };
 
 HeaderTokenizer::Token::Token(const std::string& str, TokenType type) :
@@ -402,5 +405,12 @@ void HeaderTokenizer::EndStar(char c)
 		mParseState.pop();
 		mParseState.push(ParseState::SlashStar);
 	}
+}
+
+void HeaderTokenizer::CommaState(char c)
+{
+	PushToken(TokenType::Comma);
+	mParseState.pop();
+	NewToken(c);
 }
 #pragma endregion

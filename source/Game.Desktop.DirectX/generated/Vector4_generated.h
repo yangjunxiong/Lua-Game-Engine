@@ -26,6 +26,11 @@ public:
 		bind.SetFunction<Vector4, void, float>("SetY", &Vector4::SetY);
 		bind.SetFunction<Vector4, void, float>("SetZ", &Vector4::SetZ);
 		bind.SetFunction<Vector4, void, float>("SetW", &Vector4::SetW);
+		bind.SetProperty<Vector4>("One", &Vector4::One);
+		bind.SetProperty<Vector4>("Zero", &Vector4::Zero);
+		bind.SetProperty<Vector4>("Forward", &Vector4::Forward);
+		bind.SetProperty<Vector4>("Up", &Vector4::Up);
+		bind.SetProperty<Vector4>("Right", &Vector4::Right);
 	};
 };
 class Vector3_generated final
@@ -40,9 +45,10 @@ public:
 	static void Lua_RegisterMember(LuaBind& bind)
 	{
 		bind;
-		bind.SetConstructor<Vector3, float>();
+		bind.SetConstructor<Vector3, float, float, float>();
 		bind.SetFunction<Vector3, float>("Length", &Vector3::Length);
 		bind.SetFunction<Vector3, float>("LengthSquare", &Vector3::LengthSquare);
+		bind.SetFunction<Vector3, void>("Normalize", &Vector3::Normalize);
 	};
 };
 }

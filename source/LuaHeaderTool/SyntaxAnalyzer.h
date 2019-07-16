@@ -15,7 +15,8 @@ namespace GameEngine::HeaderTool
 			EndClass,
 			Variable,
 			Function,
-			Constructor
+			Constructor,
+			Enum
 		};
 
 		enum class AccessLevel : uint8_t
@@ -54,6 +55,7 @@ namespace GameEngine::HeaderTool
 			bool mWritable = true;
 			bool mStatic = false;
 			std::vector<std::string> mArgumentList;
+			std::vector<std::string> mEnumList;
 			int mFlag = 0;
 		};
 
@@ -79,7 +81,11 @@ namespace GameEngine::HeaderTool
 
 			InConstructorMark,
 			BeforeConstructor,
-			InConstructorSignature
+			InConstructorSignature,
+
+			InEnumMark,
+			BeforeEnum,
+			InEnum,
 		};
 
 		using StateFunction = void (SyntaxAnalyzer::*)(size_t index);
@@ -97,10 +103,13 @@ namespace GameEngine::HeaderTool
 		void InFunctionSignatureState(size_t index);
 		void InConstructorMarkState(size_t index);
 		void BeforeConstructorState(size_t index);
+		void InEnumMarkState(size_t index);
+		void BeforeEnumState(size_t index);
+		void InEnumState(size_t index);
 
 		inline void Reset();
 		inline void ResetClass();
-		inline void ResetMember();
+		inline void ResetParseVariable();
 
 		inline bool ProcessType(std::string& typeString, const HeaderTokenizer::Token& token);
 
@@ -113,6 +122,12 @@ namespace GameEngine::HeaderTool
 		std::string mParentClass;
 		int mBracketLevel = 0;
 		int mParenthesisLevel = 0;
+
+		/// <summary>
+		/// Special flag attribute to specify in the macro for property, function, constructor or enum.
+		/// The final flag for one macro will be bitwise add result for all attributes in the macro
+		/// </summary>
+		/// <see cref="ItemFlag"/>
 		int mFlag = 0;
 
 		// Class state
@@ -125,5 +140,11 @@ namespace GameEngine::HeaderTool
 		bool mAfterMark = false;
 		bool mExpectType = false;
 		bool mExpectTypename = false;
+		int mFunctionSignatureParentLevel = 0;
+
+		// Enum state
+		bool mExpectEnumKeyword = true;
+		bool mExpectClassKeyword = true;
+		bool mExpectEnumName = true;
 	};
 }

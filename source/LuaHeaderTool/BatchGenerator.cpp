@@ -142,11 +142,19 @@ void BatchGenerator::WriteRegister(const std::string& filePath, const std::strin
 		string currentClass;
 		for (const auto& item : parsedFile.mItems)
 		{
-			if (item.mType == ItemType::Class)
+			if (item.mType == ItemType::Class || item.mType == ItemType::Enum)
 			{
 				currentClass = item.mClassName;
 				file << "DECLARE_LUA_WRAPPER(" << item.mClassName << ", \"" << item.mClassName << "\");" << endl;
-				file << "LUA_DEFINE_CUSTOM_OBJECT_TYPE(" << item.mClassName << ");" << endl;
+				if (item.mType == ItemType::Class)
+				{
+					file << "LUA_DEFINE_CUSTOM_OBJECT_TYPE(" << item.mClassName << ");" << endl;
+				}
+				else
+				{
+					file << "LUA_DEFINE_ENUM(" << item.mClassName << ");" << endl;
+					file << "DECLARE_LUA_VECTOR_WRAPPER_ALL(" << item.mClassName << ", \"" << item.mClassName << "\");" << endl;
+				}
 			}
 			else if (item.mType == ItemType::Constructor)
 			{
@@ -182,7 +190,7 @@ void BatchGenerator::WriteRegister(const std::string& filePath, const std::strin
 	{
 		for (const auto& item : parsedFile.mItems)
 		{
-			if (item.mType == ItemType::Class)
+			if (item.mType == ItemType::Class || item.mType == ItemType::Enum)
 			{
 				WriteWrapperRegister(item, file);
 			}
@@ -198,7 +206,7 @@ void BatchGenerator::WriteRegister(const std::string& filePath, const std::strin
 	{
 		for (const auto& item : parsedFile.mItems)
 		{
-			if (item.mType == ItemType::Class)
+			if (item.mType == ItemType::Class || item.mType == ItemType::Enum)
 			{
 				file << item.mClassName << "_generated::Lua_RegisterMember(bind);" << endl;
 				if (SyntaxAnalyzer::Item::HasFlag(item.mFlag, SyntaxAnalyzer::ItemFlag::EventMessage))
@@ -290,7 +298,7 @@ void BatchGenerator::ParseFile(const std::filesystem::path& filePath)
 	// Build class name map
 	for (auto& item : parsedFile.mItems)
 	{
-		if (item.mType == ItemType::Class)
+		if (item.mType == ItemType::Class || item.mType == ItemType::Enum)
 		{
 			if (mClassMap.find(item.mClassName) != mClassMap.end())
 			{

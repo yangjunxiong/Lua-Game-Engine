@@ -8,7 +8,6 @@
     <ClInclude Include="AttributedFoo.h">
       <Filter>TestClass</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="JsonParseHelperInteger.h">
       <Filter>TestClass</Filter>
     </ClInclude>
@@ -43,7 +42,6 @@
     <ClCompile Include="AttributedFoo.cpp">
       <Filter>TestClass</Filter>
     </ClCompile>
-    <ClCompile Include="TestSetup.cpp" />
     <ClCompile Include="JsonParseHelperInteger.cpp">
       <Filter>TestClass</Filter>
     </ClCompile>
@@ -55,7 +53,6 @@
     <ClCompile Include="JsonParseHelperObject.cpp">
       <Filter>TestClass</Filter>
     </ClCompile>
-    <ClCompile Include="JsonTableParseTest.cpp" />
     <ClCompile Include="JsonParseHelperVector.cpp">
       <Filter>TestClass</Filter>
     </ClCompile>
@@ -63,17 +60,12 @@
     <ClCompile Include="Avatar.cpp">
       <Filter>TestClass</Filter>
     </ClCompile>
-    <ClCompile Include="EntityTest.cpp" />
-    <ClCompile Include="ActionTest.cpp" />
     <ClCompile Include="EventTest.cpp" />
     <ClCompile Include="FooSubscriber.cpp">
       <Filter>TestClass</Filter>
     </ClCompile>
     <ClCompile Include="ReactionTest.cpp" />
     <ClCompile Include="StackTest.cpp" />
-    <ClCompile Include="ActionExpressionTest.cpp" />
-    <ClCompile Include="TransformTest.cpp" />
-    <ClCompile Include="TestActionLoadJson.cpp" />
     <ClCompile Include="LuaBindTest.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -89,9 +81,6 @@
     <Filter Include="Content\Lua">
       <UniqueIdentifier>{2ff2d70a-d21b-4dbc-80e9-a0f3db5f3085}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="UnitTest.Library.Desktop.rc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="content\jsonTest.json">

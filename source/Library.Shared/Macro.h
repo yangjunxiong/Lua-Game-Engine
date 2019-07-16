@@ -175,6 +175,24 @@ TYPE_CHECK(CheckArgType<_type>(L, index));																				   \
 return *static_cast<LuaWrapper<_type>*>(lua_touserdata(L, index))->mObject;												   \
 }
 
+#define LUA_DEFINE_ENUM(_type)                                                                                                                \
+template<> static inline _type GameEngine::Lua::LuaBind::_FromLuaStack(lua_State* L, int index)												  \
+{																																			  \
+	return static_cast<_type>(luaL_checkinteger(L, index));																					  \
+}																																			  \
+template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStack(lua_State* L, _type value)												  \
+{																																			  \
+	lua_pushinteger(L, static_cast<int>(value));																								  \
+}																																			  \
+template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStack(lua_State* L, _type* address, int /*flag*/)								  \
+{																																			  \
+	lua_pushinteger(L, static_cast<int>(*address));																							  \
+}																																			  \
+template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStack(lua_State* L, const _type* address, int /*flag*/)						  \
+{																																			  \
+	lua_pushinteger(L, static_cast<int>(*address));																							  \
+}
+
 /*
 Define the wrapper type for custom data type with custom name in Lua
 */
@@ -285,3 +303,4 @@ DECLARE_LUA_VECTOR_WRAPPER(_type*, _name##"*")					\
 #define PROPERTY(...)
 #define FUNCTION(...)
 #define CONSTRUCTOR(...)
+#define ENUM(...)

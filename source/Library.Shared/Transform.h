@@ -57,6 +57,15 @@ namespace GameEngine
 		FUNCTION();
 		void SetLocalScale(const Vector3& scale);
 
+		FUNCTION();
+		const Vector3& Forward();
+
+		FUNCTION();
+		const Vector3& Up();
+
+		FUNCTION();
+		const Vector3& Right();
+
 		using UpdateCallback = std::function<void()>;
 		void AddTransformUpdateCallback(UpdateCallback callback);
 		void RemoveTransformUpdateCallback(UpdateCallback callback);
@@ -84,6 +93,9 @@ namespace GameEngine
 		Vector3 mLocalPosition;
 		Quaternion mLocalRotation;
 		Vector3 mLocalScale { 1.f };
+		Vector3 mForward = Vector3::Forward;
+		Vector3 mUp = Vector3::Up;
+		Vector3 mRight = Vector3::Right;
 
 		bool mLocalPositionDirty = false;
 		bool mLocalRotationDirty = false;

@@ -187,6 +187,7 @@ namespace GameEngine
 		OemClear = 0xfe,
 	};
 
+	CLASS();
 	class KeyboardEntity final : public Entity
 	{
 		RTTI_DECLARATIONS(KeyboardEntity, Entity)

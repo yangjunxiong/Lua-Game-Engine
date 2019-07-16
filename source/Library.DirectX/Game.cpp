@@ -81,9 +81,10 @@ namespace GameEngine
 		LuaRegister::RegisterLua(*mLua.get());
 		mLua->LoadFile("Content\\Lua\\Main.lua");
 		mLua->SetProperty("World", mWorld.get());
+		mLua->SetProperty("Mouse", mMouse);
+		mLua->SetProperty("Keyboard", mKeyboard);
 		mLua->SetFunction("Log", std::function(Log));
 		mLua->OpenTable("Main");
-
 		mLua->CallFunctionNoReturn("Start");
 	}
 

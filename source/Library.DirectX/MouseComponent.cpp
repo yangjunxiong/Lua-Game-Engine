@@ -1,15 +1,26 @@
 #include "pch.h"
 #include "MouseComponent.h"
 #include "Game.h"
+#include "Event.h"
+#include "LuaBind.h"
 
 using namespace std;
 using namespace DirectX;
+using namespace GameEngine::Lua;
 
 namespace GameEngine
 {
 	RTTI_DEFINITIONS(MouseEntity)
 
 	unique_ptr<Mouse> MouseEntity::sMouse(new DirectX::Mouse);
+	const std::vector<bool(*)(const DirectX::Mouse::State&)> MouseEntity::sButtonGetters =
+	{
+		[](const DirectX::Mouse::State& state) { return state.leftButton; },
+		[](const DirectX::Mouse::State& state) { return state.rightButton; },
+		[](const DirectX::Mouse::State& state) { return state.middleButton; },
+		[](const DirectX::Mouse::State& state) { return state.xButton1; },
+		[](const DirectX::Mouse::State& state) { return state.xButton2; },
+	};
 
 	Mouse* MouseEntity::Mouse()
 	{
@@ -41,12 +52,20 @@ namespace GameEngine
 	{
 		mCurrentState = sMouse->GetState();
 		mLastState = mCurrentState;
+
+		// Create mouse time map
+		assert(static_cast<int>(MouseButtons::Begin) == 0);
+		for (int i = static_cast<int>(MouseButtons::Begin); i <= static_cast<int>(MouseButtons::End); ++i)
+		{
+			mMousePressTime.emplace_back(0.f);
+		}
 	}
 
-	void MouseEntity::Update(WorldState&)
+	void MouseEntity::Update(WorldState& state)
 	{
 		mLastState = mCurrentState;
 		mCurrentState = sMouse->GetState();
+		UpdateMouseEvent(state);
 	}
 
 	void MouseEntity::SetWindow(HWND window)
@@ -117,25 +136,47 @@ namespace GameEngine
 
 	bool MouseEntity::GetButtonState(const Mouse::State& state, MouseButtons button) const
 	{
-		switch (button)
+		return sButtonGetters[static_cast<int>(button)](state);
+	}
+
+	void MouseEntity::UpdateMouseEvent(WorldState& state)
+	{
+		float deltaTime = state.GetGameTime().ElapsedGameTimeSeconds().count();
+		for (int i = static_cast<int>(MouseButtons::Begin); i <= static_cast<int>(MouseButtons::End); ++i)
 		{
-			case GameEngine::MouseButtons::Left:
-				return state.leftButton;
+			auto getter = sButtonGetters[i];
+			bool oldPress = getter(mLastState);
+			bool newPress = getter(mCurrentState);
 
-			case GameEngine::MouseButtons::Right:
-				return state.rightButton;
-
-			case GameEngine::MouseButtons::Middle:
-				return state.middleButton;				
-
-			case GameEngine::MouseButtons::X1:
-				return state.xButton1;
-
-			case GameEngine::MouseButtons::X2:
-				return state.xButton2;
-
-			default:
-				throw exception("Invalid MouseButtons.");
+			if (!oldPress)
+			{
+				if (newPress)
+				{
+					mMousePressTime[i] = 0.f;
+					SendMouseEvent(state, MouseEventType::Press, static_cast<MouseButtons>(i));
+				}
+			}
+			else
+			{
+				mMousePressTime[i] += deltaTime;
+				if (!newPress)
+				{
+					SendMouseEvent(state, MouseEventType::Release, static_cast<MouseButtons>(i));
+					if (mMousePressTime[i] <= sClickThreshold)
+					{
+						SendMouseEvent(state, MouseEventType::Click, static_cast<MouseButtons>(i));
+					}
+				}
+			}
 		}
+	}
+
+	void MouseEntity::SendMouseEvent(WorldState& state, MouseEventType type, MouseButtons button)
+	{
+		MouseEvent message;
+		message.Type = type;
+		message.Button = button;
+		auto event = make_shared<Event<MouseEvent>>(message);
+		state.GetWorld()->EnqueueEvent(event);
 	}
 }

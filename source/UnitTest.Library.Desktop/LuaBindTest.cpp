@@ -1,22 +1,11 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "JsonParseMaster.h"
-#include "JsonTableParseHelper.h"
-#include "World.h"
-#include "Sector.h"
-#include "Entity.h"
-#include "Avatar.h"
-#include "WorldState.h"
-#include "GameClock.h"
-#include "GameTime.h"
-#include <json/json.h>
 #include "LuaBind.h"
 #include "Action.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace GameEngine;
 using namespace GameEngine::Lua;
-using namespace std;
 using namespace std::string_literals;
 using namespace glm;
 

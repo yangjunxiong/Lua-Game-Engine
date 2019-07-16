@@ -177,6 +177,9 @@ namespace GameEngine::Lua
 		void SetConstructor();
 		template <typename Class, typename Param1, typename Param2, typename Param3, typename Param4, typename Param5, typename Param6>
 		void SetConstructor();
+
+		template <typename Enum>
+		void SetEnumValue(const std::string& enumName, int value);
 		
 		/// <summary>
 		/// Set static member function. Lua can invoke the function by ClassName.FunctionName()

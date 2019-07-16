@@ -32,3 +32,34 @@ Matrix::Matrix(float m11, float m12, float m13, float m14,
 		m31, m32, m33, m34,
 		m41, m42, m43, m44)
 {}
+
+#ifdef WITH_OPENGL
+#else
+using namespace DirectX;
+
+Matrix::Matrix(const XMMATRIX& matrix)
+{
+	XMStoreFloat4x4(&mMatrix, matrix);
+}
+
+Vector3 Matrix::Forward() const
+{
+	auto vector = Vector3(-mMatrix._31, -mMatrix._32, -mMatrix._33);
+	vector.Normalize();
+	return vector;
+}
+
+Vector3 Matrix::Up() const
+{
+	auto vector = Vector3(mMatrix._21, mMatrix._22, mMatrix._23);
+	vector.Normalize();
+	return vector;
+}
+
+Vector3 Matrix::Right() const
+{
+	auto vector = Vector3(mMatrix._11, mMatrix._12, mMatrix._13);
+	vector.Normalize();
+	return vector;
+}
+#endif

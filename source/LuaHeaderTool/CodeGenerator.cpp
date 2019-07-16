@@ -15,7 +15,8 @@ const std::vector<CodeGenerator::StateFunction> CodeGenerator::sStateFunctions =
 	&CodeGenerator::EndClassState,
 	&CodeGenerator::VariableState,
 	&CodeGenerator::FunctionState,
-	&CodeGenerator::ConstructorState
+	&CodeGenerator::ConstructorState,
+	&CodeGenerator::EnumState
 };
 
 const std::vector<CodeGenerator::LuaStateFunction> CodeGenerator::sLuaStateFunctions =
@@ -25,7 +26,8 @@ const std::vector<CodeGenerator::LuaStateFunction> CodeGenerator::sLuaStateFunct
 	&CodeGenerator::LuaEndClassState,
 	&CodeGenerator::LuaVariableState,
 	&CodeGenerator::LuaFunctionState,
-	&CodeGenerator::LuaConstructorState
+	&CodeGenerator::LuaConstructorState,
+	&CodeGenerator::LuaEnumState
 };
 
 void CodeGenerator::GenerateCPP(const std::vector<Item>& items, const std::string& source, const std::string& outputPath)
@@ -79,6 +81,10 @@ void CodeGenerator::GenerateLua(const std::vector<SyntaxAnalyzer::Item>& items, 
 		}
 	}
 	ifile.close();
+	while (content.back().empty() || content.back() == "\n")
+	{
+		content.erase(content.end() - 1);
+	}
 
 	// Process all items and output code
 	mItems = &items;
@@ -194,7 +200,8 @@ void CodeGenerator::FunctionState(const SyntaxAnalyzer::Item& item, std::ofstrea
 	file << item.mClassName << ", ";
 	if (item.mStatic)
 	{
-		file << "(" << item.mMemberType << "*)";
+		file << item.mMemberType;
+		file << "(*)";
 		file << "(";
 		for (size_t i = 0; i < item.mArgumentList.size(); ++i)
 		{
@@ -229,6 +236,19 @@ void CodeGenerator::ConstructorState(const SyntaxAnalyzer::Item& item, std::ofst
 		file << ", " << arg;
 	}
 	file << ">();" << endl;
+}
+
+void CodeGenerator::EnumState(const SyntaxAnalyzer::Item& item, std::ofstream& file)
+{
+	// Need to treat enum as class too
+	ClassState(item, file);
+	for (const auto& name : item.mEnumList)
+	{
+		WriteIndentation(file);
+		file << "bind.SetEnumValue<" << item.mClassName << ">(";
+		file << "\"" << name << "\"" << ", static_cast<int>(" << item.mClassName << "::" << name << "));\n";
+	}
+	EndClassState(item, file);
 }
 
 void CodeGenerator::WriteEvent(const SyntaxAnalyzer::Item& item, std::ofstream& file)
@@ -340,5 +360,22 @@ void CodeGenerator::LuaConstructorState(const SyntaxAnalyzer::Item& item, std::v
 	if (!FindLine(content, str))
 	{
 		content.emplace_back(str);
+	}
+}
+
+void CodeGenerator::LuaEnumState(const SyntaxAnalyzer::Item& item, std::vector<std::string>& content)
+{
+	stringstream ss;
+	ss << "-- C++ enum " << item.mClassName << " { ";
+	for (const auto& name : item.mEnumList)
+	{
+		ss << name << ",";
+	}
+	ss << " }" << endl;
+
+	string line = ss.str();
+	if (!FindLine(content, line))
+	{
+		content.emplace_back(line);
 	}
 }

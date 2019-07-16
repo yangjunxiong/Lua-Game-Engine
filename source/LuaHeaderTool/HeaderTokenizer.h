@@ -37,6 +37,7 @@ namespace GameEngine::HeaderTool
 			Mark_Property,
 			Mark_Function,
 			Mark_Constructor,
+			Mark_Enum,
 
 			Keyword_Class,
 			Keyword_Struct,
@@ -131,6 +132,8 @@ namespace GameEngine::HeaderTool
 			DoubleSlash,
 			SlashStar,
 			EndStar,
+
+			Comma,
 		};
 
 		/// <summary>
@@ -225,5 +228,6 @@ namespace GameEngine::HeaderTool
 		void DoubleSlashState(char c);
 		void SlashStar(char c);
 		void EndStar(char c);
+		void CommaState(char c);
 	};
 }

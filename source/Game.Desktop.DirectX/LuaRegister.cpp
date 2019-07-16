@@ -9,7 +9,9 @@
 #include "InputData.h"
 #include "Camera.h"
 #include "FirstPersonCamera.h"
+#include "KeyboardComponent.h"
 #include "Material.h"
+#include "MouseComponent.h"
 #include "PerspectiveCamera.h"
 #include "RenderTarget.h"
 #include "StaticMeshMaterial.h"
@@ -50,8 +52,20 @@ DECLARE_LUA_WRAPPER(Camera, "Camera");
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(Camera);
 DECLARE_LUA_WRAPPER(FirstPersonCamera, "FirstPersonCamera");
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(FirstPersonCamera);
+DECLARE_LUA_WRAPPER(KeyboardEntity, "KeyboardEntity");
+LUA_DEFINE_CUSTOM_OBJECT_TYPE(KeyboardEntity);
 DECLARE_LUA_WRAPPER(Material, "Material");
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(Material);
+DECLARE_LUA_WRAPPER(MouseButtons, "MouseButtons");
+LUA_DEFINE_ENUM(MouseButtons);
+DECLARE_LUA_VECTOR_WRAPPER_ALL(MouseButtons, "MouseButtons");
+DECLARE_LUA_WRAPPER(MouseEventType, "MouseEventType");
+LUA_DEFINE_ENUM(MouseEventType);
+DECLARE_LUA_VECTOR_WRAPPER_ALL(MouseEventType, "MouseEventType");
+DECLARE_LUA_WRAPPER(MouseEntity, "MouseEntity");
+LUA_DEFINE_CUSTOM_OBJECT_TYPE(MouseEntity);
+DECLARE_LUA_WRAPPER(MouseEvent, "MouseEvent");
+LUA_DEFINE_CUSTOM_OBJECT_TYPE(MouseEvent);
 DECLARE_LUA_WRAPPER(PerspectiveCamera, "PerspectiveCamera");
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(PerspectiveCamera);
 DECLARE_LUA_WRAPPER(RenderTarget, "RenderTarget");
@@ -105,7 +119,9 @@ LUA_DEFINE_CUSTOM_OBJECT_TYPE(WorldState);
 #include "./generated/InputData_generated.h"
 #include "./generated/Camera_generated.h"
 #include "./generated/FirstPersonCamera_generated.h"
+#include "./generated/KeyboardComponent_generated.h"
 #include "./generated/Material_generated.h"
+#include "./generated/MouseComponent_generated.h"
 #include "./generated/PerspectiveCamera_generated.h"
 #include "./generated/RenderTarget_generated.h"
 #include "./generated/StaticMeshMaterial_generated.h"
@@ -135,7 +151,12 @@ Entity_generated::Lua_RegisterClass(bind);
 Camera_generated::Lua_RegisterClass(bind);
 PerspectiveCamera_generated::Lua_RegisterClass(bind);
 FirstPersonCamera_generated::Lua_RegisterClass(bind);
+KeyboardEntity_generated::Lua_RegisterClass(bind);
 Material_generated::Lua_RegisterClass(bind);
+MouseButtons_generated::Lua_RegisterClass(bind);
+MouseEventType_generated::Lua_RegisterClass(bind);
+MouseEntity_generated::Lua_RegisterClass(bind);
+MouseEvent_generated::Lua_RegisterClass(bind);
 RenderTarget_generated::Lua_RegisterClass(bind);
 StaticMeshMaterial_generated::Lua_RegisterClass(bind);
 Action_generated::Lua_RegisterClass(bind);
@@ -157,7 +178,13 @@ MouseInput_generated::Lua_RegisterMember(bind);
 monitor->subscribers.emplace_back(new MouseInput_event_generated(bind));
 Camera_generated::Lua_RegisterMember(bind);
 FirstPersonCamera_generated::Lua_RegisterMember(bind);
+KeyboardEntity_generated::Lua_RegisterMember(bind);
 Material_generated::Lua_RegisterMember(bind);
+MouseButtons_generated::Lua_RegisterMember(bind);
+MouseEventType_generated::Lua_RegisterMember(bind);
+MouseEntity_generated::Lua_RegisterMember(bind);
+MouseEvent_generated::Lua_RegisterMember(bind);
+monitor->subscribers.emplace_back(new MouseEvent_event_generated(bind));
 PerspectiveCamera_generated::Lua_RegisterMember(bind);
 RenderTarget_generated::Lua_RegisterMember(bind);
 StaticMeshMaterial_generated::Lua_RegisterMember(bind);
@@ -188,5 +215,6 @@ delete monitor;
 gMonitors.erase(&bind);
 if (all) {
 Event<MouseInput>::UnsubscribeAll();
+Event<MouseEvent>::UnsubscribeAll();
 }
 }
