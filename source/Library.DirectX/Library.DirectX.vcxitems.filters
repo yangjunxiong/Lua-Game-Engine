@@ -189,9 +189,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)TextureCube.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ImGuiComponent.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)imgui_impl_dx11.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
@@ -203,6 +200,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)StaticMeshMaterial.cpp">
       <Filter>Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UtilityWin32.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UIManager.cpp">
+      <Filter>ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -353,9 +356,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)TextureCube.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ImGuiComponent.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)imgui_impl_dx11.h">
       <Filter>ImGui</Filter>
     </ClInclude>
@@ -367,6 +367,12 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)StaticMeshMaterial.h">
       <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)UtilityWin32.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)UIManager.h">
+      <Filter>ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

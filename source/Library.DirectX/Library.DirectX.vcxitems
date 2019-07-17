@@ -27,7 +27,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Game.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameException.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GamePadComponent.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ImGuiComponent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)imgui_impl_dx11.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
@@ -68,7 +67,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)TextureCube.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TextureCubeReader.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TextureHelper.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)UIManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Utility.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)UtilityWin32.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)VectorHelper.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)VertexDeclarations.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)VertexShader.cpp" />
@@ -88,7 +89,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Game.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameException.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GamePadComponent.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ImGuiComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)imgui_impl_dx11.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)KeyboardComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Light.h" />
@@ -124,7 +124,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)TextureCube.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TextureCubeReader.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TextureHelper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)UIManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Utility.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)UtilityWin32.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)VectorHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)VertexDeclarations.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)VertexShader.h" />

@@ -14,6 +14,9 @@
 #include "MouseComponent.h"
 #include "FirstPersonCamera.h"
 #include "Texture2D.h"
+#include "imgui_impl_dx11.h"
+#include "UtilityWin32.h"
+#include "UIManager.h"
 
 using namespace std;
 using namespace gsl;
@@ -62,11 +65,11 @@ namespace GameEngine
 		mWorld = make_shared<World>(mGameTime);
 		mKeyboard = new KeyboardEntity();
 		auto gamepad = new GamePadEntity();
-		mMouse = new MouseEntity(MouseModes::Relative);
+		mMouse = new MouseEntity(MouseModes::Absolute);
 		mCamera = new FirstPersonCamera();
 		mWorld->Adopt(*mKeyboard, mWorld->ENTITY_TABLE_KEY);
-		mWorld->Adopt(*gamepad, mWorld->ENTITY_TABLE_KEY);
 		mWorld->Adopt(*mMouse, mWorld->ENTITY_TABLE_KEY);
+		mWorld->Adopt(*gamepad, mWorld->ENTITY_TABLE_KEY);
 		mWorld->Adopt(*mCamera, mWorld->ENTITY_TABLE_KEY);
 		mServices.AddService(KeyboardEntity::TypeIdClass(), mKeyboard);
 		mServices.AddService(GamePadEntity::TypeIdClass(), gamepad);
@@ -75,15 +78,26 @@ namespace GameEngine
 		mServices.AddService(PerspectiveCamera::TypeIdClass(), mCamera);
 		mServices.AddService(FirstPersonCamera::TypeIdClass(), mCamera);
 		mWorld->Start();
+
+		// Init ImGui
+		ImGui::CreateContext();
+		ImGui_ImplDX11_Init(mGetWindow(), Game::GetInstance()->Direct3DDevice(), Game::GetInstance()->Direct3DDeviceContext());
+		ImGui::StyleColorsClassic();
+		ImGui::GetIO();
+		auto imGuiWndProcHandler = make_shared<UtilityWin32::WndProcHandler>(ImGui_ImplWin32_WndProcHandler);
+		UtilityWin32::AddWndProcHandler(imGuiWndProcHandler);
 		
 		// Init Lua
 		mLua = make_shared<LuaBind>();
 		LuaRegister::RegisterLua(*mLua.get());
+		UILuaAdapter::Init(mLua->LuaState());
 		mLua->LoadFile("Content\\Lua\\Main.lua");
 		mLua->SetProperty("World", mWorld.get());
 		mLua->SetProperty("Mouse", mMouse);
 		mLua->SetProperty("Keyboard", mKeyboard);
 		mLua->SetFunction("Log", std::function(Log));
+
+		// Start game logic
 		mLua->OpenTable("Main");
 		mLua->CallFunctionNoReturn("Start");
 	}
@@ -104,6 +118,11 @@ namespace GameEngine
 		// Close rendering states
 		RasterizerStates::Shutdown();
 		SamplerStates::Shutdown();
+
+		// Close ImGui
+		ImGui_ImplDX11_Shutdown();
+		ImGui::DestroyContext();
+		UIManager::ClearAllBlocks();
 
 		// Free up all D3D resources.
 		mDirect3DDeviceContext->ClearState();
@@ -144,7 +163,21 @@ namespace GameEngine
 		mDirect3DDeviceContext->ClearRenderTargetView(mRenderTargetView.get(), BackgroundColor.f);
 		mDirect3DDeviceContext->ClearDepthStencilView(mDepthStencilView.get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
+		// Draw world
 		mWorld->Draw();
+
+		// Draw UI
+		auto& blocks = UIManager::GetAllBlocks();
+		ImGui_ImplDX11_NewFrame();
+		for (const auto& block : blocks)
+		{
+			if (block.Active)
+			{
+				block.RenderFunc();
+			}
+		}
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
 		HRESULT hr = mSwapChain->Present(1, 0);
 

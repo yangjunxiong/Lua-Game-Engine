@@ -28,11 +28,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Program.cpp" />
-    <ClCompile Include="UtilityWin32.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="UtilityWin32.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

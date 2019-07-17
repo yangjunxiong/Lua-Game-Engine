@@ -28,6 +28,8 @@
 #include <crtdbg.h>
 #endif
 
+#include <imgui.h>
+
 // Guidelines Support GameEngine
 #include <gsl\gsl>
 

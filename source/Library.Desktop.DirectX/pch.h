@@ -63,6 +63,7 @@
 // Windows
 #include <windows.h>
 #include <winrt\Windows.Foundation.h>
+#include <imgui.h>
 
 // DirectX
 #include <d3d11_4.h>
