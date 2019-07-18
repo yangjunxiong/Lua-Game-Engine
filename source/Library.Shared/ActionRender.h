@@ -3,7 +3,7 @@
 
 namespace GameEngine
 {
-	CLASS();
+	CLASS(NoLuaAuthority);
 	class ActionRender : public Action
 	{
 		RTTI_DECLARATIONS(ActionRender, Action);

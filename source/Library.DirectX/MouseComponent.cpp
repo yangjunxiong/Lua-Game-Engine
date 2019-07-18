@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "Event.h"
 #include "LuaBind.h"
+#include "Camera.h"
 
 using namespace std;
 using namespace DirectX;
@@ -50,6 +51,7 @@ namespace GameEngine
 
 	void MouseEntity::Start(WorldState&)
 	{
+		mCamera = static_cast<Camera*>(mGame->Services().GetService(Camera::TypeIdClass()));
 		mCurrentState = sMouse->GetState();
 		mLastState = mCurrentState;
 
@@ -73,14 +75,22 @@ namespace GameEngine
 		sMouse->SetWindow(window);
 	}
 
-	int MouseEntity::X() const
+	Vector3 MouseEntity::PixelPosition() const
 	{
-		return mCurrentState.x;
+		return Vector3(static_cast<float>(mCurrentState.x), static_cast<float>(mCurrentState.y), 0.f);
 	}
 
-	int MouseEntity::Y() const
+	Vector3 MouseEntity::ViewportPosition() const
 	{
-		return mCurrentState.y;
+		SIZE viewportSize = mGame->RenderTargetSize();
+		float x = (static_cast<float>(mCurrentState.x) / static_cast<float>(viewportSize.cx)) * 2.f - 1.f;
+		float y = (static_cast<float>(mCurrentState.y) / static_cast<float>(viewportSize.cy)) * 2.f - 1.f;
+		return Vector3(x, y, 0.f);
+	}
+
+	Vector3 MouseEntity::WorldPosition(float z) const
+	{
+		return mCamera->Unproject(Vector3(static_cast<float>(mCurrentState.x), static_cast<float>(mCurrentState.y), z));
 	}
 
 	int MouseEntity::Wheel() const

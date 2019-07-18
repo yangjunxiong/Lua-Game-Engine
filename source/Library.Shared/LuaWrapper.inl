@@ -161,7 +161,7 @@ namespace GameEngine::Lua
 		if (mLuaObject)
 		{
 			Registry::DecrementObjectCounter(mObject);
-			if (!Registry::IsValid(mObject))
+			if (!Registry::IsValidLuaObject(mObject) && sLuaAuthority)
 			{
 				delete mObject;
 			}
@@ -505,7 +505,7 @@ namespace GameEngine::Lua
 		}
 	}
 
-	bool Registry::IsValid(void* address)
+	bool Registry::IsValidLuaObject(void* address)
 	{
 		return sObjectCounter.find(address) != sObjectCounter.end();
 	}

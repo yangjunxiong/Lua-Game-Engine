@@ -8,7 +8,13 @@ void Transform::SetParent(Transform* parent)
 {
 	if (parent != mParent)
 	{
+		if (mParent != nullptr)
+		{
+			mParent->mChildren.erase(std::find(mParent->mChildren.begin(), mParent->mChildren.end(), this));
+		}
+
 		mParent = parent;
+		mParent->mChildren.emplace_back(this);
 		mWorldPositionDirty = true;
 		mWorldRotationDirty = true;
 		mWorldScaleDirty = true;
@@ -20,7 +26,7 @@ Transform* Transform::GetParent() const
 	return mParent;
 }
 
-const Vector3& Transform::GetWorldPosition()
+Vector3& Transform::GetWorldPosition()
 {
 	if (LocalTransformDirty() || (mParent != nullptr && mParent->TransformDirty()))
 	{
@@ -29,7 +35,12 @@ const Vector3& Transform::GetWorldPosition()
 	return mWorldPosition;
 }
 
-const Quaternion& Transform::GetWorldRotation()
+const Vector3& Transform::GetWorldPosition() const
+{
+	return mWorldPosition;
+}
+
+Quaternion& Transform::GetWorldRotation()
 {
 	if (LocalTransformDirty() || (mParent != nullptr && mParent->TransformDirty()))
 	{
@@ -38,12 +49,22 @@ const Quaternion& Transform::GetWorldRotation()
 	return mWorldRotation;
 }
 
-const Vector3& Transform::GetWorldScale()
+const Quaternion& Transform::GetWorldRotation() const
+{
+	return mWorldRotation;
+}
+
+Vector3& Transform::GetWorldScale()
 {
 	if (LocalTransformDirty() || (mParent != nullptr && mParent->TransformDirty()))
 	{
 		UpdateMatrix();
 	}
+	return mWorldScale;
+}
+
+const Vector3& Transform::GetWorldScale() const
+{
 	return mWorldScale;
 }
 
@@ -68,7 +89,7 @@ void Transform::SetWorldScale(const Vector3& scale)
 	mWorldScaleDirty = true;
 }
 
-const Vector3& Transform::GetLocalPosition()
+Vector3& Transform::GetLocalPosition()
 {
 	if (WorldTransformDirty())
 	{
@@ -77,7 +98,12 @@ const Vector3& Transform::GetLocalPosition()
 	return mLocalPosition;
 }
 
-const Quaternion& Transform::GetLocalRotation()
+const Vector3& Transform::GetLocalPosition() const
+{
+	return mLocalPosition;
+}
+
+Quaternion& Transform::GetLocalRotation()
 {
 	if (WorldTransformDirty())
 	{
@@ -86,12 +112,22 @@ const Quaternion& Transform::GetLocalRotation()
 	return mLocalRotation;
 }
 
-const Vector3& Transform::GetLocalScale()
+const Quaternion& Transform::GetLocalRotation() const
+{
+	return mLocalRotation;
+}
+
+Vector3& Transform::GetLocalScale()
 {
 	if (WorldTransformDirty())
 	{
 		UpdateMatrix();
 	}
+	return mLocalScale;
+}
+
+const Vector3& Transform::GetLocalScale() const
+{
 	return mLocalScale;
 }
 
@@ -116,7 +152,7 @@ void Transform::SetLocalScale(const Vector3& scale)
 	mWorldScaleDirty = false;
 }
 
-const Vector3& Transform::Forward()
+Vector3& Transform::Forward()
 {
 	if (TransformDirty())
 	{
@@ -125,7 +161,12 @@ const Vector3& Transform::Forward()
 	return mForward;
 }
 
-const Vector3& Transform::Up()
+const Vector3& Transform::Forward() const
+{
+	return mForward;
+}
+
+Vector3& Transform::Up()
 {
 	if (TransformDirty())
 	{
@@ -134,7 +175,12 @@ const Vector3& Transform::Up()
 	return mUp;
 }
 
-const Vector3& Transform::Right()
+const Vector3& Transform::Up() const
+{
+	return mUp;
+}
+
+Vector3& Transform::Right()
 {
 	if (TransformDirty())
 	{
@@ -143,7 +189,12 @@ const Vector3& Transform::Right()
 	return mRight;
 }
 
-const Matrix& Transform::GetWorldMatrix()
+const Vector3& Transform::Right() const
+{
+	return mRight;
+}
+
+Matrix& Transform::GetWorldMatrix()
 {
 	if (TransformDirty())
 	{
@@ -152,7 +203,12 @@ const Matrix& Transform::GetWorldMatrix()
 	return mWorldMatrix;
 }
 
-const Matrix& Transform::GetLocalMatrix()
+const Matrix& Transform::GetWorldMatrix() const
+{
+	return mWorldMatrix;
+}
+
+Matrix& Transform::GetLocalMatrix()
 {
 	if (TransformDirty())
 	{
@@ -161,12 +217,22 @@ const Matrix& Transform::GetLocalMatrix()
 	return mLocalMatrix;
 }
 
-const Matrix& Transform::GetWorldMatrixInverse()
+const Matrix& Transform::GetLocalMatrix() const
+{
+	return mLocalMatrix;
+}
+
+Matrix& Transform::GetWorldMatrixInverse()
 {
 	if (TransformDirty())
 	{
 		UpdateMatrix();
 	}
+	return mWorldMatrixInverse;
+}
+
+const Matrix& Transform::GetWorldMatrixInverse() const
+{
 	return mWorldMatrixInverse;
 }
 
@@ -276,6 +342,21 @@ void Transform::UpdateMatrix()
 	mWorldScaleDirty = false;
 
 	// Broadcast update transform message
+	for (auto& child : mChildren)
+	{
+		if (!child->mWorldPositionDirty)
+		{
+			child->mLocalPositionDirty = true;
+		}
+		if (!child->mWorldRotationDirty)
+		{
+			child->mLocalRotationDirty = true;
+		}
+		if (child->mWorldScaleDirty)
+		{
+			child->mLocalScaleDirty = true;
+		}
+	}
 	for (auto& callback : mCallbacks)
 	{
 		callback();

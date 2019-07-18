@@ -41,9 +41,11 @@ void StaticMeshRenderComponent::Init()
 	auto firstPersonCamera = mCamera->As<FirstPersonCamera>();
 	if (firstPersonCamera != nullptr)
 	{
-		firstPersonCamera->AddPositionUpdatedCallback([this]()
+		Transform* cameraTrans = firstPersonCamera->GetTransform();
+		cameraTrans->AddTransformUpdateCallback([this, cameraTrans]()
 		{
-			mMaterial.UpdateCameraPosition(mCamera->Position());
+			auto& pos = cameraTrans->GetWorldPosition().RawVector();
+			mMaterial.UpdateCameraPosition(XMFLOAT3(pos.x, pos.y, pos.z));
 		});
 	}
 	auto updateMaterialFunc = [this]() { mUpdateMaterial = true; };
@@ -54,11 +56,11 @@ void StaticMeshRenderComponent::Init()
 
 void StaticMeshRenderComponent::Draw()
 {
-	const XMMATRIX worldMatrix = XMLoadFloat4x4(&mParent->GetTransform()->GetWorldMatrix().RawMatrix());
+	const Matrix& worldMatrix = mParent->GetTransform()->GetWorldMatrix();
 	if (mUpdateMaterial)
 	{
-		const XMMATRIX wvp = XMMatrixTranspose(worldMatrix * mCamera->ViewProjectionMatrix());
-		mMaterial.UpdateTransforms(wvp, XMMatrixTranspose(worldMatrix));
+		const XMMATRIX wvp = XMMatrixTranspose((worldMatrix * mCamera->ViewProjectionMatrix()).SIMDMatrix());
+		mMaterial.UpdateTransforms(wvp, XMMatrixTranspose(worldMatrix.SIMDMatrix()));
 		mUpdateMaterial = false;
 	}
 

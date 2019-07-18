@@ -13,7 +13,7 @@ namespace GameEngine
 	class Camera;
 	class StaticMeshMaterial;
 
-	CLASS();
+	CLASS(NoLuaAuthority);
 	class StaticMeshRenderComponent : public ActionRender
 	{
 		RTTI_DECLARATIONS(StaticMeshRenderComponent, ActionRender);

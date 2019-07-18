@@ -9,6 +9,8 @@
 
 namespace GameEngine
 {
+	class Matrix;
+
 	CLASS();
 	class Vector4
 	{
@@ -17,9 +19,9 @@ namespace GameEngine
 		explicit Vector4(float v);
 		Vector4(float x, float y, float z, float w);
 		Vector4(float x, float y, float z);
-		Vector4(const Vector4& other) = default;
+		Vector4(const Vector4& other);
 		Vector4(Vector4&& other) = default;
-		Vector4& operator=(const Vector4& other) = default;
+		Vector4& operator=(const Vector4& other);
 		Vector4& operator=(Vector4&& other) = default;
 		virtual ~Vector4() = default;
 
@@ -66,6 +68,10 @@ namespace GameEngine
 		inline glm::vec4& RawVector();
 		inline const glm::vec4& RawVector() const;
 #else
+		float& x = mVector.x;
+		float& y = mVector.y;
+		float& z = mVector.z;
+		float& w = mVector.w;
 		inline DirectX::XMFLOAT4& RawVector();
 		inline const DirectX::XMFLOAT4& RawVector() const;
 		static const DirectX::XMVECTOR OneVector;
@@ -96,6 +102,16 @@ namespace GameEngine
 		explicit Vector3(float v);
 		virtual ~Vector3() = default;
 
+		Vector3 operator+(const Vector3 other) const;
+		Vector3 operator-(const Vector3 other) const;
+		Vector3 operator*(float scale) const;
+		Vector3 operator/(float scale) const;
+
+#ifdef WITH_OPENGL
+#else
+		Vector3(const DirectX::XMVECTOR& vec);
+#endif
+
 		CONSTRUCTOR();
 		Vector3(float x, float y, float z);
 
@@ -107,6 +123,30 @@ namespace GameEngine
 
 		FUNCTION();
 		inline void Normalize();
+
+		PROPERTY();
+		static const Vector3 One;
+
+		PROPERTY();
+		static const Vector3 Zero;
+
+		PROPERTY();
+		static const Vector3 Forward;
+
+		PROPERTY();
+		static const Vector3 Up;
+
+		PROPERTY();
+		static const Vector3 Right;
+
+		static Vector3 Unproject(Vector3 screenCoordinates,
+			const Matrix& projection,
+			const Matrix& view,
+			const Matrix& world,
+			float viewportWidth, float viewportHeight,
+			float viewportX = 0.f, float viewportY = 0.f,
+			float viewportMinZ = 0.f, float viewportMaxZ = 1.f
+			);
 	};
 }
 

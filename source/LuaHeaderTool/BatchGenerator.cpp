@@ -145,7 +145,15 @@ void BatchGenerator::WriteRegister(const std::string& filePath, const std::strin
 			if (item.mType == ItemType::Class || item.mType == ItemType::Enum)
 			{
 				currentClass = item.mClassName;
-				file << "DECLARE_LUA_WRAPPER(" << item.mClassName << ", \"" << item.mClassName << "\");" << endl;
+				file << "DECLARE_LUA_WRAPPER(" << item.mClassName << ", \"" << item.mClassName << "\"";
+				if (SyntaxAnalyzer::Item::HasFlag(item.mFlag, SyntaxAnalyzer::ItemFlag::NoLuaAuthority))
+				{
+					file << ", false);" << endl;
+				}
+				else
+				{
+					file << ", true);" << endl;
+				}
 				if (item.mType == ItemType::Class)
 				{
 					file << "LUA_DEFINE_CUSTOM_OBJECT_TYPE(" << item.mClassName << ");" << endl;

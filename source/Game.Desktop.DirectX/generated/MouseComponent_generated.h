@@ -59,8 +59,9 @@ public:
 	static void Lua_RegisterMember(LuaBind& bind)
 	{
 		bind;
-		bind.SetFunction<MouseEntity, int>("X", &MouseEntity::X);
-		bind.SetFunction<MouseEntity, int>("Y", &MouseEntity::Y);
+		bind.SetFunction<MouseEntity, Vector3>("PixelPosition", &MouseEntity::PixelPosition);
+		bind.SetFunction<MouseEntity, Vector3>("ViewportPosition", &MouseEntity::ViewportPosition);
+		bind.SetFunction<MouseEntity, Vector3, float>("WorldPosition", &MouseEntity::WorldPosition);
 		bind.SetFunction<MouseEntity, int>("Wheel", &MouseEntity::Wheel);
 	};
 };

@@ -196,9 +196,10 @@ template<> static inline void GameEngine::Lua::LuaBind::_ToLuaStack(lua_State* L
 /*
 Define the wrapper type for custom data type with custom name in Lua
 */
-#define DECLARE_LUA_WRAPPER(_type, _name)                            \
+#define DECLARE_LUA_WRAPPER(_type, _name, _authority)                            \
 const std::string GameEngine::Lua::LuaWrapper<_type>::sName = _name; \
 const uint64_t GameEngine::Lua::LuaWrapper<_type>::sTypeId = reinterpret_cast<uint64_t>(&GameEngine::Lua::LuaWrapper<_type>::sTypeId);  \
+const bool GameEngine::Lua::LuaWrapper<_type>::sLuaAuthority = _authority;  \
 LUA_DEFINE_POINTER_TYPE(_type)
 
 // Vector functions for primitive types
@@ -251,6 +252,7 @@ template<> static inline int VectorWrapper<_type>::Insert(lua_State* L)									
 #define DECLARE_LUA_VECTOR_WRAPPER(_type, _name)  \
 const std::string GameEngine::Lua::LuaWrapper<std::vector<_type>>::sName = VECTOR_PREFIX ## _name;  \
 const uint64_t GameEngine::Lua::LuaWrapper<std::vector<_type>>::sTypeId = reinterpret_cast<uint64_t>(&GameEngine::Lua::LuaWrapper<std::vector<_type>>::sTypeId);  \
+const bool GameEngine::Lua::LuaWrapper<std::vector<_type>>::sLuaAuthority = true;  \
 template<> static inline void LuaBind::_RegisterVector<_type>(LuaBind& bind)  \
 {  \
 	lua_State* mLuaState = bind.mLuaState;  \
@@ -304,3 +306,6 @@ DECLARE_LUA_VECTOR_WRAPPER(_type*, _name##"*")					\
 #define FUNCTION(...)
 #define CONSTRUCTOR(...)
 #define ENUM(...)
+
+#define EVENT_MESSAGE EventMessage
+#define NO_LUA_AUTHORITY NoLuaAuthority

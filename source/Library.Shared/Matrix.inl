@@ -22,5 +22,10 @@ namespace GameEngine
 	{
 		return mMatrix;
 	}
+
+	DirectX::XMMATRIX Matrix::SIMDMatrix() const
+	{
+		return XMLoadFloat4x4(&mMatrix);
+	}
 #endif
 }

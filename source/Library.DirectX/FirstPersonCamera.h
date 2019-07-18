@@ -23,26 +23,9 @@ namespace GameEngine
 		FirstPersonCamera& operator=(FirstPersonCamera&&) = default;
 		virtual ~FirstPersonCamera() = default;
 
-		GamePadEntity* GetGamePad() const;
-		void SetGamePad(GamePadEntity* gamePad);
-
-		KeyboardEntity* GetKeyboard() const;
-		void SetKeyboard(KeyboardEntity* keyboard);
-
-		MouseEntity* GetMouse() const;
-		void SetMouse(MouseEntity* mouse);
-
 		float& MouseSensitivity();
         float& RotationRate();
         float& MovementRate();
-        
-		const std::vector<std::function<void()>>& PositionUpdatedCallbacks() const;
-		void AddPositionUpdatedCallback(std::function<void()> callback);
-
-		FUNCTION();
-		virtual void SetPosition(float x, float y, float z) override;
-		virtual void SetPosition(DirectX::FXMVECTOR position) override;
-		virtual void SetPosition(const DirectX::XMFLOAT3& position) override;
 
 		virtual void Start(WorldState&) override;
         virtual void Update(WorldState&) override;
@@ -52,8 +35,7 @@ namespace GameEngine
 		inline static const float DefaultMovementRate{ 100.0f };
 
 	private:
-		void UpdatePosition(const DirectX::XMFLOAT2& movementAmount, const DirectX::XMFLOAT2& rotationAmount, const GameEngine::GameTime& gameTime);
-		void InvokePositionUpdatedCallbacks();
+		void UpdatePosition(const Vector3& movementAmount, const Vector3& rotationAmount, const GameEngine::GameTime& gameTime);
 		
 		inline bool IsGamePadConnected(DirectX::GamePad::State& gamePadState)
 		{
@@ -73,6 +55,5 @@ namespace GameEngine
 		float mMouseSensitivity{ DefaultMouseSensitivity };
 		float mRotationRate{ DefaultRotationRate };
         float mMovementRate{ DefaultMovementRate };
-		std::vector<std::function<void()>> mPositionUpdatedCallbacks;
     };
 }

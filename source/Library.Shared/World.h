@@ -11,7 +11,7 @@ namespace GameEngine
 {
 	class Sector;
 
-	CLASS();
+	CLASS(NoLuaAuthority);
 	/// <summary>
 	/// A World is the container for all objects in the game. It contains many sectors and will update each one of them in each tick
 	/// </summary>
@@ -88,7 +88,6 @@ namespace GameEngine
 		/// <returns>The Sector created</returns>
 		Sector* CreateSector(const std::string& name);
 
-		FUNCTION();
 		/// <summary>
 		/// Try to destroy an attributed object by putting it into the destroying queue, actual destruction will happend at the end of frame
 		/// </summary>

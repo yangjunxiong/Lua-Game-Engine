@@ -2,7 +2,7 @@
 namespace GameEngine::Lua
 {
 #pragma region int
-	DECLARE_LUA_WRAPPER(int, "int32");
+	DECLARE_LUA_WRAPPER(int, "int32", true);
 	LUA_DEFINE_NATIVE_OBJECT_TYPE(int);
 	DECLARE_LUA_VECTOR_WRAPPER_ALL(int, "int32");
 
@@ -47,7 +47,7 @@ namespace GameEngine::Lua
 		return 1;
 	}
 
-	DECLARE_LUA_WRAPPER(unsigned int, "uint32");
+	DECLARE_LUA_WRAPPER(unsigned int, "uint32", true);
 	LUA_DEFINE_NATIVE_OBJECT_TYPE(unsigned int);
 	DECLARE_LUA_VECTOR_WRAPPER_ALL(unsigned int, "uint32");
 
@@ -94,7 +94,7 @@ namespace GameEngine::Lua
 #pragma endregion
 
 #pragma region int64
-	DECLARE_LUA_WRAPPER(long long, "int64");
+	DECLARE_LUA_WRAPPER(long long, "int64", true);
 	LUA_DEFINE_NATIVE_OBJECT_TYPE(long long);
 	DECLARE_LUA_VECTOR_WRAPPER_ALL(long long, "int64");
 
@@ -139,7 +139,7 @@ namespace GameEngine::Lua
 		return 1;
 	}
 
-	DECLARE_LUA_WRAPPER(unsigned long long, "uint64");
+	DECLARE_LUA_WRAPPER(unsigned long long, "uint64", true);
 	LUA_DEFINE_NATIVE_OBJECT_TYPE(unsigned long long);
 	DECLARE_LUA_VECTOR_WRAPPER_ALL(unsigned long long, "uint64");
 
@@ -186,7 +186,7 @@ namespace GameEngine::Lua
 #pragma endregion
 
 #pragma region float
-	DECLARE_LUA_WRAPPER(float, "float");
+	DECLARE_LUA_WRAPPER(float, "float", true);
 	LUA_DEFINE_NATIVE_OBJECT_TYPE(float);
 	DECLARE_LUA_VECTOR_WRAPPER_ALL(float, "float");
 
@@ -233,7 +233,7 @@ namespace GameEngine::Lua
 #pragma endregion
 
 #pragma region double
-	DECLARE_LUA_WRAPPER(double, "double");
+	DECLARE_LUA_WRAPPER(double, "double", true);
 	LUA_DEFINE_NATIVE_OBJECT_TYPE(double);
 	DECLARE_LUA_VECTOR_WRAPPER_ALL(double, "double");
 
@@ -280,7 +280,7 @@ namespace GameEngine::Lua
 #pragma endregion
 
 #pragma region bool
-	DECLARE_LUA_WRAPPER(bool, "bool");
+	DECLARE_LUA_WRAPPER(bool, "bool", true);
 	LUA_DEFINE_NATIVE_OBJECT_TYPE(bool);
 	DECLARE_LUA_VECTOR_WRAPPER_ALL(bool, "bool");
 
@@ -337,6 +337,7 @@ namespace GameEngine::Lua
 	// The implementation for that type is in LuaBind.inl
 	const std::string LuaWrapper<char>::sName = "char";
 	const uint64_t LuaWrapper<char>::sTypeId = reinterpret_cast<uint64_t>(&LuaWrapper<char>::sTypeId);
+	const bool LuaWrapper<char>::sLuaAuthority = true;
 	LUA_DEFINE_NATIVE_OBJECT_TYPE(char);
 	DECLARE_LUA_VECTOR_WRAPPER_ALL(char, "char");
 
@@ -381,7 +382,7 @@ namespace GameEngine::Lua
 		return 1;
 	}
 
-	DECLARE_LUA_WRAPPER(unsigned char, "uchar");
+	DECLARE_LUA_WRAPPER(unsigned char, "uchar", true);
 	LUA_DEFINE_NATIVE_OBJECT_TYPE(unsigned char);
 	DECLARE_LUA_VECTOR_WRAPPER_ALL(unsigned char, "uchar");
 
@@ -428,7 +429,7 @@ namespace GameEngine::Lua
 #pragma endregion
 
 #pragma region std::string
-	DECLARE_LUA_WRAPPER(std::string, "String");
+	DECLARE_LUA_WRAPPER(std::string, "String", true);
 	LUA_DEFINE_NATIVE_OBJECT_TYPE(std::string);
 	DECLARE_LUA_VECTOR_WRAPPER_ALL(std::string, "String");
 
@@ -479,7 +480,7 @@ namespace GameEngine::Lua
 #pragma endregion
 
 #pragma region glm::vec4
-	DECLARE_LUA_WRAPPER(glm::vec4, "vec4");
+	DECLARE_LUA_WRAPPER(glm::vec4, "vec4", true);
 	LUA_DEFINE_CUSTOM_OBJECT_TYPE(glm::vec4);
 	LUA_DEFINE_CUSTOM_COPY_TYPE(glm::vec4);
 	DECLARE_LUA_VECTOR_WRAPPER_ALL(glm::vec4, "vec4");

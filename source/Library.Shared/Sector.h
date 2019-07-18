@@ -8,7 +8,7 @@ namespace GameEngine
 	class Entity;
 	class WorldState;
 
-	CLASS();
+	CLASS(NoLuaAuthority);
 	/// <summary>
 	/// An entity represents a group of objects in the world. Equivalent to a game level
 	/// It can contain many Entity

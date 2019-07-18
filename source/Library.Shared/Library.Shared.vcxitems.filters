@@ -103,6 +103,15 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ActionRender.cpp">
       <Filter>Engine\Action\Render</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Collision.cpp">
+      <Filter>EngineBase\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SphereComponent.cpp">
+      <Filter>Engine\Action\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)CollisionComponent.cpp">
+      <Filter>Engine\Action\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Action.h">
@@ -234,6 +243,15 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ActionRender.h">
       <Filter>Engine\Action\Render</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Collision.h">
+      <Filter>EngineBase\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SphereComponent.h">
+      <Filter>Engine\Action\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)CollisionComponent.h">
+      <Filter>Engine\Action\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)DefaultHashFunction.inl">
@@ -303,6 +321,9 @@
     </Filter>
     <Filter Include="Engine\Action\Render">
       <UniqueIdentifier>{00bf8215-8dab-413f-a372-8b7a9ec2c7ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Action\Collision">
+      <UniqueIdentifier>{cc1118fe-ae73-4991-9b4b-2df94e4fa9ad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

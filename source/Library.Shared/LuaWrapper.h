@@ -2,6 +2,9 @@
 #include "Macro.h"
 #include <vector>
 #include <map>
+#include <set>
+#include <assert.h>
+#include <type_traits>
 
 #define MEMBER_GETTER "__propget"
 #define MEMBER_SETTER "__propset"
@@ -41,6 +44,7 @@ namespace GameEngine::Lua
 		T* const mObject = nullptr;
 		const static std::string sName;
 		const static uint64_t sTypeId;
+		const static bool sLuaAuthority;
 
 	protected:
 		const bool mLuaObject = false;
@@ -80,7 +84,7 @@ namespace GameEngine::Lua
 
 		static inline void IncrementObjectCounter(void* address);
 		static inline void DecrementObjectCounter(void* address);
-		static inline bool IsValid(void* address);
+		static inline bool IsValidLuaObject(void* address);
 
 	private:
 		static inline std::map<void*, size_t> sObjectCounter;

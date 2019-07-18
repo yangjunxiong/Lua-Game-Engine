@@ -2,6 +2,7 @@
 #include "HeaderTokenizer.h"
 
 #define EVENT_MARK "EventMessage"
+#define LUA_AUTHORITY_MARK "NoLuaAuthority"
 
 namespace GameEngine::HeaderTool
 {
@@ -28,7 +29,8 @@ namespace GameEngine::HeaderTool
 
 		enum class ItemFlag : int
 		{
-			EventMessage = 0
+			EventMessage = 0,
+			NoLuaAuthority = 1
 		};
 
 		struct Item

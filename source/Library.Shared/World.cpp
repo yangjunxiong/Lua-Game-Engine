@@ -4,6 +4,7 @@
 #include "WorldState.h"
 #include "Action.h"
 #include "Entity.h"
+#include "LuaWrapper.h"
 
 using namespace GameEngine;
 using namespace std;

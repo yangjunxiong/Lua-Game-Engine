@@ -11,7 +11,7 @@ namespace GameEngine
 	class Action;
 	class WorldState;
 
-	CLASS();
+	CLASS(NoLuaAuthority);
 	/// <summary>
 	/// An entity represents a base individual object in the game.
 	/// It can contain actions

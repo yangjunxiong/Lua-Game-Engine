@@ -53,6 +53,31 @@ namespace GameEngine
 		sInstance = nullptr;
 	}
 
+	World* Game::GetWorld() const
+	{
+		return mWorld.get();
+	}
+
+	KeyboardEntity* Game::GetKeyboard() const
+	{
+		return mKeyboard;
+	}
+
+	GamePadEntity* Game::GetGamepad() const
+	{
+		return mGamePad;
+	}
+
+	MouseEntity* Game::GetMouse() const
+	{
+		return mMouse;
+	}
+
+	Camera* Game::GetCamera() const
+	{
+		return mCamera;
+	}
+
 	void Game::Initialize()
 	{
 		// Init rendering
@@ -92,10 +117,11 @@ namespace GameEngine
 		LuaRegister::RegisterLua(*mLua.get());
 		UILuaAdapter::Init(mLua->LuaState());
 		mLua->LoadFile("Content\\Lua\\Main.lua");
-		mLua->SetProperty("World", mWorld.get());
-		mLua->SetProperty("Mouse", mMouse);
-		mLua->SetProperty("Keyboard", mKeyboard);
-		mLua->SetFunction("Log", std::function(Log));
+		mLua->SetProperty("G_World", mWorld.get());
+		mLua->SetProperty("G_Mouse", mMouse);
+		mLua->SetProperty("G_Keyboard", mKeyboard);
+		mLua->SetProperty("G_Camera", mCamera);
+		mLua->SetFunction("G_Log", std::function(Log));
 
 		// Start game logic
 		mLua->OpenTable("Main");
@@ -173,7 +199,9 @@ namespace GameEngine
 		{
 			if (block.Active)
 			{
+				ImGui::Begin(block.Name.c_str());
 				block.RenderFunc();
+				ImGui::End();
 			}
 		}
 		ImGui::Render();

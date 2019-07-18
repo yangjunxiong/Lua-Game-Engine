@@ -49,6 +49,11 @@ public:
 		bind.SetFunction<Vector3, float>("Length", &Vector3::Length);
 		bind.SetFunction<Vector3, float>("LengthSquare", &Vector3::LengthSquare);
 		bind.SetFunction<Vector3, void>("Normalize", &Vector3::Normalize);
+		bind.SetProperty<Vector3>("One", &Vector3::One);
+		bind.SetProperty<Vector3>("Zero", &Vector3::Zero);
+		bind.SetProperty<Vector3>("Forward", &Vector3::Forward);
+		bind.SetProperty<Vector3>("Up", &Vector3::Up);
+		bind.SetProperty<Vector3>("Right", &Vector3::Right);
 	};
 };
 }

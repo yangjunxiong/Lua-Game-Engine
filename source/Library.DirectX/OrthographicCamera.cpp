@@ -46,7 +46,7 @@ namespace GameEngine
 		if (mProjectionMatrixDataDirty)
 		{
 			XMMATRIX projectionMatrix = XMMatrixOrthographicRH(mViewWidth, mViewHeight, mNearPlaneDistance, mFarPlaneDistance);
-			XMStoreFloat4x4(&mProjectionMatrix, projectionMatrix);
+			XMStoreFloat4x4(&mProjectionMatrix.RawMatrix(), projectionMatrix);
 
 			for (auto& callback : mProjectionMatrixUpdatedCallbacks)
 			{

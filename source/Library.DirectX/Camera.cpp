@@ -19,46 +19,6 @@ namespace GameEngine
 		assert(mGame != nullptr);
 	}
 
-	const XMFLOAT3& Camera::Position() const
-	{
-		return mPosition;
-	}
-
-	const XMFLOAT3& Camera::Direction() const
-	{
-		return mDirection;
-	}
-
-	const XMFLOAT3& Camera::Up() const
-	{
-		return mUp;
-	}
-
-	const XMFLOAT3& Camera::Right() const
-	{
-		return mRight;
-	}
-
-	XMVECTOR Camera::PositionVector() const
-	{
-		return XMLoadFloat3(&mPosition);
-	}
-
-	XMVECTOR Camera::DirectionVector() const
-	{
-		return XMLoadFloat3(&mDirection);
-	}
-
-	XMVECTOR Camera::UpVector() const
-	{
-		return XMLoadFloat3(&mUp);
-	}
-
-	XMVECTOR Camera::RightVector() const
-	{
-		return XMLoadFloat3(&mRight);
-	}
-
 	float Camera::NearPlaneDistance() const
 	{
 		return mNearPlaneDistance;
@@ -81,22 +41,28 @@ namespace GameEngine
 		mProjectionMatrixDataDirty = true;
 	}
 
-	XMMATRIX Camera::ViewMatrix() const
+	Matrix Camera::ViewMatrix() const
 	{
-		return XMLoadFloat4x4(&mViewMatrix);
+		return mViewMatrix;
 	}
 
-	XMMATRIX Camera::ProjectionMatrix() const
+	Matrix Camera::ProjectionMatrix() const
 	{
-		return XMLoadFloat4x4(&mProjectionMatrix);
+		return mProjectionMatrix;
 	}
 
-	XMMATRIX Camera::ViewProjectionMatrix() const
+	Matrix Camera::ViewProjectionMatrix() const
 	{
-		XMMATRIX viewMatrix = XMLoadFloat4x4(&mViewMatrix);
-		XMMATRIX projectionMatrix = XMLoadFloat4x4(&mProjectionMatrix);
+		XMMATRIX viewMatrix = XMLoadFloat4x4(&mViewMatrix.RawMatrix());
+		XMMATRIX projectionMatrix = XMLoadFloat4x4(&mProjectionMatrix.RawMatrix());
 
 		return XMMatrixMultiply(viewMatrix, projectionMatrix);
+	}
+
+	Vector3 Camera::Unproject(const Vector3& screenPosition) const
+	{
+		return Vector3::Unproject(screenPosition, mProjectionMatrix, mViewMatrix,
+			Matrix::Identity, static_cast<float>(mGame->RenderTargetSize().cx), static_cast<float>(mGame->RenderTargetSize().cy));
 	}
 
 	const vector<function<void()>>& Camera::ViewMatrixUpdatedCallbacks() const
@@ -119,32 +85,9 @@ namespace GameEngine
 		mProjectionMatrixUpdatedCallbacks.push_back(callback);
 	}
 
-	void Camera::SetPosition(float x, float y, float z)
-	{
-		XMVECTOR position = XMVectorSet(x, y, z, 1.0f);
-		SetPosition(position);
-	}
-
-	void Camera::SetPosition(FXMVECTOR position)
-	{
-		XMStoreFloat3(&mPosition, position);
-		mViewMatrixDataDirty = true;
-	}
-
-	void Camera::SetPosition(const XMFLOAT3& position)
-	{
-		mPosition = position;
-		mViewMatrixDataDirty = true;
-	}
-
 	void Camera::Reset()
 	{
-		mPosition = Vector3Helper::Zero;
-		mDirection = Vector3Helper::Forward;
-		mUp = Vector3Helper::Up;
-		mRight = Vector3Helper::Right;
 		mViewMatrixDataDirty = true;
-
 		UpdateViewMatrix();
 	}
 
@@ -164,12 +107,12 @@ namespace GameEngine
 
 	void Camera::UpdateViewMatrix()
 	{
-		XMVECTOR eyePosition = XMLoadFloat3(&mPosition);
-		XMVECTOR direction = XMLoadFloat3(&mDirection);
-		XMVECTOR upDirection = XMLoadFloat3(&mUp);
+		XMVECTOR eyePosition = XMLoadFloat4(&mTransform.GetWorldPosition().RawVector());
+		XMVECTOR direction = XMLoadFloat4(&mTransform.GetWorldRotation().Forward().RawVector());
+		XMVECTOR upDirection = XMLoadFloat4(&mTransform.GetWorldRotation().Up().RawVector());
 
 		XMMATRIX viewMatrix = XMMatrixLookToRH(eyePosition, direction, upDirection);
-		XMStoreFloat4x4(&mViewMatrix, viewMatrix);
+		XMStoreFloat4x4(&mViewMatrix.RawMatrix(), viewMatrix);
 
 		for (auto& callback : mViewMatrixUpdatedCallbacks)
 		{
@@ -177,32 +120,5 @@ namespace GameEngine
 		}
 
 		mViewMatrixDataDirty = false;
-	}
-
-	void Camera::ApplyRotation(CXMMATRIX transform)
-	{
-		XMVECTOR direction = XMLoadFloat3(&mDirection);
-		XMVECTOR up = XMLoadFloat3(&mUp);
-
-		direction = XMVector3TransformNormal(direction, transform);
-		direction = XMVector3Normalize(direction);
-
-		up = XMVector3TransformNormal(up, transform);
-		up = XMVector3Normalize(up);
-
-		XMVECTOR right = XMVector3Cross(direction, up);
-		up = XMVector3Cross(right, direction);
-
-		XMStoreFloat3(&mDirection, direction);
-		XMStoreFloat3(&mUp, up);
-		XMStoreFloat3(&mRight, right);
-
-		mViewMatrixDataDirty = true;
-	}
-
-	void Camera::ApplyRotation(const XMFLOAT4X4& transform)
-	{
-		XMMATRIX transformMatrix = XMLoadFloat4x4(&transform);
-		ApplyRotation(transformMatrix);
 	}
 }

@@ -42,6 +42,11 @@ Matrix::Matrix(const XMMATRIX& matrix)
 	XMStoreFloat4x4(&mMatrix, matrix);
 }
 
+Matrix Matrix::operator*(const Matrix& other) const
+{
+	return XMLoadFloat4x4(&mMatrix) * XMLoadFloat4x4(&other.RawMatrix());
+}
+
 Vector3 Matrix::Forward() const
 {
 	auto vector = Vector3(-mMatrix._31, -mMatrix._32, -mMatrix._33);

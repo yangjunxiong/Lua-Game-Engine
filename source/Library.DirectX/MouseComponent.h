@@ -13,6 +13,7 @@ namespace DirectX
 namespace GameEngine
 {
 	class Game;
+	class Camera;
 
 	ENUM();
 	enum class MouseButtons
@@ -45,7 +46,7 @@ namespace GameEngine
 		End = Wheel
 	};
 
-	CLASS();
+	CLASS(NoLuaAuthority);
 	class MouseEntity final : public Entity
 	{
 		RTTI_DECLARATIONS(MouseEntity, Entity)
@@ -68,10 +69,13 @@ namespace GameEngine
 		void SetWindow(HWND window);
 
 		FUNCTION();
-		int X() const;
+		Vector3 PixelPosition() const;
 
 		FUNCTION();
-		int Y() const;
+		Vector3 ViewportPosition() const;
+
+		FUNCTION();
+		Vector3 WorldPosition(float z) const;
 
 		FUNCTION();
 		int Wheel() const;
@@ -93,6 +97,7 @@ namespace GameEngine
 		inline void SendMouseEvent(WorldState& state, MouseEventType type, MouseButtons button);
 
 		Game* mGame = nullptr;
+		Camera* mCamera = nullptr;
 		static std::unique_ptr<DirectX::Mouse> sMouse;
 
 		DirectX::Mouse::State mCurrentState;

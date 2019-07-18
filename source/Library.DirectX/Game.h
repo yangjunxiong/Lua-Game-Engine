@@ -28,6 +28,10 @@
 namespace GameEngine
 {
 	class World;
+	class KeyboardEntity;
+	class GamePadEntity;
+	class MouseEntity;
+	class Camera;
 
 	void Log(const char* msg);
 
@@ -56,6 +60,11 @@ namespace GameEngine
 		virtual ~Game();
 
 		inline static Game* GetInstance() { return sInstance; };
+		World* GetWorld() const;
+		KeyboardEntity* GetKeyboard() const;
+		GamePadEntity* GetGamepad() const;
+		MouseEntity* GetMouse() const;
+		Camera* GetCamera() const;
 
 		gsl::not_null<ID3D11Device5*> Direct3DDevice() const;
 		gsl::not_null<ID3D11DeviceContext4*> Direct3DDeviceContext() const;
@@ -130,9 +139,10 @@ namespace GameEngine
         GameEngine::GameTime mGameTime;
 		ServiceContainer mServices;
 		ContentManager mContentManager;
-		class KeyboardEntity* mKeyboard = nullptr;
-		class MouseEntity* mMouse = nullptr;
-		class FirstPersonCamera* mCamera = nullptr;
+		KeyboardEntity* mKeyboard = nullptr;
+		MouseEntity* mMouse = nullptr;
+		Camera* mCamera = nullptr;
+		GamePadEntity* mGamePad = nullptr;
 
 		GameEngine::EventQueue mEventQueue;
 		std::shared_ptr<GameEngine::Lua::LuaBind> mLua;

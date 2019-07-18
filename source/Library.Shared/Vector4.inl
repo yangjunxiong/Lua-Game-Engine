@@ -22,24 +22,24 @@ namespace GameEngine
 		return mVector.w;
 	}
 
-	void Vector4::SetX(float x)
+	void Vector4::SetX(float inx)
 	{
-		mVector.x = x;
+		mVector.x = inx;
 	}
 
-	void Vector4::SetY(float y)
+	void Vector4::SetY(float iny)
 	{
-		mVector.y = y;
+		mVector.y = iny;
 	}
 
-	void Vector4::SetZ(float z)
+	void Vector4::SetZ(float inz)
 	{
-		mVector.z = z;
+		mVector.z = inz;
 	}
 
-	void Vector4::SetW(float w)
+	void Vector4::SetW(float inw)
 	{
-		mVector.w = w;
+		mVector.w = inw;
 	}
 
 #ifdef WITH_OPENGL

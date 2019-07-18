@@ -10,9 +10,11 @@
 
 namespace GameEngine
 {
+	CLASS();
 	class Matrix final
 	{
 	public:
+		CONSTRUCTOR();
 		Matrix();
 		Matrix(float m11, float m12, float m13, float m14,
 			float m21, float m22, float m23, float m24,
@@ -24,11 +26,21 @@ namespace GameEngine
 		Matrix& operator=(Matrix&& other) = default;
 		~Matrix() = default;
 
+		Matrix operator*(const Matrix& other) const;
+
+		FUNCTION();
 		Vector3 Forward() const;
+
+		FUNCTION();
 		Vector3 Up() const;
+
+		FUNCTION();
 		Vector3 Right() const;
 
+		PROPERTY();
 		static const Matrix Identity;
+
+		PROPERTY();
 		static const Matrix Zero;
 
 #ifdef WITH_OPENGL
@@ -38,6 +50,7 @@ namespace GameEngine
 		Matrix(const DirectX::XMMATRIX& matrix);
 		inline DirectX::XMFLOAT4X4& RawMatrix();
 		inline const DirectX::XMFLOAT4X4& RawMatrix() const;
+		inline DirectX::XMMATRIX SIMDMatrix() const;
 #endif
 
 	private:

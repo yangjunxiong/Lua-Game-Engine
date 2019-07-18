@@ -18,7 +18,6 @@ public:
 	static void Lua_RegisterMember(LuaBind& bind)
 	{
 		bind;
-		bind.SetFunction<FirstPersonCamera, void, float, float, float>("SetPosition", &FirstPersonCamera::SetPosition);
 	};
 };
 }

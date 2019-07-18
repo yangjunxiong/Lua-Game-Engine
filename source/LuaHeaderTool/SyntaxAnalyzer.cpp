@@ -203,6 +203,10 @@ void SyntaxAnalyzer::InClassMarkState(size_t index)
 		{
 			Item::AddFlag(mFlag, ItemFlag::EventMessage);
 		}
+		else if (token.String == LUA_AUTHORITY_MARK)
+		{
+			Item::AddFlag(mFlag, ItemFlag::NoLuaAuthority);
+		}
 	}
 }
 

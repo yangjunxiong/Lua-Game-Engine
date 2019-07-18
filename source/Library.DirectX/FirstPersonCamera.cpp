@@ -17,36 +17,6 @@ namespace GameEngine
     {
     }
 
-	GamePadEntity* FirstPersonCamera::GetGamePad() const
-	{
-		return mGamePad;
-	}
-
-	void FirstPersonCamera::SetGamePad(GamePadEntity* gamePad)
-	{
-		mGamePad = gamePad;
-	}
-
-	KeyboardEntity* FirstPersonCamera::GetKeyboard() const
-	{
-		return mKeyboard;
-	}
-
-	void FirstPersonCamera::SetKeyboard(KeyboardEntity* keyboard)
-	{
-		mKeyboard = keyboard;
-	}
-
-	MouseEntity* FirstPersonCamera::GetMouse() const
-	{
-		return mMouse;
-	}
-
-	void FirstPersonCamera::SetMouse(MouseEntity* mouse)
-	{
-		mMouse = mouse;
-	}
-
 	float& FirstPersonCamera::MouseSensitivity()
 	{
 		return mMouseSensitivity;
@@ -61,34 +31,6 @@ namespace GameEngine
     {
         return mMovementRate;
     }
-
-	const vector<function<void()>>& FirstPersonCamera::PositionUpdatedCallbacks() const
-	{
-		return mPositionUpdatedCallbacks;
-	}
-
-	void FirstPersonCamera::AddPositionUpdatedCallback(function<void()> callback)
-	{
-		mPositionUpdatedCallbacks.push_back(callback);
-	}
-
-	void FirstPersonCamera::SetPosition(float x, float y, float z)
-	{
-		Camera::SetPosition(x, y, z);
-		InvokePositionUpdatedCallbacks();
-	}
-
-	void FirstPersonCamera::SetPosition(FXMVECTOR position)
-	{
-		Camera::SetPosition(position);
-		InvokePositionUpdatedCallbacks();
-	}
-
-	void FirstPersonCamera::SetPosition(const XMFLOAT3& position)
-	{
-		Camera::SetPosition(position);
-		InvokePositionUpdatedCallbacks();
-	}
 
 	void FirstPersonCamera::Start(WorldState& state)
 	{
@@ -105,10 +47,10 @@ namespace GameEngine
 		GamePad::State gamePadState;
 		if (IsGamePadConnected(gamePadState))
 		{
-			XMFLOAT2 movementAmount(gamePadState.thumbSticks.leftX, gamePadState.thumbSticks.leftY);
-			XMFLOAT2 rotationAmount(-gamePadState.thumbSticks.rightX, gamePadState.thumbSticks.rightY);
+			Vector3 movementAmount(gamePadState.thumbSticks.leftX, gamePadState.thumbSticks.leftY, 0.f);
+			Vector3 rotationAmount(-gamePadState.thumbSticks.rightX, gamePadState.thumbSticks.rightY, 0.f);
 
-			if (movementAmount.x != 0 || movementAmount.y != 0 || rotationAmount.x != 0 || rotationAmount.y != 0)
+			if (movementAmount.x != 0 || movementAmount.y != 0 || rotationAmount.z != 0 || rotationAmount.y != 0)
 			{
 				UpdatePosition(movementAmount, rotationAmount, gameTime);
 			}
@@ -116,7 +58,7 @@ namespace GameEngine
 		else
 		{
 			bool positionChanged = false;
-			XMFLOAT2 movementAmount = Vector2Helper::Zero;
+			Vector3 movementAmount;
 			if (mKeyboard != nullptr)
 			{				
 				if (mKeyboard->IsKeyDown(Keys::W))
@@ -141,16 +83,15 @@ namespace GameEngine
 				}
 			}
 
-			XMFLOAT2 rotationAmount = Vector2Helper::Zero;
-			if (mMouse != nullptr && mMouse->Mode() == MouseModes::Relative)
-			{				
-				if (mMouse->IsButtonHeldDown(MouseButtons::Left))
-				{
-					rotationAmount.x = -mMouse->X() * mMouseSensitivity;
-					rotationAmount.y = -mMouse->Y() * mMouseSensitivity;
-					positionChanged = true;
-				}
-			}
+			Vector3 rotationAmount;
+			//if (mMouse != nullptr && mMouse->Mode() == MouseModes::Relative)
+			//{				
+			//	if (mMouse->IsButtonHeldDown(MouseButtons::Left))
+			//	{
+			//		rotationAmount = mMouse->MousePosition() * -mMouseSensitivity;
+			//		positionChanged = true;
+			//	}
+			//}
 
 			if (positionChanged)
 			{
@@ -161,37 +102,21 @@ namespace GameEngine
         Camera::Update(state);
     }
 
-	void FirstPersonCamera::UpdatePosition(const XMFLOAT2& movementAmount, const XMFLOAT2& rotationAmount, const GameEngine::GameTime& gameTime)
+	void FirstPersonCamera::UpdatePosition(const Vector3& movementAmount, const Vector3& rotationAmount, const GameEngine::GameTime& gameTime)
 	{
 		float elapsedTime = gameTime.ElapsedGameTimeSeconds().count();
-		XMVECTOR rotationVector = XMLoadFloat2(&rotationAmount) * mRotationRate * elapsedTime;
-		XMVECTOR right = XMLoadFloat3(&mRight);
+		Vector3 rotationVector = rotationAmount * mRotationRate * elapsedTime;
+		Vector3 translationVector = movementAmount * mMovementRate * elapsedTime;
 
-		XMMATRIX pitchMatrix = XMMatrixRotationAxis(right, XMVectorGetY(rotationVector));
-		XMMATRIX yawMatrix = XMMatrixRotationY(XMVectorGetX(rotationVector));
+		// Update rotation
+		Quaternion deltaRotation = Quaternion::FromEulerAngles(Vector3(rotationVector.y, rotationVector.x, 0.f));
+		Quaternion newRotation = Quaternion::AddRotation(mTransform.GetWorldRotation(), deltaRotation);
+		mTransform.SetWorldRotation(newRotation);
 
-		ApplyRotation(XMMatrixMultiply(pitchMatrix, yawMatrix));
+		// Update position
+		Vector3 deltaTranslation = mTransform.Forward() * translationVector.y + mTransform.Right() * translationVector.x;
+		mTransform.SetWorldPosition(mTransform.GetWorldPosition() + deltaTranslation);
 
-		XMVECTOR position = XMLoadFloat3(&mPosition);
-		XMVECTOR movement = XMLoadFloat2(&movementAmount) * mMovementRate * elapsedTime;
-
-		XMVECTOR strafe = right * XMVectorGetX(movement);
-		position += strafe;
-
-		XMVECTOR forward = XMLoadFloat3(&mDirection) * XMVectorGetY(movement);
-		position += forward;
-
-		XMStoreFloat3(&mPosition, position);
-
-		InvokePositionUpdatedCallbacks();
 		mViewMatrixDataDirty = true;
-	}
-
-	inline void FirstPersonCamera::InvokePositionUpdatedCallbacks()
-	{
-		for (auto& callback : mPositionUpdatedCallbacks)
-		{
-			callback();
-		}
 	}
 }

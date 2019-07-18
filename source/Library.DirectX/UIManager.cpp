@@ -89,7 +89,7 @@ void UILuaAdapter::Init(lua_State* L)
 	// Expose functions to Lua
 	lua_newtable(L);
 	lua_pushvalue(L, -1);
-	lua_setglobal(L, "UI");
+	lua_setglobal(L, "G_UI");
 	assert(lua_istable(L, -1));
 	lua_pushcfunction(L, &UILuaAdapter::AddWindow);
 	lua_setfield(L, -2, "AddWindow");

@@ -19,21 +19,24 @@ public:
 	{
 		bind;
 		bind.SetConstructor<Transform>();
-		bind.SetFunction<Transform,  const Vector3&>("GetWorldPosition", &Transform::GetWorldPosition);
-		bind.SetFunction<Transform,  const Quaternion&>("GetWorldRotation", &Transform::GetWorldRotation);
-		bind.SetFunction<Transform,  const Vector3&>("GetWorldScale", &Transform::GetWorldScale);
+		bind.SetFunction<Transform, Vector3&>("GetWorldPosition", &Transform::GetWorldPosition);
+		bind.SetFunction<Transform, Quaternion&>("GetWorldRotation", &Transform::GetWorldRotation);
+		bind.SetFunction<Transform, Vector3&>("GetWorldScale", &Transform::GetWorldScale);
 		bind.SetFunction<Transform, void,  const Vector3&>("SetWorldPosition", &Transform::SetWorldPosition);
 		bind.SetFunction<Transform, void,  const Quaternion&>("SetWorldRotation", &Transform::SetWorldRotation);
 		bind.SetFunction<Transform, void,  const Vector3&>("SetWorldScale", &Transform::SetWorldScale);
-		bind.SetFunction<Transform,  const Vector3&>("GetLocalPosition", &Transform::GetLocalPosition);
-		bind.SetFunction<Transform,  const Quaternion&>("GetLocalRotation", &Transform::GetLocalRotation);
-		bind.SetFunction<Transform,  const Vector3&>("GetLocalScale", &Transform::GetLocalScale);
+		bind.SetFunction<Transform, Vector3&>("GetLocalPosition", &Transform::GetLocalPosition);
+		bind.SetFunction<Transform, Quaternion&>("GetLocalRotation", &Transform::GetLocalRotation);
+		bind.SetFunction<Transform, Vector3&>("GetLocalScale", &Transform::GetLocalScale);
 		bind.SetFunction<Transform, void,  const Vector3&>("SetLocalPosition", &Transform::SetLocalPosition);
 		bind.SetFunction<Transform, void,  const Quaternion&>("SetLocalRotation", &Transform::SetLocalRotation);
 		bind.SetFunction<Transform, void,  const Vector3&>("SetLocalScale", &Transform::SetLocalScale);
-		bind.SetFunction<Transform,  const Vector3&>("Forward", &Transform::Forward);
-		bind.SetFunction<Transform,  const Vector3&>("Up", &Transform::Up);
-		bind.SetFunction<Transform,  const Vector3&>("Right", &Transform::Right);
+		bind.SetFunction<Transform, Vector3&>("Forward", &Transform::Forward);
+		bind.SetFunction<Transform, Vector3&>("Up", &Transform::Up);
+		bind.SetFunction<Transform, Vector3&>("Right", &Transform::Right);
+		bind.SetFunction<Transform, Matrix&>("GetWorldMatrix", &Transform::GetWorldMatrix);
+		bind.SetFunction<Transform, Matrix&>("GetLocalMatrix", &Transform::GetLocalMatrix);
+		bind.SetFunction<Transform, Matrix&>("GetWorldMatrixInverse", &Transform::GetWorldMatrixInverse);
 	};
 };
 }

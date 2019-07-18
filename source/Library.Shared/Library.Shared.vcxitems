@@ -24,6 +24,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ActionListIf.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ActionRender.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Attributed.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Collision.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)CollisionComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Event.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Datum.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DefaultHashFunction.h" />
@@ -50,6 +52,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Scope.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Sector.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SList.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SphereComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Stack.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Tokenizer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transform.h" />
@@ -69,6 +72,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ActionListIf.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ActionRender.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Attributed.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Collision.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)CollisionComponent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Event.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Datum.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DefaultHashFunction.cpp" />
@@ -88,6 +93,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ReactionAttributed.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Scope.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Sector.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SphereComponent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Tokenizer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Transform.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Vector4.cpp" />

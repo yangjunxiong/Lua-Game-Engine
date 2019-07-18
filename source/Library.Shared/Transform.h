@@ -22,13 +22,16 @@ namespace GameEngine
 		virtual ~Transform() = default;
 
 		FUNCTION();
-		const Vector3& GetWorldPosition();
+		Vector3& GetWorldPosition();
+		const Vector3& GetWorldPosition() const;
 
 		FUNCTION();
-		const Quaternion& GetWorldRotation();
+		Quaternion& GetWorldRotation();
+		const Quaternion& GetWorldRotation() const;
 
 		FUNCTION();
-		const Vector3& GetWorldScale();
+		Vector3& GetWorldScale();
+		const Vector3& GetWorldScale() const;
 
 		FUNCTION();
 		void SetWorldPosition(const Vector3& position);
@@ -40,13 +43,16 @@ namespace GameEngine
 		void SetWorldScale(const Vector3& scale);
 
 		FUNCTION();
-		const Vector3& GetLocalPosition();
+		Vector3& GetLocalPosition();
+		const Vector3& GetLocalPosition() const;
 
 		FUNCTION();
-		const Quaternion& GetLocalRotation();
+		Quaternion& GetLocalRotation();
+		const Quaternion& GetLocalRotation() const;
 
 		FUNCTION();
-		const Vector3& GetLocalScale();
+		Vector3& GetLocalScale();
+		const Vector3& GetLocalScale() const;
 
 		FUNCTION();
 		void SetLocalPosition(const Vector3& position);
@@ -58,32 +64,44 @@ namespace GameEngine
 		void SetLocalScale(const Vector3& scale);
 
 		FUNCTION();
-		const Vector3& Forward();
+		Vector3& Forward();
+		const Vector3& Forward() const;
 
 		FUNCTION();
-		const Vector3& Up();
+		Vector3& Up();
+		const Vector3& Up() const;
 
 		FUNCTION();
-		const Vector3& Right();
+		Vector3& Right();
+		const Vector3& Right() const;
 
 		using UpdateCallback = std::function<void()>;
 		void AddTransformUpdateCallback(UpdateCallback callback);
 		void RemoveTransformUpdateCallback(UpdateCallback callback);
 
-		const Matrix& GetWorldMatrix();
-		const Matrix& GetLocalMatrix();
-		const Matrix& GetWorldMatrixInverse();
+		FUNCTION();
+		Matrix& GetWorldMatrix();
+		const Matrix& GetWorldMatrix() const;
 
-	protected:
+		FUNCTION();
+		Matrix& GetLocalMatrix();
+		const Matrix& GetLocalMatrix() const;
+
+		FUNCTION();
+		Matrix& GetWorldMatrixInverse();
+		const Matrix& GetWorldMatrixInverse() const;
+
 		void SetParent(Transform* parent);
 		Transform* GetParent() const;
 
+	protected:
 		inline bool LocalTransformDirty() const;
 		inline bool WorldTransformDirty() const;
 		inline bool TransformDirty() const;
 		inline void UpdateMatrix();
 
 		Transform* mParent;
+		std::vector<Transform*> mChildren;
 		Matrix mWorldMatrix;
 		Matrix mWorldMatrixInverse;
 		Matrix mLocalMatrix;
