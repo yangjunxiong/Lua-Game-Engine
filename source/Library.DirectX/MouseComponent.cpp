@@ -4,6 +4,9 @@
 #include "Event.h"
 #include "LuaBind.h"
 #include "Camera.h"
+#include "Entity.h"
+#include "Sector.h"
+#include "CollisionComponent.h"
 
 using namespace std;
 using namespace DirectX;
@@ -98,6 +101,16 @@ namespace GameEngine
 		return mCurrentState.scrollWheelValue;
 	}
 
+	int MouseEntity::WheelDelta() const
+	{
+		return mCurrentState.scrollWheelValue - mLastState.scrollWheelValue;
+	}
+
+	const std::vector<CollisionComponent*>& MouseEntity::RayHitComponents() const
+	{
+		return mRayHitComponents;
+	}
+
 	bool MouseEntity::IsButtonUp(MouseButtons button) const
 	{
 		return GetButtonState(mCurrentState, button) == false;
@@ -152,6 +165,10 @@ namespace GameEngine
 	void MouseEntity::UpdateMouseEvent(WorldState& state)
 	{
 		float deltaTime = state.GetGameTime().ElapsedGameTimeSeconds().count();
+
+		// Check collision objects
+		mRayHitComponents = RaycastMouse();
+
 		for (int i = static_cast<int>(MouseButtons::Begin); i <= static_cast<int>(MouseButtons::End); ++i)
 		{
 			auto getter = sButtonGetters[i];
@@ -188,5 +205,45 @@ namespace GameEngine
 		message.Button = button;
 		auto event = make_shared<Event<MouseEvent>>(message);
 		state.GetWorld()->EnqueueEvent(event);
+	}
+
+	std::vector<class CollisionComponent*> MouseEntity::RaycastMouse()
+	{
+		std::vector<CollisionComponent*> result;
+		Vector3 pixelPosition = PixelPosition();
+		Vector3 start = mCamera->Unproject(pixelPosition);
+		Vector3 end = mCamera->Unproject(Vector3(pixelPosition.x, pixelPosition.y, 1.f));
+		Ray ray(start, end);
+
+		Datum& sectors = mGame->GetWorld()->Sectors();
+		for (size_t s = 0; s < sectors.Size(); ++s)
+		{
+			Sector& sector = static_cast<Sector&>(sectors.AsTable(s));
+			if (sector.IsActive())
+			{
+				Datum& entities = sector.Entities();
+				for (size_t i = 0; i < entities.Size(); ++i)
+				{
+					Entity& entity = static_cast<Entity&>(entities.AsTable(i));
+					if (entity.IsActive())
+					{
+						Datum& actions = entity.Actions();
+						for (size_t j = 0; j < actions.Size(); ++j)
+						{
+							Action& action = static_cast<Action&>(actions.AsTable(j));
+							if (action.Is(CollisionComponent::TypeIdClass()))
+							{
+								if (static_cast<CollisionComponent&>(action).IntersectsRay(ray))
+								{
+									result.emplace_back(static_cast<CollisionComponent*>(&action));
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return result;
 	}
 }

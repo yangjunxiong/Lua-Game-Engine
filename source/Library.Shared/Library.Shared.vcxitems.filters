@@ -40,18 +40,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)JsonTableParseHelper.cpp">
       <Filter>EngineBase\JsonParse</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionListIf.cpp">
-      <Filter>Engine\Action</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionIncrement.cpp">
-      <Filter>Engine\Action</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionCreateAction.cpp">
-      <Filter>Engine\Action</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionDestroyAction.cpp">
-      <Filter>Engine\Action</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Entity.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
@@ -64,26 +52,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)IEventSubscriber.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionEvent.cpp">
-      <Filter>Engine\Action</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Reaction.cpp">
-      <Filter>Engine\Reaction</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)EventMessageAttributed.cpp">
-      <Filter>Engine\Reaction</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ReactionAttributed.cpp">
-      <Filter>Engine\Reaction</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionAdd.cpp">
-      <Filter>Engine\Action</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Tokenizer.cpp">
       <Filter>EngineBase\JsonParse</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionDestroy.cpp">
-      <Filter>Engine\Action</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)LuaBind.cpp">
       <Filter>LuaBind</Filter>
@@ -168,18 +138,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)JsonTableParseHelper.h">
       <Filter>EngineBase\JsonParse</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionListIf.h">
-      <Filter>Engine\Action</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionIncrement.h">
-      <Filter>Engine\Action</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionCreateAction.h">
-      <Filter>Engine\Action</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionDestroyAction.h">
-      <Filter>Engine\Action</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Entity.h">
       <Filter>Engine</Filter>
     </ClInclude>
@@ -192,29 +150,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)IEventSubscriber.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionEvent.h">
-      <Filter>Engine\Action</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Reaction.h">
-      <Filter>Engine\Reaction</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)EventMessageAttributed.h">
-      <Filter>Engine\Reaction</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ReactionAttributed.h">
-      <Filter>Engine\Reaction</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionAdd.h">
-      <Filter>Engine\Action</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Stack.h">
       <Filter>Container</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Tokenizer.h">
       <Filter>EngineBase\JsonParse</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionDestroy.h">
-      <Filter>Engine\Action</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)LuaBind.h">
       <Filter>LuaBind</Filter>
@@ -309,9 +249,6 @@
     </Filter>
     <Filter Include="EngineBase\JsonParse">
       <UniqueIdentifier>{085e595a-fcaf-4b3b-a1e5-fddb0df38051}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Reaction">
-      <UniqueIdentifier>{703e3a24-c487-4de9-a37a-61d785ea1481}</UniqueIdentifier>
     </Filter>
     <Filter Include="LuaBind">
       <UniqueIdentifier>{63d4ecea-19a3-4f3c-bf57-2738436e9207}</UniqueIdentifier>

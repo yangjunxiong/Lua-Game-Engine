@@ -14,6 +14,7 @@ namespace GameEngine
 {
 	class Game;
 	class Camera;
+	class CollisionComponent;
 
 	ENUM();
 	enum class MouseButtons
@@ -80,6 +81,12 @@ namespace GameEngine
 		FUNCTION();
 		int Wheel() const;
 
+		FUNCTION();
+		int WheelDelta() const;
+
+		FUNCTION();
+		const std::vector<CollisionComponent*>& RayHitComponents() const;
+
 		bool IsButtonUp(MouseButtons button) const;
 		bool IsButtonDown(MouseButtons button) const;
 		bool WasButtonUp(MouseButtons button) const;
@@ -95,6 +102,7 @@ namespace GameEngine
 		inline bool GetButtonState(const DirectX::Mouse::State& state, MouseButtons button) const;
 		inline void UpdateMouseEvent(WorldState& state);
 		inline void SendMouseEvent(WorldState& state, MouseEventType type, MouseButtons button);
+		inline std::vector<CollisionComponent*> RaycastMouse();
 
 		Game* mGame = nullptr;
 		Camera* mCamera = nullptr;
@@ -103,6 +111,7 @@ namespace GameEngine
 		DirectX::Mouse::State mCurrentState;
 		DirectX::Mouse::State mLastState;
 		std::vector<float> mMousePressTime;
+		std::vector<CollisionComponent*> mRayHitComponents;
 		static const std::vector<bool(*)(const DirectX::Mouse::State&)> sButtonGetters;
 		static const inline float sClickThreshold = 0.2f;
 	};

@@ -16,6 +16,7 @@ namespace GameEngine
 		mNearPlaneDistance(nearPlaneDistance), mFarPlaneDistance(farPlaneDistance)
 	{
 		mGame = Game::GetInstance();
+		mTransform.AddTransformUpdateCallback([this]() { mViewMatrixDataDirty = true; });
 		assert(mGame != nullptr);
 	}
 
@@ -91,14 +92,18 @@ namespace GameEngine
 		UpdateViewMatrix();
 	}
 
-	void Camera::Start(WorldState&)
+	void Camera::Start(WorldState& state)
 	{
+		Entity::Start(state);
+
 		UpdateProjectionMatrix();
 		Reset();
 	}
 
-	void Camera::Update(WorldState&)
+	void Camera::Update(WorldState& state)
 	{
+		Entity::Update(state);
+
 		if (mViewMatrixDataDirty)
 		{
 			UpdateViewMatrix();

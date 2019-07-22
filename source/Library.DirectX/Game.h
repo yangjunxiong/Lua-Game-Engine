@@ -14,7 +14,6 @@
 #include <d2d1_3.h>
 #include <dwrite_3.h>
 #include <wincodec.h>
-#include <DirectXMath.h>
 #include <DirectXColors.h>
 
 #include "GameClock.h"

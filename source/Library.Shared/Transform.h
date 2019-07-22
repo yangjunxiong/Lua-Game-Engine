@@ -91,6 +91,9 @@ namespace GameEngine
 		Matrix& GetWorldMatrixInverse();
 		const Matrix& GetWorldMatrixInverse() const;
 
+		FUNCTION();
+		void RefreshTransform();
+
 		void SetParent(Transform* parent);
 		Transform* GetParent() const;
 

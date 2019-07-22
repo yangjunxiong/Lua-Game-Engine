@@ -1,5 +1,17 @@
 # Visual Sutdio product
+
 .vs/
-bin/
+
 obj/
+
+bin/*
 packages/
+
+
+# Allow Lua commit
+!bin/Game.Desktop.DirectX/
+bin/Game.Desktop.DirectX/x64/Debug/*
+!bin/Game.Desktop.DirectX/x64/Debug/Content/
+bin/Game.Desktop.DirectX/x64/Debug/Content/*
+!bin/Game.Desktop.DirectX/x64/Debug/Content/Lua/
+bin/Game.Desktop.DirectX/x64/Debug/Content/Lua/Class/

@@ -3,6 +3,7 @@
 #include "Entity.h"
 
 using namespace GameEngine;
+RTTI_DEFINITIONS(SphereComponent);
 
 SphereComponent::SphereComponent(Entity* parent, const Vector3& center, float radius) :
 	CollisionComponent(parent),

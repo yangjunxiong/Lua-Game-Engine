@@ -44,7 +44,7 @@ void Entity::SetSector(Sector& sector)
 void Entity::Start(WorldState& state)
 {
 	// Because we might read transform from Json, and that doesn't trigger matrix calculation, we do it here
-	mTransform.UpdateMatrix();
+	mTransform.RefreshTransform();
 
 	Datum& actions = Actions();
 	for (size_t i = 0; i < actions.Size(); ++i)
@@ -58,6 +58,9 @@ void Entity::Start(WorldState& state)
 void Entity::Update(WorldState& state)
 {
 	state.mEntity = this;
+
+	// Refresh transform
+	mTransform.RefreshTransform();
 
 	// Update actions
 	Datum& actions = Actions();

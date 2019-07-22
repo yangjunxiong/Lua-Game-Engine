@@ -15,13 +15,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Action.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionAdd.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionCreateAction.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionDestroy.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionDestroyAction.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionEvent.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionIncrement.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ActionListIf.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ActionRender.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Attributed.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Collision.h" />
@@ -30,7 +23,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Datum.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DefaultHashFunction.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Entity.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)EventMessageAttributed.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EventQueue.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)IEventSubscriber.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Factory.h" />
@@ -46,8 +38,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Macro.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Matrix.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Quaternion.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Reaction.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ReactionAttributed.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RTTI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Scope.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Sector.h" />
@@ -63,13 +53,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Action.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionAdd.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionCreateAction.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionDestroy.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionDestroyAction.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionEvent.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionIncrement.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ActionListIf.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ActionRender.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Attributed.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Collision.cpp" />
@@ -78,7 +61,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Datum.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DefaultHashFunction.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Entity.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)EventMessageAttributed.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EventQueue.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)IEventSubscriber.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameClock.cpp" />
@@ -89,8 +71,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)LuaBind.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Matrix.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Quaternion.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Reaction.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ReactionAttributed.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Scope.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Sector.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SphereComponent.cpp" />

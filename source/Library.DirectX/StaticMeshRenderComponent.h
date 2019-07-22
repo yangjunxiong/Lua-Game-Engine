@@ -14,7 +14,7 @@ namespace GameEngine
 	class StaticMeshMaterial;
 
 	CLASS(NoLuaAuthority);
-	class StaticMeshRenderComponent : public ActionRender
+	class StaticMeshRenderComponent final : public ActionRender
 	{
 		RTTI_DECLARATIONS(StaticMeshRenderComponent, ActionRender);
 

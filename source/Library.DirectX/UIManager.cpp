@@ -1,8 +1,53 @@
 #include "pch.h"
 #include "UIManager.h"
 #include "LuaBind.h"
+#include <imgui.h>
 
 using namespace GameEngine;
+
+#define CALL_FUNCTION(_required, _funcName, ...)                                   \
+if (lua_isfunction(L, -1))														   \
+{																				   \
+	int uniqueIndex = luaL_ref(L, LUA_REGISTRYINDEX);							   \
+	_funcName = [uniqueIndex, L]()												   \
+	{																			   \
+		lua_rawgeti(L, LUA_REGISTRYINDEX, uniqueIndex);							   \
+		assert(lua_isfunction(L, -1));											   \
+		lua_call(L, 0, 1);														   \
+		__VA_ARGS__;															   \
+	};																			   \
+}																				   \
+else if (lua_istable(L, -1))													   \
+{																				   \
+	size_t length = lua_rawlen(L, -1);											   \
+	size_t paramLength = length - 1;											   \
+																				   \
+	lua_rawgeti(L, -1, 1);														   \
+	int functionIndex = luaL_ref(L, LUA_REGISTRYINDEX);							   \
+																				   \
+	std::vector<int> paramIndexes;												   \
+	for (size_t i = 0; i < paramLength; ++i)									   \
+	{																			   \
+		lua_rawgeti(L, -1, i + 2);												   \
+		paramIndexes.emplace_back(luaL_ref(L, LUA_REGISTRYINDEX));				   \
+	}																			   \
+																				   \
+	_funcName = [functionIndex, paramIndexes, L]()								   \
+	{																			   \
+		lua_rawgeti(L, LUA_REGISTRYINDEX, functionIndex);						   \
+		assert(lua_isfunction(L, -1));											   \
+		for (int index : paramIndexes)											   \
+		{																		   \
+			lua_rawgeti(L, LUA_REGISTRYINDEX, index);							   \
+		}																		   \
+		lua_call(L, static_cast<int>(paramIndexes.size()), 1);					   \
+		__VA_ARGS__;															   \
+	};																			   \
+}																				   \
+else if (_required)                                                                \
+{																				   \
+	lua_error(L);																   \
+}
 
 #pragma region UIManager
 
@@ -129,7 +174,7 @@ int UILuaAdapter::AddWindow(lua_State* L)
 		{
 			lua_error(L);
 		}
-		lua_rawgeti(L, 3, 1);
+		lua_getfield(L, 3, TYPE_FIELD);  // Get "Type" field
 		std::string type = luaL_checkstring(L, -1);
 		auto it = sWidgetTypeMap.find(type);
 		if (it == sWidgetTypeMap.end())
@@ -171,75 +216,48 @@ int UILuaAdapter::SetWindowActive(lua_State* L)
 
 std::function<void()> UILuaAdapter::TextState(lua_State* L, int index)
 {
-	lua_rawgeti(L, index, 2);  // second config is label
+	std::function<void()> func;
+	lua_getfield(L, index, TEXT_FIELD);
 	if (lua_isstring(L, -1))
 	{
 		const char* str = lua_tostring(L, -1);
-		return [str]() { ImGui::Text(str); };
-	}
-	else if (lua_isfunction(L, -1))
-	{
-		int uniqueIndex = luaL_ref(L, LUA_REGISTRYINDEX);
-		return [uniqueIndex, L]() {
-			lua_rawgeti(L, LUA_REGISTRYINDEX, uniqueIndex);
-			assert(lua_isfunction(L, -1));
-			lua_call(L, 0, 1);
-			ImGui::Text(luaL_checkstring(L, -1));
-			lua_pop(L, 1);
-		};
+		func = [str]() { ImGui::Text(str); };
 	}
 	else
 	{
-		lua_error(L);
+		CALL_FUNCTION(true, func,
+			const char* str = luaL_checkstring(L, -1);
+			lua_pop(L, 1);
+			ImGui::Text(str);
+		);
 	}
-	return []() {};
+
+	return func;
 }
 
 std::function<void()> UILuaAdapter::ButtonState(lua_State* L, int index)
 {
 	// Label function
-	lua_rawgeti(L, index, 2);
-	std::function<std::string()> label;
+	lua_getfield(L, index, TEXT_FIELD);
+	std::function<const char*()> label;
 	std::string labelString;
 	if (lua_isstring(L, -1))
 	{
 		labelString = lua_tostring(L, -1);
 	}
-	else if (lua_isfunction(L, -1))
-	{
-		int uniqueIndex = luaL_ref(L, LUA_REGISTRYINDEX);
-		label = [uniqueIndex, L]()
-		{
-			lua_rawgeti(L, LUA_REGISTRYINDEX, uniqueIndex);
-			assert(lua_isfunction(L, -1));
-			lua_call(L, 0, 1);
-			std::string str = luaL_checkstring(L, -1);
-			lua_pop(L, 1);
-			return str;
-		};
-	}
 	else
 	{
-		lua_error(L);
+		CALL_FUNCTION(true, label,
+			const char* str = luaL_checkstring(L, -1);
+			lua_pop(L, 1);
+			return str;
+		);
 	}
 
 	// Click callback function
-	lua_rawgeti(L, index, 3);
+	lua_getfield(L, index, CLICK_FIELD);
 	std::function<void()> callback;
-	if (lua_isfunction(L, -1))
-	{
-		int uniqueIndex = luaL_ref(L, LUA_REGISTRYINDEX);
-		callback = [uniqueIndex, L]()
-		{
-			lua_rawgeti(L, LUA_REGISTRYINDEX, uniqueIndex);
-			assert(lua_isfunction(L, -1));
-			lua_call(L, 0, 0);
-		};
-	}
-	else
-	{
-		callback = []() {};
-	}
+	CALL_FUNCTION(false, callback);
 
 	if (!labelString.empty())
 	{
@@ -255,7 +273,7 @@ std::function<void()> UILuaAdapter::ButtonState(lua_State* L, int index)
 	{
 		return [label, callback]()
 		{
-			if (ImGui::Button(label().c_str()))
+			if (ImGui::Button(label()))
 			{
 				callback();
 			}

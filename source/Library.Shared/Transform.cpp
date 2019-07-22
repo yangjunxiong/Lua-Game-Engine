@@ -236,6 +236,14 @@ const Matrix& Transform::GetWorldMatrixInverse() const
 	return mWorldMatrixInverse;
 }
 
+void Transform::RefreshTransform()
+{
+	if (TransformDirty())
+	{
+		UpdateMatrix();
+	}
+}
+
 bool Transform::LocalTransformDirty() const
 {
 	return mLocalPositionDirty || mLocalRotationDirty || mLocalScaleDirty;

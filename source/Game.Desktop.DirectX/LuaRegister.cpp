@@ -98,6 +98,8 @@ DECLARE_LUA_WRAPPER(Collision, "Collision", true);
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(Collision);
 DECLARE_LUA_WRAPPER(CollisionComponent, "CollisionComponent", true);
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(CollisionComponent);
+LUA_DEFINE_CUSTOM_COPY_TYPE(CollisionComponent);
+DECLARE_LUA_VECTOR_WRAPPER_ALL(CollisionComponent, "CollisionComponent");
 DECLARE_LUA_WRAPPER(Datum, "Datum", true);
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(Datum);
 DECLARE_LUA_WRAPPER(Entity, "Entity", false);

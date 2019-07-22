@@ -20,7 +20,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int showCommand)
 	const wstring windowClassName = L"RenderingClass"s;
 	const wstring windowTitle = L"DirectX Essentials"s;
 
-	const SIZE RenderTargetSize = { 1024, 768 };
+	const SIZE RenderTargetSize = { 1024, 765 };
 	HWND windowHandle;
 	WNDCLASSEX window;
 

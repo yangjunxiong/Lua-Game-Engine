@@ -40,6 +40,10 @@ namespace GameEngine
 			Text = 0,
 			Button
 		};
+		
+		const static inline char* TYPE_FIELD = "Type";
+		const static inline char* TEXT_FIELD = "Text";
+		const static inline char* CLICK_FIELD = "Click";
 
 		using WidgetFunction = std::function<void()>(*)(lua_State* L, int index);
 		static std::vector<WidgetFunction> sWidgetFunctions;

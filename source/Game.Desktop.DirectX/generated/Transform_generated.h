@@ -37,6 +37,7 @@ public:
 		bind.SetFunction<Transform, Matrix&>("GetWorldMatrix", &Transform::GetWorldMatrix);
 		bind.SetFunction<Transform, Matrix&>("GetLocalMatrix", &Transform::GetLocalMatrix);
 		bind.SetFunction<Transform, Matrix&>("GetWorldMatrixInverse", &Transform::GetWorldMatrixInverse);
+		bind.SetFunction<Transform, void>("RefreshTransform", &Transform::RefreshTransform);
 	};
 };
 }

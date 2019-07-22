@@ -18,6 +18,7 @@ public:
 	static void Lua_RegisterMember(LuaBind& bind)
 	{
 		bind;
+		bind.SetConstructor<CollisionComponent, Entity*>();
 		bind.SetFunction<CollisionComponent, bool,  const Ray&>("IntersectsRay", &CollisionComponent::IntersectsRay);
 		bind.SetFunction<CollisionComponent, bool,  const Sphere&>("IntersectsSphere", &CollisionComponent::IntersectsSphere);
 	};

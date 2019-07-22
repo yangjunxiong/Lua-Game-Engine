@@ -15,6 +15,7 @@
 #include "FirstPersonCamera.h"
 #include "Texture2D.h"
 #include "imgui_impl_dx11.h"
+#include <imgui.h>
 #include "UtilityWin32.h"
 #include "UIManager.h"
 
@@ -91,7 +92,8 @@ namespace GameEngine
 		mKeyboard = new KeyboardEntity();
 		auto gamepad = new GamePadEntity();
 		mMouse = new MouseEntity(MouseModes::Absolute);
-		mCamera = new FirstPersonCamera();
+		mCamera = new PerspectiveCamera();
+		mCamera->GetTransform()->SetWorldPosition(Vector3(0.f, 0.f, 100.f));
 		mWorld->Adopt(*mKeyboard, mWorld->ENTITY_TABLE_KEY);
 		mWorld->Adopt(*mMouse, mWorld->ENTITY_TABLE_KEY);
 		mWorld->Adopt(*gamepad, mWorld->ENTITY_TABLE_KEY);

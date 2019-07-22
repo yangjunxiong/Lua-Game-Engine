@@ -63,6 +63,8 @@ public:
 		bind.SetFunction<MouseEntity, Vector3>("ViewportPosition", &MouseEntity::ViewportPosition);
 		bind.SetFunction<MouseEntity, Vector3, float>("WorldPosition", &MouseEntity::WorldPosition);
 		bind.SetFunction<MouseEntity, int>("Wheel", &MouseEntity::Wheel);
+		bind.SetFunction<MouseEntity, int>("WheelDelta", &MouseEntity::WheelDelta);
+		bind.SetFunction<MouseEntity,  const std::vector<CollisionComponent*>&>("RayHitComponents", &MouseEntity::RayHitComponents);
 	};
 };
 class MouseEvent_event_generated final : public IEventSubscriber

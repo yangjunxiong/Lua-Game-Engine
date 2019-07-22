@@ -4,8 +4,10 @@
 namespace GameEngine
 {
 	CLASS(NO_LUA_AUTHORITY);
-	class SphereComponent : public CollisionComponent
+	class SphereComponent final : public CollisionComponent
 	{
+		RTTI_DECLARATIONS(SphereComponent, CollisionComponent);
+
 	public:
 		CONSTRUCTOR();
 		SphereComponent(Entity* parent, const Vector3& center, float radius);
@@ -33,7 +35,6 @@ namespace GameEngine
 
 	protected:
 		inline Sphere FinalSphere() const;
-
 		Sphere mSphere;
 	};
 }

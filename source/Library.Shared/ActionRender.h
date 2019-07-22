@@ -20,7 +20,5 @@ namespace GameEngine
 
 	protected:
 		ActionRender(RTTI::IdType type, Entity* parent);
-		inline void AttachToParent();
-		Entity* mParent = nullptr;
 	};
 }
