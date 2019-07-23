@@ -99,6 +99,7 @@ namespace GameEngine
 		Vector3& operator=(const Vector3& other) = default;
 		Vector3& operator=(Vector3&& other) = default;
 		Vector3(const Vector4& vec);
+		Vector3(float x, float y, float z, float w);
 		explicit Vector3(float v);
 		virtual ~Vector3() = default;
 

@@ -48,11 +48,13 @@ function Main.RemoveUpdate(obj)
     table.remove(Main.UpdateList, obj)
 end
 
-function Main.RegisterEvent(eventName, func, obj)
+function Main.RegisterEvent(eventName, obj, func)
     if (Main.EventList[eventName] == nil) then
         Main.EventList[eventName] = {}
     end
-    Main.EventList[eventName][func] = obj or false
+    assert(obj ~= nil)
+    assert(func ~= nil)
+    Main.EventList[eventName][obj] = func
 end
 
 function Main.UnregisterEvent(eventName, func)
@@ -63,9 +65,11 @@ end
 
 -- Called from C++ update frame, will dispatch update event to all registered functions
 function Main.Update(deltaTime)
+    Time.Update(deltaTime)
     for obj, func in pairs(Main.UpdateList) do
         func(obj, deltaTime)
     end
+    collectgarbage("collect")
 end
 
 -- Called when Lua scripts is loaded
@@ -107,12 +111,8 @@ end
 function Main.EventNotify(event, eventName)
     local list = Main.EventList[eventName]
     if (list) then
-        for func, obj in pairs(list) do
-            if (obj == false)then
-                func(event)
-            else
-                func(obj, event)
-            end
+        for obj, func in pairs(list) do
+            func(obj, event)
         end
     end
 end

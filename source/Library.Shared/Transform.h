@@ -108,12 +108,12 @@ namespace GameEngine
 		Matrix mWorldMatrix;
 		Matrix mWorldMatrixInverse;
 		Matrix mLocalMatrix;
-		Vector3 mWorldPosition;
+		Vector3 mWorldPosition { 0.f, 0.f, 0.f, 1.f } ;
 		Quaternion mWorldRotation;
-		Vector3 mWorldScale { 1.f };
-		Vector3 mLocalPosition;
+		Vector3 mWorldScale { 1.f, 1.f, 1.f, 0.f };
+		Vector3 mLocalPosition { 0.f, 0.f, 0.f, 1.f };
 		Quaternion mLocalRotation;
-		Vector3 mLocalScale { 1.f };
+		Vector3 mLocalScale { 1.f, 1.f, 1.f, 0.f };
 		Vector3 mForward = Vector3::Forward;
 		Vector3 mUp = Vector3::Up;
 		Vector3 mRight = Vector3::Right;

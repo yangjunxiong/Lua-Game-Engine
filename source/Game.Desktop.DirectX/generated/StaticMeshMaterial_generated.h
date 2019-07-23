@@ -19,6 +19,10 @@ public:
 	{
 		bind;
 		bind.SetFunction<StaticMeshMaterial, void,  const std::string&>("SetColorMap", &StaticMeshMaterial::SetColorMap);
+		bind.SetFunction<StaticMeshMaterial, Vector3>("CoverColor", &StaticMeshMaterial::CoverColor);
+		bind.SetFunction<StaticMeshMaterial, void,  const Vector3&>("SetCoverColor", &StaticMeshMaterial::SetCoverColor);
+		bind.SetFunction<StaticMeshMaterial, float>("Outline", &StaticMeshMaterial::Outline);
+		bind.SetFunction<StaticMeshMaterial, void, float>("SetOutline", &StaticMeshMaterial::SetOutline);
 	};
 };
 }

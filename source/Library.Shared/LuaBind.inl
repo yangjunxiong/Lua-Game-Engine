@@ -268,6 +268,7 @@ namespace GameEngine::Lua
 	void LuaBind::SetEnumValue(const std::string& enumName, int value)
 	{
 		int newTable = luaL_newmetatable(mLuaState, LuaWrapper<Enum>::sName.c_str());
+		newTable;
 		assert(!newTable);
 		lua_pushstring(mLuaState, enumName.c_str());
 		lua_pushinteger(mLuaState, value);
@@ -619,7 +620,7 @@ namespace GameEngine::Lua
 		// Call function
 		int argCount = 0;
 		_PushFunctionArgument(argCount, std::forward<Args>(args)...);
-		int error = lua_pcall(mLuaState, argCount, 1, 0);
+		int error = lua_pcall(mLuaState, argCount, 0, 0);
 		_ProcessError(error);
 	}
 

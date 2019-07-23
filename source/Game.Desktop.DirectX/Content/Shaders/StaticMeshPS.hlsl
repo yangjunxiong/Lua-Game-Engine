@@ -10,6 +10,8 @@ cbuffer CBufferPerObject
 {
 	float3 SpecularColor;
 	float SpecularPower;
+	float3 CoverColor;
+	float Outline;
 }
 
 Texture2D ColorMap;
@@ -43,5 +45,12 @@ float4 main(VS_OUTPUT IN) : SV_TARGET
 	float3 diffuse = color.rgb * lightCoefficients.x * LightColor * IN.Attenuation;
 	float3 specular = min(lightCoefficients.y, specularClamp) * SpecularColor * IN.Attenuation;
 
-	return float4(saturate(ambient + (diffuse + specular)), color.a);
+	float4 colorWithLight = float4(saturate(ambient + (diffuse + specular)), color.a);
+	float4 finalColor = colorWithLight * float4(CoverColor, 1);
+
+	// Outline
+	float n_dot_view = dot(normal, viewDirection);
+	float n_dot_view_abs = abs(n_dot_view);
+	float outlineCoefficient = (Outline > 0 && n_dot_view_abs < 0.25) ? Outline : 0;
+	return outlineCoefficient > 0 ? outlineCoefficient * float4(1, 1, 1, 1) : finalColor;
 }

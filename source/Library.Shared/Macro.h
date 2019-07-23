@@ -19,7 +19,7 @@
 		lua_error(L);			\
 	}
 #else
-	#define LUA_ASSERT(L, ...) ()
+	#define LUA_ASSERT(L, ...)
 #endif
 
 /*
@@ -258,6 +258,7 @@ template<> static inline void LuaBind::_RegisterVector<_type>(LuaBind& bind)  \
 	lua_State* mLuaState = bind.mLuaState;  \
 	LuaWrapper<std::vector<_type>>::Register(mLuaState);  \
 	int newTable = luaL_newmetatable(mLuaState, LuaWrapper<std::vector<_type>>::sName.c_str());  \
+	newTable;  \
 	assert(!newTable);																			  \
 	bind.SetConstructor<std::vector<_type>>();															  \
 	lua_pushstring(mLuaState, "Get");															  \

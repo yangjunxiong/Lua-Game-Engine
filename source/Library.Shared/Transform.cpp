@@ -71,6 +71,7 @@ const Vector3& Transform::GetWorldScale() const
 void Transform::SetWorldPosition(const Vector3& position)
 {
 	mWorldPosition = position;
+	mWorldPosition.w = 1.f;
 	mLocalPositionDirty = false;
 	mWorldPositionDirty = true;
 }
@@ -85,6 +86,7 @@ void Transform::SetWorldRotation(const Quaternion& rotation)
 void Transform::SetWorldScale(const Vector3& scale)
 {
 	mWorldScale = scale;
+	mWorldScale.w = 0.f;
 	mLocalScaleDirty = false;
 	mWorldScaleDirty = true;
 }
@@ -134,6 +136,7 @@ const Vector3& Transform::GetLocalScale() const
 void Transform::SetLocalPosition(const Vector3& position)
 {
 	mLocalPosition = position;
+	mLocalPosition.w = 1.f;
 	mLocalPositionDirty = true;
 	mWorldPositionDirty = false;
 }
@@ -148,6 +151,7 @@ void Transform::SetLocalRotation(const Quaternion& rotation)
 void Transform::SetLocalScale(const Vector3& scale)
 {
 	mLocalScale = scale;
+	mLocalScale.w = 0.f;
 	mLocalScaleDirty = true;
 	mWorldScaleDirty = false;
 }

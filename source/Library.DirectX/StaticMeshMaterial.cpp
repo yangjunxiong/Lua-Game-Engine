@@ -122,6 +122,29 @@ void StaticMeshMaterial::SetSpecularColor(const XMFLOAT3& color)
 	mPixelCBufferPerObjectDataDirty = true;
 }
 
+Vector3 StaticMeshMaterial::CoverColor() const
+{
+	return Vector3(mPixelCBufferPerObjectData.CoverColor.x, mPixelCBufferPerObjectData.CoverColor.y, mPixelCBufferPerObjectData.CoverColor.z, 1.f);
+}
+
+void StaticMeshMaterial::SetCoverColor(const Vector3& color)
+{
+	auto& raw = color.RawVector();
+	mPixelCBufferPerObjectData.CoverColor = XMFLOAT3(raw.x, raw.y, raw.z);
+	mPixelCBufferPerObjectDataDirty = true;
+}
+
+float StaticMeshMaterial::Outline() const
+{
+	return mPixelCBufferPerObjectData.Outline;
+}
+
+void StaticMeshMaterial::SetOutline(float value)
+{
+	mPixelCBufferPerObjectData.Outline = value;
+	mPixelCBufferPerObjectDataDirty = true;
+}
+
 float StaticMeshMaterial::SpecularPower() const
 {
 	return mPixelCBufferPerObjectData.SpecularPower;

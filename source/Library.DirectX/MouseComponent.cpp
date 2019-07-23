@@ -7,6 +7,7 @@
 #include "Entity.h"
 #include "Sector.h"
 #include "CollisionComponent.h"
+#include <imgui.h>
 
 using namespace std;
 using namespace DirectX;
@@ -164,6 +165,11 @@ namespace GameEngine
 
 	void MouseEntity::UpdateMouseEvent(WorldState& state)
 	{
+		if (ImGui::IsAnyItemHovered() || ImGui::IsAnyItemActive())
+		{
+			return;
+		}
+
 		float deltaTime = state.GetGameTime().ElapsedGameTimeSeconds().count();
 
 		// Check collision objects

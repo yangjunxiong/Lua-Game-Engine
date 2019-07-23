@@ -5,6 +5,7 @@
 #include "VectorHelper.h"
 #include "MatrixHelper.h"
 #include "SamplerStates.h"
+#include "Vector4.h"
 
 namespace GameEngine
 {
@@ -47,6 +48,18 @@ namespace GameEngine
 		const DirectX::XMFLOAT3& SpecularColor() const;
 		void SetSpecularColor(const DirectX::XMFLOAT3& color);
 
+		FUNCTION();
+		Vector3 CoverColor() const;
+
+		FUNCTION();
+		void SetCoverColor(const Vector3& color);
+
+		FUNCTION();
+		float Outline() const;
+
+		FUNCTION();
+		void SetOutline(float value);
+
 		float SpecularPower() const;
 		void SetSpecularPower(float power);
 
@@ -83,6 +96,8 @@ namespace GameEngine
 		{
 			DirectX::XMFLOAT3 SpecularColor { 1.0f, 1.0f, 1.0f };
 			float SpecularPower { 128.0f };
+			DirectX::XMFLOAT3 CoverColor { Vector3Helper::One };
+			float Outline = 0.f;
 		};
 
 		virtual void BeginDraw() override;

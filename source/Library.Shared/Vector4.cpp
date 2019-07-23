@@ -67,6 +67,10 @@ Vector3::Vector3(const Vector4& vec) :
 	Vector4(vec)
 {}
 
+Vector3::Vector3(float x, float y, float z, float w) :
+	Vector4(x, y, z, w)
+{}
+
 Vector3::Vector3(float v) :
 	Vector4(v)
 {}

@@ -10,6 +10,10 @@ packages/
 
 # Allow Lua commit
 !bin/Game.Desktop.DirectX/
+bin/Game.Desktop.DirectX/*
+!bin/Game.Desktop.DirectX/x64
+bin/Game.Desktop.DirectX/x64/*
+!bin/Game.Desktop.DirectX/x64/Debug
 bin/Game.Desktop.DirectX/x64/Debug/*
 !bin/Game.Desktop.DirectX/x64/Debug/Content/
 bin/Game.Desktop.DirectX/x64/Debug/Content/*

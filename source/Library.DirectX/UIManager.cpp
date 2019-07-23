@@ -5,15 +5,16 @@
 
 using namespace GameEngine;
 
-#define CALL_FUNCTION(_required, _funcName, ...)                                   \
+#define CALL_FUNCTION(_required, _funcName, _paramCount, _params, _paramsPush, ...)                          \
 if (lua_isfunction(L, -1))														   \
 {																				   \
 	int uniqueIndex = luaL_ref(L, LUA_REGISTRYINDEX);							   \
-	_funcName = [uniqueIndex, L]()												   \
+	_funcName = [uniqueIndex, L](_params)										   \
 	{																			   \
 		lua_rawgeti(L, LUA_REGISTRYINDEX, uniqueIndex);							   \
 		assert(lua_isfunction(L, -1));											   \
-		lua_call(L, 0, 1);														   \
+		_paramsPush;  \
+		lua_pcall(L, _paramCount, 1, 0);                                                     \
 		__VA_ARGS__;															   \
 	};																			   \
 }																				   \
@@ -32,7 +33,7 @@ else if (lua_istable(L, -1))													   \
 		paramIndexes.emplace_back(luaL_ref(L, LUA_REGISTRYINDEX));				   \
 	}																			   \
 																				   \
-	_funcName = [functionIndex, paramIndexes, L]()								   \
+	_funcName = [functionIndex, paramIndexes, L](_params)						   \
 	{																			   \
 		lua_rawgeti(L, LUA_REGISTRYINDEX, functionIndex);						   \
 		assert(lua_isfunction(L, -1));											   \
@@ -40,7 +41,8 @@ else if (lua_istable(L, -1))													   \
 		{																		   \
 			lua_rawgeti(L, LUA_REGISTRYINDEX, index);							   \
 		}																		   \
-		lua_call(L, static_cast<int>(paramIndexes.size()), 1);					   \
+		_paramsPush;  \
+		lua_pcall(L, static_cast<int>(paramIndexes.size()) + _paramCount, 1, 0);				   \
 		__VA_ARGS__;															   \
 	};																			   \
 }																				   \
@@ -48,6 +50,8 @@ else if (_required)                                                             
 {																				   \
 	lua_error(L);																   \
 }
+
+#define CALL_FUNCTION_BRIEF(_required, _funcName, ...) CALL_FUNCTION(_required, _funcName, 0, EXP(), EXP(), __VA_ARGS__)
 
 #pragma region UIManager
 
@@ -121,12 +125,14 @@ UIManager::RenderBlock::RenderBlock(const std::string& name, bool active, std::f
 std::vector<UILuaAdapter::WidgetFunction> UILuaAdapter::sWidgetFunctions =
 {
 	&UILuaAdapter::TextState,
-	&UILuaAdapter::ButtonState
+	&UILuaAdapter::ButtonState,
+	&UILuaAdapter::SliderState
 };
 std::map<std::string, UILuaAdapter::WidgetType> UILuaAdapter::sWidgetTypeMap =
 {
 	{ "Text", WidgetType::Text },
-	{ "Button", WidgetType::Button }
+	{ "Button", WidgetType::Button },
+	{ "Slider", WidgetType::Slider }
 };
 
 void UILuaAdapter::Init(lua_State* L)
@@ -225,7 +231,7 @@ std::function<void()> UILuaAdapter::TextState(lua_State* L, int index)
 	}
 	else
 	{
-		CALL_FUNCTION(true, func,
+		CALL_FUNCTION_BRIEF(true, func,
 			const char* str = luaL_checkstring(L, -1);
 			lua_pop(L, 1);
 			ImGui::Text(str);
@@ -247,7 +253,7 @@ std::function<void()> UILuaAdapter::ButtonState(lua_State* L, int index)
 	}
 	else
 	{
-		CALL_FUNCTION(true, label,
+		CALL_FUNCTION_BRIEF(true, label,
 			const char* str = luaL_checkstring(L, -1);
 			lua_pop(L, 1);
 			return str;
@@ -257,7 +263,7 @@ std::function<void()> UILuaAdapter::ButtonState(lua_State* L, int index)
 	// Click callback function
 	lua_getfield(L, index, CLICK_FIELD);
 	std::function<void()> callback;
-	CALL_FUNCTION(false, callback);
+	CALL_FUNCTION_BRIEF(false, callback);
 
 	if (!labelString.empty())
 	{
@@ -279,5 +285,77 @@ std::function<void()> UILuaAdapter::ButtonState(lua_State* L, int index)
 			}
 		};
 	}
+}
+
+std::function<void()> UILuaAdapter::SliderState(lua_State* L, int index)
+{
+	lua_getfield(L, index, TEXT_FIELD);
+	std::function<const char*()> label;
+	if (lua_isstring(L, -1))
+	{
+		const char* str = lua_tostring(L, -1);
+		label = [str]() { return str; };
+	}
+	else
+	{
+		CALL_FUNCTION_BRIEF(true, label,
+			const char* str = luaL_checkstring(L, -1);
+			lua_pop(L, 1);
+			return str;
+		);
+	}
+
+	lua_getfield(L, index, SLIDER_MIN_FIELD);
+	std::function<float()> min;
+	if (lua_isnumber(L, -1))
+	{
+		float value = static_cast<float>(lua_tonumber(L, -1));
+		min = [value]() { return value; };
+	}
+	else
+	{
+		CALL_FUNCTION_BRIEF(true, min,
+			float value = static_cast<float>(luaL_checknumber(L, -1));
+			lua_pop(L, 1);
+			return value;
+		);
+	}
+
+	lua_getfield(L, index, SLIDER_MAX_FIELD);
+	std::function<float()> max;
+	if (lua_isnumber(L, -1))
+	{
+		float value = static_cast<float>(lua_tonumber(L, -1));
+		max = [value]() { return value; };
+	}
+	else
+	{
+		CALL_FUNCTION_BRIEF(true, max,
+			float value = static_cast<float>(luaL_checknumber(L, -1));
+			lua_pop(L, 1);
+			return value;
+		);
+	}
+
+	lua_getfield(L, index, SLIDER_VALUE_GETTER);
+	std::function<float()> getter;
+	CALL_FUNCTION_BRIEF(true, getter,
+		float value = static_cast<float>(luaL_checknumber(L, -1));
+		lua_pop(L, 1);
+		return value;
+	);
+
+	lua_getfield(L, index, SLIDER_VALUE_CALLBACK_FIELD);
+	std::function<void(float)> callback;
+	CALL_FUNCTION(false, callback, 1, EXP(float value), EXP(lua_pushnumber(L, value);));
+
+	return [label, min, max, getter, callback]()
+	{
+		float value = getter();
+		if (ImGui::SliderFloat(label(), &value, min(), max()))
+		{
+			callback(value);
+		}
+	};
 }
 #pragma endregion

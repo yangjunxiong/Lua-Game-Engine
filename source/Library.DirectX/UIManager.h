@@ -38,17 +38,23 @@ namespace GameEngine
 		enum class WidgetType
 		{
 			Text = 0,
-			Button
+			Button,
+			Slider
 		};
 		
 		const static inline char* TYPE_FIELD = "Type";
 		const static inline char* TEXT_FIELD = "Text";
 		const static inline char* CLICK_FIELD = "Click";
+		const static inline char* SLIDER_MIN_FIELD = "Min";
+		const static inline char* SLIDER_MAX_FIELD = "Max";
+		const static inline char* SLIDER_VALUE_GETTER = "Value";
+		const static inline char* SLIDER_VALUE_CALLBACK_FIELD = "ValueChange";
 
 		using WidgetFunction = std::function<void()>(*)(lua_State* L, int index);
 		static std::vector<WidgetFunction> sWidgetFunctions;
 		static std::map<std::string, WidgetType> sWidgetTypeMap;
 		static std::function<void()> TextState(lua_State* L, int index);
 		static std::function<void()> ButtonState(lua_State* L, int index);
+		static std::function<void()> SliderState(lua_State* L, int index);
 	};
 }

@@ -44,7 +44,7 @@ function CameraController:Init()
     Main.AddUpdate(self, self.Update)
     self.mCameraTrans = G_Camera:GetTransform()
     self.mCameraTrans:SetWorldPosition(Vector3.New(0, 0, self.mDefaultDistance))
-    G_UI.AddWindow(self:Window())
+    --G_UI.AddWindow(self:Window())
 end
 
 function CameraController:Update(deltaTime)

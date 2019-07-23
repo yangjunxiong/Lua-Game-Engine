@@ -38,16 +38,12 @@ void StaticMeshRenderComponent::Init()
 	mMaterial.Initialize();
 
 	// Set camera callback to update material buffer
-	auto firstPersonCamera = mCamera->As<FirstPersonCamera>();
-	if (firstPersonCamera != nullptr)
+	Transform* cameraTrans = mCamera->GetTransform();
+	cameraTrans->AddTransformUpdateCallback([this, cameraTrans]()
 	{
-		Transform* cameraTrans = firstPersonCamera->GetTransform();
-		cameraTrans->AddTransformUpdateCallback([this, cameraTrans]()
-		{
-			auto& pos = cameraTrans->GetWorldPosition().RawVector();
-			mMaterial.UpdateCameraPosition(XMFLOAT3(pos.x, pos.y, pos.z));
-		});
-	}
+		auto& pos = cameraTrans->GetWorldPosition().RawVector();
+		mMaterial.UpdateCameraPosition(XMFLOAT3(pos.x, pos.y, pos.z));
+	});
 	auto updateMaterialFunc = [this]() { mUpdateMaterial = true; };
 	mCamera->AddViewMatrixUpdatedCallback(updateMaterialFunc);
 	mCamera->AddProjectionMatrixUpdatedCallback(updateMaterialFunc);
