@@ -72,9 +72,14 @@ function SelectFleetWindow.FleetValue()
 end
 
 function SelectFleetWindow.FleetValueChange(value)
-    self.mFleetValue = value
+    self.mFleetValue = math.floor(value)
 end
 
 function SelectFleetWindow.SendFleet()
-    
+    if (self.mFleetValue > 0) then
+        Main.Create(Fleet, self.mStartPlanet, self.mEndPlanet, self.mFleetValue)
+        self.mStartPlanet.mArmyStrength = self.mStartPlanet.mArmyStrength - self.mFleetValue
+        self.mStartPlanet.mFaction:UpdateArmyStrength()
+        self.Close()
+    end
 end

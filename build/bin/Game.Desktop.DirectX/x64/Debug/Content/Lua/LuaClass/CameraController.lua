@@ -7,10 +7,10 @@ self.mYBoundary = 0.75
 self.mScrollSpeed = 500
 
 -- Control scale mouse in and out
-self.mNearDistance = 20
-self.mFarDistance = 1000
-self.mDefaultDistance = 100
-self.mCurrentDistance = 100
+self.mNearDistance = 200
+self.mFarDistance = 1500
+self.mDefaultDistance = 200
+self.mCurrentDistance = self.mDefaultDistance
 self.mScaleSpeed = 10
 
 function CameraController:Print(flag)

@@ -14,6 +14,7 @@
 #include "MouseComponent.h"
 #include "PerspectiveCamera.h"
 #include "RenderTarget.h"
+#include "Skybox.h"
 #include "StaticMeshMaterial.h"
 #include "StaticMeshRenderComponent.h"
 #include "Action.h"
@@ -74,6 +75,10 @@ DECLARE_LUA_WRAPPER(PerspectiveCamera, "PerspectiveCamera", true);
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(PerspectiveCamera);
 DECLARE_LUA_WRAPPER(RenderTarget, "RenderTarget", true);
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(RenderTarget);
+DECLARE_LUA_WRAPPER(Skybox, "Skybox", false);
+LUA_DEFINE_CUSTOM_OBJECT_TYPE(Skybox);
+LUA_DEFINE_CUSTOM_COPY_TYPE(Skybox);
+DECLARE_LUA_VECTOR_WRAPPER_ALL(Skybox, "Skybox");
 DECLARE_LUA_WRAPPER(StaticMeshMaterial, "StaticMeshMaterial", true);
 LUA_DEFINE_CUSTOM_OBJECT_TYPE(StaticMeshMaterial);
 DECLARE_LUA_WRAPPER(StaticMeshRenderComponent, "StaticMeshRenderComponent", false);
@@ -150,6 +155,7 @@ LUA_DEFINE_CUSTOM_OBJECT_TYPE(WorldState);
 #include "./generated/MouseComponent_generated.h"
 #include "./generated/PerspectiveCamera_generated.h"
 #include "./generated/RenderTarget_generated.h"
+#include "./generated/Skybox_generated.h"
 #include "./generated/StaticMeshMaterial_generated.h"
 #include "./generated/StaticMeshRenderComponent_generated.h"
 #include "./generated/Action_generated.h"
@@ -188,9 +194,10 @@ MouseEventType_generated::Lua_RegisterClass(bind);
 MouseEntity_generated::Lua_RegisterClass(bind);
 MouseEvent_generated::Lua_RegisterClass(bind);
 RenderTarget_generated::Lua_RegisterClass(bind);
-StaticMeshMaterial_generated::Lua_RegisterClass(bind);
 Action_generated::Lua_RegisterClass(bind);
 ActionRender_generated::Lua_RegisterClass(bind);
+Skybox_generated::Lua_RegisterClass(bind);
+StaticMeshMaterial_generated::Lua_RegisterClass(bind);
 StaticMeshRenderComponent_generated::Lua_RegisterClass(bind);
 Sphere_generated::Lua_RegisterClass(bind);
 Ray_generated::Lua_RegisterClass(bind);
@@ -223,6 +230,7 @@ MouseEvent_generated::Lua_RegisterMember(bind);
 monitor->subscribers.emplace_back(new MouseEvent_event_generated(bind));
 PerspectiveCamera_generated::Lua_RegisterMember(bind);
 RenderTarget_generated::Lua_RegisterMember(bind);
+Skybox_generated::Lua_RegisterMember(bind);
 StaticMeshMaterial_generated::Lua_RegisterMember(bind);
 StaticMeshRenderComponent_generated::Lua_RegisterMember(bind);
 Action_generated::Lua_RegisterMember(bind);

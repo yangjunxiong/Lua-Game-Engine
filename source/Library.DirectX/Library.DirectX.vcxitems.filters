@@ -207,6 +207,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)UIManager.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Skybox.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Camera.h">
@@ -373,6 +376,9 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)UIManager.h">
       <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Skybox.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

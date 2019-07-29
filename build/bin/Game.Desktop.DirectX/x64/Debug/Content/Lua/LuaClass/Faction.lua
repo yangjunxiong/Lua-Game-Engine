@@ -21,11 +21,20 @@ function Faction:LogicTick(turn)
 end
 
 function Faction:AddPlanet(planet)
+    for i = 1, #self.mPlanetList do
+        if (self.mPlanetList[i] == planet) then
+            return
+        end
+    end
     table.insert(self.mPlanetList, planet)
 end
 
 function Faction:RemovePlanet(planet)
-    table.remove(self.mPlanetList, planet)
+    for i = 1, #self.mPlanetList do
+        if (self.mPlanetList[i] == planet) then
+            table.remove(self.mPlanetList, i)
+        end
+    end
 end
 
 function Faction:UpdateArmyStrength()

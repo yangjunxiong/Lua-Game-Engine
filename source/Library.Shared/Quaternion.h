@@ -75,6 +75,13 @@ namespace GameEngine
 		FUNCTION();
 		static Vector3 ToEulerAngles(const Quaternion& quat);
 
+		FUNCTION();
+		static Vector3 ToUnitVector(const Quaternion& quat);
+
+		FUNCTION();
+		static Quaternion FromUnitVector(const Vector3& vector);
+
+		FUNCTION();
 		inline Matrix ToMatrix() const;
 
 #ifdef WITH_OPENGL

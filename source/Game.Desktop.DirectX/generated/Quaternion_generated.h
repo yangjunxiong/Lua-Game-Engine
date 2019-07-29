@@ -36,6 +36,9 @@ public:
 		bind.SetFunction<Quaternion, Quaternion(*)( const Quaternion&,  const Quaternion&, float)>("Slerp", &Quaternion::Slerp);
 		bind.SetFunction<Quaternion, Quaternion(*)( const Vector3&)>("FromEulerAngles", &Quaternion::FromEulerAngles);
 		bind.SetFunction<Quaternion, Vector3(*)( const Quaternion&)>("ToEulerAngles", &Quaternion::ToEulerAngles);
+		bind.SetFunction<Quaternion, Vector3(*)( const Quaternion&)>("ToUnitVector", &Quaternion::ToUnitVector);
+		bind.SetFunction<Quaternion, Quaternion(*)( const Vector3&)>("FromUnitVector", &Quaternion::FromUnitVector);
+		bind.SetFunction<Quaternion, Matrix>("ToMatrix", &Quaternion::ToMatrix);
 	};
 };
 }

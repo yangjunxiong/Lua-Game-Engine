@@ -29,7 +29,7 @@ function LogicTick.AddTick(obj, func)
 end
 
 function LogicTick.RemoveTick(obj)
-    table.remove(self.mTickList, obj)
+    self.mTickList[obj] = nil
 end
 
 function LogicTick.DoTick(turn)

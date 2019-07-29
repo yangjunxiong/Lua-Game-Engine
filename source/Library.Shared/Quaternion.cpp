@@ -67,4 +67,31 @@ Vector3 Quaternion::ToEulerAngles(const Quaternion& quat)
 
 	return Vector3(pitch, yaw, roll);
 }
+
+Vector3 Quaternion::ToUnitVector(const Quaternion& quat)
+{
+	return XMVector3Rotate(Vector4::ForwardVector, XMLoadFloat4(&quat.RawQuaternion()));
+}
+
+Quaternion Quaternion::FromUnitVector(const Vector3& vector)
+{
+	auto dotResult = XMVector3Dot(Vector3::ForwardVector, XMLoadFloat4(&vector.RawVector()));
+	XMFLOAT4 dotFloat;
+	XMStoreFloat4(&dotFloat, dotResult);
+	float dot = dotFloat.x;
+
+	if (fabs(dot - (-1.0f)) < 0.000001f)
+	{
+		return Quaternion::RotationAroundAxis(Vector3::Up, 180.f);
+	}
+	if (fabs(dot - (1.0f)) < 0.000001f)
+	{
+		return Quaternion::Identity;
+	}
+
+	float rotAngle = *XMVector3AngleBetweenVectors(Vector3::ForwardVector, XMLoadFloat4(&vector.RawVector())).m128_f32;
+	auto rotAxis = XMVector3Cross(Vector3::ForwardVector, XMLoadFloat4(&vector.RawVector()));
+	rotAxis = XMVector3Normalize(rotAxis);
+	return Quaternion::RotationAroundAxis(rotAxis, rotAngle);
+}
 #endif

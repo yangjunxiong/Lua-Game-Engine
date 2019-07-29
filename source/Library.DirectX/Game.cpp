@@ -105,7 +105,7 @@ namespace GameEngine
 		mServices.AddService(PerspectiveCamera::TypeIdClass(), mCamera);
 		mServices.AddService(FirstPersonCamera::TypeIdClass(), mCamera);
 		mWorld->Start();
-
+		
 		// Init ImGui
 		ImGui::CreateContext();
 		ImGui_ImplDX11_Init(mGetWindow(), Game::GetInstance()->Direct3DDevice(), Game::GetInstance()->Direct3DDeviceContext());

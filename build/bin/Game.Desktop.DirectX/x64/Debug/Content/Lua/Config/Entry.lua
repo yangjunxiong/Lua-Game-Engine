@@ -48,6 +48,8 @@ function Entry.Load()
     -- Create data
     self.CreateFactions()
     self.CreatePlanets()
+    local skybox = Main.Create(Entity)
+    Main.Create(Skybox, skybox, String.New("Textures/Skybox.dds"), 1000)
 end
 
 function Entry.CreatePlanets()
@@ -65,7 +67,7 @@ function Entry.CreatePlanets()
                 planet:ChangeFaction(faction)
             end
             planet.mName = "Planet " .. i .. "-" .. j
-            planet.mMineSpeed = math.random(1, 10)
+            planet.mMineSpeed = math.random() * 2
             planet.mArmyStrength = 0
         end
     end

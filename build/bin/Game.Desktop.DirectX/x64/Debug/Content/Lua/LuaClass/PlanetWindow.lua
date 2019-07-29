@@ -121,8 +121,10 @@ function PlanetWindow:OnMouseClick(event)
 end
 
 function PlanetWindow.ChangePlanet(planet)
-    Main.EventNotify({oldPlanet = self.mPlanet, newPlanet = planet}, "ChangePlanet")
-    self.mPlanet = planet
+    if (self.mPlanet ~= planet) then
+        Main.EventNotify({oldPlanet = self.mPlanet, newPlanet = planet}, "ChangePlanet")
+        self.mPlanet = planet
+    end
 end
 
 function PlanetWindow.ClickFactionDetail()

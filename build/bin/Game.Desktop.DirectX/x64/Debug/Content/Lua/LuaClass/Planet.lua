@@ -26,6 +26,7 @@ function Planet:Init()
 
     Main.AddUpdate(self, self.Update)
     Main.RegisterEvent("ChangePlanet", self, self.OnChangePlanet)
+    Main.RegisterEvent("FleetArrive", self, self.OnFleetArrive)
     LogicTick.AddTick(self, self.LogicTick)
 end
 
@@ -40,7 +41,7 @@ end
 
 function Planet:LogicTick(turn)
     if (self.mTraningCount > 0) then
-        self.mCurrentTraningProgress = self.mCurrentTraningProgress + 0.01 * turn
+        self.mCurrentTraningProgress = self.mCurrentTraningProgress + 0.02 * turn
         if (self.mCurrentTraningProgress >= 1) then
             self:FinishTraining()
         end
@@ -111,4 +112,41 @@ function Planet:OnChangePlanet(event)
     elseif (event.newPlanet == self) then
         self.mMaterial:SetOutline(1)
     end
+end
+
+function Planet:OnFleetArrive(event)
+    local fleet = event.fleet
+    if (fleet.mEndPlanet == self) then
+        if (self.mFaction == nil) then  -- Colonize planet
+            self:ChangeFaction(fleet.mStartPlanet.mFaction, fleet.mStrength)
+        elseif (fleet.mStartPlanet.mFaction == self.mFaction) then  -- Reinforce
+            self.mArmyStrength = self.mArmyStrength + fleet.mStrength
+            self.mFaction:UpdateArmyStrength()
+        else  -- Conquest
+            if (self.mArmyStrength >= fleet.mStrength) then
+                self.mArmyStrength = self.mArmyStrength - fleet.mStrength
+            else
+                fleet.mStrength = fleet.mStrength - self.mArmyStrength
+                self:ChangeFaction(fleet.mStartPlanet.mFaction, fleet.mStrength)
+            end
+        end
+    end
+end
+
+function Planet:ChangeFaction(faction, newStrength)
+    if (faction == self.mFaction) then
+        return
+    end
+
+    if (self.mFaction) then
+        self.mFaction:RemovePlanet(self)
+        self.mFaction:UpdateArmyStrength()
+    end
+
+    self.mFaction = faction
+    self.mMineCount = 0
+    self.mArmyStrength = newStrength or 0
+    self.mFaction:AddPlanet(self)
+    self.mFaction:UpdateArmyStrength()
+    self.mMaterial:SetCoverColor(faction.mColor)
 end

@@ -18,12 +18,14 @@ function Main.NewClass(parent)
         table = parent:New()
     else
         table = {}
-        table.New = function(self, obj)
-            local obj = obj or {}
+        table._New = function(self, ...)
+            local obj = {}
             setmetatable(obj, self)
             self.__index = self
+            obj:New(...)
             return obj
         end
+        table.New = function(self, ...) end
     end
 
     return table
@@ -45,7 +47,7 @@ end
 
 -- Remove the update function for an object
 function Main.RemoveUpdate(obj)
-    table.remove(Main.UpdateList, obj)
+    Main.UpdateList[obj] = nil
 end
 
 function Main.RegisterEvent(eventName, obj, func)
@@ -57,9 +59,9 @@ function Main.RegisterEvent(eventName, obj, func)
     Main.EventList[eventName][obj] = func
 end
 
-function Main.UnregisterEvent(eventName, func)
+function Main.UnregisterEvent(eventName, obj)
     if (not Main.EventList[eventName] == nil) then
-        table.remove(Main.EventList[eventName], func)
+        Main.EventList[eventName][obj] = nil
     end
 end
 
@@ -99,7 +101,7 @@ function Main.Create(class, ...)
     if (type(class.TypeName) == "function") then
         obj = class.New(...)
     else
-        obj = class:New(...)
+        obj = class:_New(...)
     end
     if (type(obj.Init) == "function") then
         obj:Init()
